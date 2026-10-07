@@ -3,7 +3,7 @@
 Overdrachtsdocument voor de Denckh-website. Hier staan de actuele stand, alle belangrijke technische en creatieve
 beslissingen, open punten en de volgende stappen. **Bijwerken aan het eind van elke werksessie.**
 
-- Laatst bijgewerkt: 2026-09-29
+- Laatst bijgewerkt: 2026-10-07
 - Live (`main`): "begin met een punt" (B-031), ronde 2 (B-038) en ronde 3 (merge `5427b8e`, B-047)
 
 ---
@@ -13,6 +13,12 @@ beslissingen, open punten en de volgende stappen. **Bijwerken aan het eind van e
 **Productie.** `denckh.nl` draait op GitHub Pages vanaf `main`. Op 2026-09-29 is `creatief/het-punt` na akkoord van
 de eigenaar gemerged (merge `960251b`, B-031). Mail via Cloud86/Plesk (`info@denckh.nl`). Aan DNS, Plesk en mail is
 niets gewijzigd.
+
+**Mail instellen op iPhone (branch `mail-instellen`, nog niet live, B-077).** Niet-gelinkte hulppagina
+`/mail-instellen/` (noindex, nofollow, niet in de sitemap) met drie configuratieprofielen in
+`public/mail-instellen/`: `denckh-info`, `denckh-kerckh` en `lichtsturing-info`. Geen wachtwoorden; iOS vraagt erom bij
+installatie. Merge naar `main` = livegang, alleen na akkoord van de eigenaar. Sinds 7 okt 2026 (avond) wijzen de
+Denckh-profielen naar `mail.denckh.nl` (B-078): de mail van denckh.nl is verhuisd naar Cloud86 E-mail Start (shared227).
 
 **Wat er live staat** (uit branch `creatief/het-punt`, zelf samengevoegd uit `main` en `codex/interactieve-kern`):
 
@@ -175,6 +181,8 @@ Pas de oude regel niet aan. *Voorstel* = wacht op akkoord van de eigenaar.
 | B-074 | 2026-09-30 | Positionering aangescherpt, geen redesign: eerst begrijpen en concreet maken, website is één mogelijke vorm. Hero-intro: *Een technisch product, een ingewikkeld verhaal, een praktisch probleem of een goed idee. Denckh zoekt uit welke vorm het begrijpelijk, bruikbaar of zichtbaar maakt.* (ingekort: zo blijft "begin met een punt" op mobiel in het eerste scherm) Verhaal: voorbeelden beginnen met interactieve uitleg, website als "soms". *Wat kan een idee worden?*: *Juist iets technisch of ingewikkelds? Mooi. Daar begint het vaak.*; lijst begint met interactieve uitleg, website en webshop achteraan, "interactieve demo" heet "demo of showroomconcept". *Klein, bewust*: Martijn stelt zich voor (elektrotechniek, techniek en commercie in verlichting, lichtsturing en slimme gebouwen; hoe werkt het echt en hoe maak je het eenvoudig). Geen werkgever genoemd. Prijzen ongewijzigd. | Eigenaar: Denckh mag niet primair overkomen als websitebouwer; de technische en commerciële achtergrond moet zichtbaar zijn. Tekst over Martijn aangeleverd door de eigenaar. | Vast |
 | B-075 | 2026-09-30 | Profiel-PDF *Achter Denckh* (`public/downloads/denckh-achter-denckh.pdf`, één A4, `npm run achter`, `scripts/achter-denckh.mjs`): tekst van de eigenaar (vier pijlers, de rode draad, mogelijke uitkomsten) in de huisstijl: echt woordmerk en krul, Fraunces en Manrope, portret van de site, getekende pijlen. Weggelaten: "Eigen woning grotendeels ontworpen en technisch gerealiseerd" (eigenaar: geen verhaal over het eigen huis op de site; "praktisch ontwerpen, bouwen en verbouwen" dekt het). Link *Meer over mijn achtergrond (pdf)* onder *Denckh is klein. Bewust.* | Aangeleverde PDF (ChatGPT/ReportLab) had een getypt woordmerk, standaardletters en een ondertekend AI-label. | Vast |
 | B-076 | 2026-09-30 | *Denckh is klein. Bewust.*: volgorde omgedraaid. Eerst de vraag van de bezoeker en wat Denckh ermee doet, dan dat je rechtstreeks met Martijn werkt, dan pas de achtergrond als bewijs (techniek en commercie; verlichting, lichtsturing en slimme gebouwen), dan Deegh en de link naar de A4. Verdere achtergrond alleen in de A4. | Eigenaar: het blok begon te veel als een Over Martijn-pagina; Denckh mag niet als adviesbureau voor verlichting of techniek overkomen. Gelaagd: homepage (wat kan Denckh voor mijn idee?), dit blok (met wie werk ik?), A4 (wat heeft Martijn gedaan?). | Vast |
+| B-077 | 2026-10-07 | Hulppagina `/mail-instellen/` met drie `.mobileconfig`-profielen (één `com.apple.mail.managed`-payload elk, IMAP 993 en SMTP 465 met SSL, wachtwoordverificatie, gebruikersnaam = volledig adres, geen wachtwoord, `OutgoingPasswordSameAsIncomingPassword`). Denckh-adressen via `shared218.cloud86-host.io`, niet via `mail.denckh.nl` of `denckh.nl`. lichtsturing.info via `mail.lichtsturing.info`. Identifiers onder `nl.denckh.mail.*`, vaste UUID's. Niet ondertekend. | `denckh.nl` wijst naar GitHub Pages; `mail.denckh.nl` geeft een certificaat voor alleen `webmail.denckh.nl` (hostname mismatch); `shared218.cloud86-host.io` heeft een geldig certificaat en is de servernaam die Cloud86 voorschrijft als de website elders staat. `mail.lichtsturing.info` is de MX met geldig wildcardcertificaat. Keys gecontroleerd tegen Apple's Device Management-documentatie. | Voorstel |
+| B-078 | 2026-10-07 | Profielen `denckh-info` en `denckh-kerckh`: IMAP en SMTP via **`mail.denckh.nl`** (993 en 465, SSL) in plaats van `shared218.cloud86-host.io`. Herziet het serverdeel van B-077; de rest van B-077 blijft. Fallback als `mail.denckh.nl` ooit niet werkt: `shared227.cloud86-host.io`. | De mail van denckh.nl draait sinds 7 okt 2026 op het Cloud86-pakket E-mail Start (`shared227`, 45.82.190.24); `mail.denckh.nl` wijst daarheen en heeft er een Let's Encrypt-certificaat voor `mail.denckh.nl` en `webmail.denckh.nl` (extern gecontroleerd op 993, 465, 587, 995 en 443, geen hostnamefout). `shared218` is de oude server. `kerckh@denckh.nl` bestaat nu als eigen postvak. | Voorstel (branch `mail-instellen`, niet gemerged) |
 
 ---
 
@@ -193,6 +201,10 @@ Pas de oude regel niet aan. *Voorstel* = wacht op akkoord van de eigenaar.
 | Workflow `deploy-pages.yml` deployt elke push naar `main`; laatste run (2f9a7a2) geslaagd. | GitHub Actions | 2026-09-29 |
 | Mail via Cloud86/Plesk, mailbox `info@denckh.nl`. | Eigenaar | 2026-09-29 |
 | Op live `main` staat letterlijk `\n` linksboven op de homepage (typefout in `src/app/page.tsx`); op de branch opgelost. | Code | 2026-09-29 |
+| MX `denckh.nl` → `mail.denckh.nl` (45.82.189.107 = `shared218.cloud86-host.io`, Plesk Obsidian 18.0.81, Postfix/Dovecot). Poorten 993, 465 en 587 bereikbaar. Certificaat op `mail.denckh.nl` alleen geldig voor `webmail.denckh.nl`; op `shared218.cloud86-host.io` geldig. `smtp.denckh.nl` is een CNAME naar `denckh.nl` (GitHub Pages), dus geen mailserver. | DNS + openssl | 2026-10-07 |
+| Plesk: postvakken `info@denckh.nl` (postvak aan, geen aliassen, niet doorsturen, geen autoreply) en drie `@deegh.nl`-adressen. `kerckh@denckh.nl` bestaat niet (geen postvak, geen alias); mail aan onbekende adressen op `denckh.nl` wordt teruggestuurd. | Plesk (alleen gelezen) | 2026-10-07 |
+| Mail denckh.nl verhuisd: MX `mail.denckh.nl` → 45.82.190.24 = `shared227.cloud86-host.io` (Cloud86 E-mail Start). Postvakken `info@denckh.nl` en `kerckh@denckh.nl` (eigen postvakken, geen alias, niet doorsturen). Let's Encrypt voor `mail.denckh.nl` + `webmail.denckh.nl`; SPF `+ip4:45.82.190.24`, DKIM selector `cloud86` van shared227, DMARC ongewijzigd. Verzend- en ontvangsttest beide adressen geslaagd, SPF/DKIM/DMARC pass. Vervangt de serverregel hierboven (2026-10-07, shared218). | DNS + Plesk + openssl + testmail | 2026-10-07 |
+| MX `lichtsturing.info` → `mail.lichtsturing.info` (Theory7, `web0102.theory7.net`, Exim/Dovecot, DirectAdmin). Wildcardcertificaat `*.lichtsturing.info` geldig; SMTP AUTH PLAIN/LOGIN. Website staat los daarvan op GitHub Pages. Of `info@lichtsturing.info` een postvak is: niet gecontroleerd (DirectAdmin vraagt een login). | DNS + openssl | 2026-10-07 |
 
 ---
 
@@ -210,6 +222,8 @@ Pas de oude regel niet aan. *Voorstel* = wacht op akkoord van de eigenaar.
 | O-34 | **Logo-lab** (`denckh.nl/logo-lab/`): nu merkproefpagina (B-048). Woordmerk blijft; lettersnedes staan als archief onder "eerdere proeven". | Pagina weghalen of houden zodra de krul-toepassingen vaststaan. |
 | O-36 | **GitHub Pages meldt `http://denckh.nl/` als omgeving-URL.** Mogelijk staat "Enforce HTTPS" uit. | Eigenaar controleert in GitHub → Settings → Pages; niet door Claude aangepast (buiten scope). |
 | O-37 | **Consumentenprijzen juridisch controleren.** Tekst over particulieren staat erbij (B-073). Voor prijzen aan consumenten gelden strengere regels dan voor B2B. | Vóór actieve verkoop aan consumenten laten controleren door een deskundige hoe de prijzen op de site gepresenteerd moeten worden; niet door Claude laten invullen. |
+| O-40 | ~~**`kerckh@denckh.nl` aanmaken**~~ Gedaan 2026-10-07 (eigen postvak op shared227). Profielen wijzen naar `mail.denckh.nl` (B-078). | Profielen op een iPhone testen, daarna branch `mail-instellen` mergen na akkoord eigenaar. |
+| O-41 | **`info@lichtsturing.info` controleren** in DirectAdmin (Theory7): postvak of alleen doorsturen? | Bij installatie van het profiel blijkt het ook: login lukt alleen bij een echt postvak. |
 | O-02 | Repo is publiek. | Op privé zetten kan alleen met betaald GitHub-plan voor Pages; anders bewust publiek laten en niets vertrouwelijks opnemen. |
 
 Afgehandeld: O-01 (repo hernoemd naar `denckh`), O-08 (live sites via geautoriseerde browsersessie bekeken, zie

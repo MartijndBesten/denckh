@@ -548,6 +548,15 @@ nav .link-draw:hover, nav .link-draw:focus-visible { background-size: 100% 6px, 
 .legal-page__intro { font-size: 1.2rem; }
 .legal-page__date { margin-top: 2rem; color: var(--graphite); font-size: 0.9rem; }
 .not-found { min-height: 70svh; padding-bottom: 4rem; }
+.mail-setup { max-width: 34rem; padding-block: 2.5rem 3rem; }
+.mail-setup h1 { font-size: clamp(2rem, 8vw, 2.8rem); line-height: 1.05; margin-bottom: 1.5rem; }
+.mail-setup__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+.mail-setup__account { padding: 1.1rem 1.2rem 1.3rem; background: var(--paper-2); border-radius: 3px; }
+.mail-setup__account h2 { font-size: 1.5rem; line-height: 1.1; }
+.mail-setup__account p { margin: 0.2rem 0 0.9rem; color: var(--graphite); overflow-wrap: anywhere; }
+.mail-setup__steps { margin: 2rem 0 0; padding-left: 1.4rem; line-height: 1.6; list-style: decimal; }
+.mail-setup__steps li { padding-left: 0.2rem; }
+.mail-setup__note { margin-top: 1.5rem; color: var(--graphite); font-size: 0.9rem; }
 @media (max-width: 760px) { .case-page__facts { grid-template-columns: 1fr; } }
 
 /* ---------------- logo-lab (intern, noindex) ---------------- */
