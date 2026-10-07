@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>PayloadContent</key>
+  <array>
+    <dict>
+      <key>PayloadType</key>
+      <string>com.apple.mail.managed</string>
+      <key>PayloadVersion</key>
+      <integer>1</integer>
+      <key>PayloadIdentifier</key>
+      <string>nl.denckh.mail.info.account</string>
+      <key>PayloadUUID</key>
+      <string>7B61C986-1AF6-4992-97AF-438CA9CDA976</string>
+      <key>PayloadDisplayName</key>
+      <string>Denckh.</string>
+      <key>EmailAccountType</key>
+      <string>EmailTypeIMAP</string>
+      <key>EmailAccountDescription</key>
+      <string>Denckh.</string>
+      <key>EmailAccountName</key>
+      <string>Denckh.</string>
+      <key>EmailAddress</key>
+      <string>info@denckh.nl</string>
+      <key>IncomingMailServerHostName</key>
+      <string>shared218.cloud86-host.io</string>
+      <key>IncomingMailServerPortNumber</key>
+      <integer>993</integer>
+      <key>IncomingMailServerUseSSL</key>
+      <true/>
+      <key>IncomingMailServerAuthentication</key>
+      <string>EmailAuthPassword</string>
+      <key>IncomingMailServerUsername</key>
+      <string>info@denckh.nl</string>
+      <key>OutgoingMailServerHostName</key>
+      <string>shared218.cloud86-host.io</string>
+      <key>OutgoingMailServerPortNumber</key>
+      <integer>465</integer>
+      <key>OutgoingMailServerUseSSL</key>
+      <true/>
+      <key>OutgoingMailServerAuthentication</key>
+      <string>EmailAuthPassword</string>
+      <key>OutgoingMailServerUsername</key>
+      <string>info@denckh.nl</string>
+      <key>OutgoingPasswordSameAsIncomingPassword</key>
+      <true/>
+    </dict>
+  </array>
+  <key>PayloadType</key>
+  <string>Configuration</string>
+  <key>PayloadVersion</key>
+  <integer>1</integer>
+  <key>PayloadIdentifier</key>
+  <string>nl.denckh.mail.info</string>
+  <key>PayloadUUID</key>
+  <string>334FCA3F-0BB8-406F-B3A3-FA012D2314ED</string>
+  <key>PayloadDisplayName</key>
+  <string>Mail – Denckh. (info@denckh.nl)</string>
+  <key>PayloadDescription</key>
+  <string>Zet het mailaccount info@denckh.nl klaar in Mail (IMAP en SMTP via SSL bij Cloud86). Bevat geen wachtwoord: iOS vraagt erom bij de installatie.</string>
+  <key>PayloadOrganization</key>
+  <string>Denckh</string>
+</dict>
+</plist>
