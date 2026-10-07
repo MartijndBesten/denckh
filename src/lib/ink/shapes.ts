@@ -157,6 +157,27 @@ export const SHAPES: Record<string, (b: Box) => Shape> = {
       `M${s0.x} ${s0.y} Q${sc.x} ${sc.y} ${s1.x} ${s1.y}`, C(sx, sy, Math.min(w, h) * 0.045),
     ] };
   },
+  kerk: ({ w, h }) => {
+    // kerkgebouw met torentje (de contour); ernaast een agendakaart waarin één tijdslot bevestigd is
+    const W = Math.min(w * 0.34, h * 0.6), cx = w * 0.335, yb = h * 0.92, x0 = cx - W / 2, x1 = cx + W / 2;
+    const yw = yb - W * 0.62, yr = yw - W * 0.42, t = W * 0.11;
+    const roof = yw - (yw - yr) * (1 - t / (W / 2)), yt = yr - W * 0.14, ys = yt - W * 0.24;
+    const dw = W * 0.24, dy = yb - W * 0.36 + dw / 2;
+    const kw = w * 0.26, kh = kw * 0.78, kx = x1 + w * 0.07, ky = yb - kh;
+    const pad = 7, gap = 5, top = ky + 18, sw = (kw - pad * 2 - gap * 2) / 3, sh = (ky + kh - pad - top - gap) / 2;
+    const slot = (c: number, r: number) => R(kx + pad + c * (sw + gap), top + r * (sh + gap), sw, sh, 3);
+    const mx = kx + pad + 2 * (sw + gap) + sw / 2, my = top + sh + gap + sh / 2, k = Math.min(sw, sh) * 0.26;
+    const outline = [
+      { x: x0, y: yb }, { x: x0, y: yw }, { x: cx - t, y: roof }, { x: cx - t, y: yt }, { x: cx, y: ys },
+      { x: cx + t, y: yt }, { x: cx + t, y: roof }, { x: x1, y: yw }, { x: x1, y: yb }, { x: x0, y: yb },
+    ];
+    return { outline: resample(outline, SN), closed: true, details: [
+      `M${cx - dw / 2} ${yb} V${dy} A${dw / 2} ${dw / 2} 0 0 1 ${cx + dw / 2} ${dy} V${yb}`, C(cx, yw - (yw - yr) * 0.4, W * 0.07),
+      R(kx, ky, kw, kh, 6), L(kx, ky + 12, kx + kw, ky + 12),
+      ...[0, 1].flatMap((r) => [0, 1, 2].map((c) => slot(c, r))),
+      `M${mx - k} ${my} L${mx - k * 0.2} ${my + k * 0.8} L${mx + k * 1.2} ${my - k * 0.8}`,
+    ] };
+  },
   knop: ({ w, h }) => ({ outline: circle(w / 2, h / 2, Math.min(w, h) * 0.32), closed: true, details: [L(w / 2, h / 2, w / 2, h / 2 - Math.min(w, h) * 0.22)] }),
   deegbol: ({ w, h }) => ({ outline: circle(w / 2, h * 0.56, Math.min(w, h) * 0.26), closed: true, details: [`M${w / 2 - Math.min(w, h) * 0.12} ${h * 0.5} q${Math.min(w, h) * 0.08} ${-Math.min(w, h) * 0.05} ${Math.min(w, h) * 0.16} 0`] }),
   pizza: ({ w, h }) => {

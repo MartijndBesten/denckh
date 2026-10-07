@@ -268,9 +268,11 @@ for (const [w, h] of [[390, 844], [320, 640]]) {
   check("construct: stap is klikbaar", (await merk.getAttribute("aria-current")) === "step");
   check("construct: Deegh-logo in de stap merk", (await fig.locator(".construct__details.is-on image").count()) === 1);
   check("construct: echt Deegh-logo (PNG), lijn maakt plaats", (await fig.locator('.construct__details.is-on image[href="/images/deegh-logo.png"]').count()) === 1 && (await fig.locator(".construct__line").evaluate((e) => getComputedStyle(e).opacity)) === "0");
-  for (let i = 0; i < 3; i++) { await p.locator(".more__item").nth(i).scrollIntoViewIfNeeded(); await p.waitForTimeout(300); }
+  const more = p.locator(".more__item"), nMore = await more.count();
+  for (let i = 0; i < nMore; i++) { await more.nth(i).scrollIntoViewIfNeeded(); await p.waitForTimeout(300); }
   await p.waitForTimeout(1200);
-  check("ook gemaakt: drie vormen krijgen vorm", (await p.locator(".more__details").count()) === 3);
+  check("ook gemaakt: vier vormen krijgen vorm", nMore === 4 && (await p.locator(".more__details").count()) === 4, `${nMore} projecten`);
+  check("ook gemaakt: Kerckh. linkt naar www.kerckh.nl", (await more.filter({ hasText: "Kerckh." }).getByRole("link", { name: "Bekijk Kerckh." }).getAttribute("href")) === "https://www.kerckh.nl");
   check("projecten: geen console-errors", errors.length === 0, errors.join(" | "));
   await ctx.close();
 }

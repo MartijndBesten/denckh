@@ -3,7 +3,7 @@
 Overdrachtsdocument voor de Denckh-website. Hier staan de actuele stand, alle belangrijke technische en creatieve
 beslissingen, open punten en de volgende stappen. **Bijwerken aan het eind van elke werksessie.**
 
-- Laatst bijgewerkt: 2026-09-29
+- Laatst bijgewerkt: 2026-10-07
 - Live (`main`): "begin met een punt" (B-031), ronde 2 (B-038) en ronde 3 (merge `5427b8e`, B-047)
 
 ---
@@ -32,6 +32,11 @@ niets gewijzigd.
 - **AI:** alleen onderzoek, niets gebouwd: `docs/ai-onderzoek.md`.
 
 Nieuw werk: op een aparte branch; merge naar `main` = livegang.
+
+**Kerckh. (branch `inhoud/kerckh`, nog niet live, B-077).** Kerckh., een eigen product van Denckh (zaalreservering
+voor kerken), staat als vierde item in *Ook gemaakt*, direct na Autowasdag Sionkerk, met een schematische vorm (kerk
+met agendakaart) en de link *Bekijk Kerckh. →* naar `https://www.kerckh.nl`. Verder niets aan de site veranderd.
+Dossier: `docs/cases/kerckh.md`. Wacht op akkoord eigenaar voor merge naar `main`.
 
 **Ronde 2 (live sinds 2026-09-29, B-038).** Verwerkt de feedback van 2026-09-29:
 
@@ -88,7 +93,7 @@ aangescherpte positionering (B-044), Loflijn-beurt verwijderd (B-045) en de inte
 | Remote | `https://github.com/MartijndBesten/denckh` |
 | Zichtbaarheid | Publiek |
 | Hoofdbranch | `main` (live) |
-| Laatste werkbranch | `creatief/ronde-3` (gemerged, B-047) |
+| Laatste werkbranch | `inhoud/kerckh` (niet gemerged, B-077) |
 
 ---
 
@@ -175,6 +180,7 @@ Pas de oude regel niet aan. *Voorstel* = wacht op akkoord van de eigenaar.
 | B-074 | 2026-09-30 | Positionering aangescherpt, geen redesign: eerst begrijpen en concreet maken, website is één mogelijke vorm. Hero-intro: *Een technisch product, een ingewikkeld verhaal, een praktisch probleem of een goed idee. Denckh zoekt uit welke vorm het begrijpelijk, bruikbaar of zichtbaar maakt.* (ingekort: zo blijft "begin met een punt" op mobiel in het eerste scherm) Verhaal: voorbeelden beginnen met interactieve uitleg, website als "soms". *Wat kan een idee worden?*: *Juist iets technisch of ingewikkelds? Mooi. Daar begint het vaak.*; lijst begint met interactieve uitleg, website en webshop achteraan, "interactieve demo" heet "demo of showroomconcept". *Klein, bewust*: Martijn stelt zich voor (elektrotechniek, techniek en commercie in verlichting, lichtsturing en slimme gebouwen; hoe werkt het echt en hoe maak je het eenvoudig). Geen werkgever genoemd. Prijzen ongewijzigd. | Eigenaar: Denckh mag niet primair overkomen als websitebouwer; de technische en commerciële achtergrond moet zichtbaar zijn. Tekst over Martijn aangeleverd door de eigenaar. | Vast |
 | B-075 | 2026-09-30 | Profiel-PDF *Achter Denckh* (`public/downloads/denckh-achter-denckh.pdf`, één A4, `npm run achter`, `scripts/achter-denckh.mjs`): tekst van de eigenaar (vier pijlers, de rode draad, mogelijke uitkomsten) in de huisstijl: echt woordmerk en krul, Fraunces en Manrope, portret van de site, getekende pijlen. Weggelaten: "Eigen woning grotendeels ontworpen en technisch gerealiseerd" (eigenaar: geen verhaal over het eigen huis op de site; "praktisch ontwerpen, bouwen en verbouwen" dekt het). Link *Meer over mijn achtergrond (pdf)* onder *Denckh is klein. Bewust.* | Aangeleverde PDF (ChatGPT/ReportLab) had een getypt woordmerk, standaardletters en een ondertekend AI-label. | Vast |
 | B-076 | 2026-09-30 | *Denckh is klein. Bewust.*: volgorde omgedraaid. Eerst de vraag van de bezoeker en wat Denckh ermee doet, dan dat je rechtstreeks met Martijn werkt, dan pas de achtergrond als bewijs (techniek en commercie; verlichting, lichtsturing en slimme gebouwen), dan Deegh en de link naar de A4. Verdere achtergrond alleen in de A4. | Eigenaar: het blok begon te veel als een Over Martijn-pagina; Denckh mag niet als adviesbureau voor verlichting of techniek overkomen. Gelaagd: homepage (wat kan Denckh voor mijn idee?), dit blok (met wie werk ik?), A4 (wat heeft Martijn gedaan?). | Vast |
+| B-077 | 2026-10-07 | Kerckh. op de site als vierde item in *Ook gemaakt*, direct na Autowasdag Sionkerk: soort "vraag bij één kerk → eigen product", titel "Kerckh.", korte tekst uit kerckh.nl en de briefing, link *Bekijk Kerckh. →* naar `https://www.kerckh.nl` (zelfde tab en linkstijl als de andere items). Nieuwe vorm `kerk` in `shapes.ts` (kerkgebouw als contour, agendakaart met één bevestigd tijdslot in oker), zelfde lijnstijl en animatie als de andere vormen. Geen Kerckh.-logo: dat staat niet in de repo. Raster ongewijzigd, dus op desktop drie plus één, op tablet twee bij twee. Test telt nu vier vormen en controleert de link. | Opdracht eigenaar: Kerckh. toevoegen als eigen project, niet groter dan de andere projecten, geen nieuwe stijl. *Ook gemaakt* is de plek voor kleinere vormen; naast Sionkerk omdat Kerckh. daar volgens kerckh.nl is ontstaan. Een eigen kerkvorm in plaats van nog een `agenda`, zodat de twee buren niet hetzelfde beeld hebben. | Vast (wacht op merge) |
 
 ---
 
@@ -210,6 +216,7 @@ Pas de oude regel niet aan. *Voorstel* = wacht op akkoord van de eigenaar.
 | O-34 | **Logo-lab** (`denckh.nl/logo-lab/`): nu merkproefpagina (B-048). Woordmerk blijft; lettersnedes staan als archief onder "eerdere proeven". | Pagina weghalen of houden zodra de krul-toepassingen vaststaan. |
 | O-36 | **GitHub Pages meldt `http://denckh.nl/` als omgeving-URL.** Mogelijk staat "Enforce HTTPS" uit. | Eigenaar controleert in GitHub → Settings → Pages; niet door Claude aangepast (buiten scope). |
 | O-37 | **Consumentenprijzen juridisch controleren.** Tekst over particulieren staat erbij (B-073). Voor prijzen aan consumenten gelden strengere regels dan voor B2B. | Vóór actieve verkoop aan consumenten laten controleren door een deskundige hoe de prijzen op de site gepresenteerd moeten worden; niet door Claude laten invullen. |
+| O-40 | ***Ook gemaakt* op desktop** (B-077): met vier items staat de 3D-werkdag alleen op een tweede rij (drie plus één); tablet is twee bij twee, mobiel één kolom. | Zo laten (raster en maten ongewijzigd). Alternatief: vier kolommen vanaf ca. 1200 px, maar dan worden alle vormen en tekstkolommen smaller. |
 | O-02 | Repo is publiek. | Op privé zetten kan alleen met betaald GitHub-plan voor Pages; anders bewust publiek laten en niets vertrouwelijks opnemen. |
 
 Afgehandeld: O-01 (repo hernoemd naar `denckh`), O-08 (live sites via geautoriseerde browsersessie bekeken, zie
