@@ -316,6 +316,25 @@ for (const [w, h, mobile] of [[320, 700, true], [393, 852, true], [1440, 900, fa
   await ctx.close();
 }
 
+// 6d · mail-instellen: interne hulppagina, niet vindbaar, profielen zonder wachtwoord
+{
+  const { p, ctx, errors } = await page(browser, { width: 390, height: 844, mobile: true, path: "mail-instellen/" });
+  check("mail-instellen: noindex, nofollow", /noindex.*nofollow/.test((await p.locator('meta[name="robots"]').getAttribute("content")) ?? ""));
+  const sitemap = await (await p.request.get(new URL("sitemap.xml", BASE).href)).text();
+  check("mail-instellen: niet in de sitemap", !sitemap.includes("mail-instellen"));
+  const links = await p.locator(".mail-setup__account a").evaluateAll((as) => as.map((a) => a.getAttribute("href")));
+  check("mail-instellen: drie installatieknoppen", links.length === 3, links.join(", "));
+  for (const href of links) {
+    const body = await (await p.request.get(new URL(href.replace(/^\//, ""), BASE).href)).text();
+    const ok = body.includes("<string>com.apple.mail.managed</string>") && !/Password<\/key>\s*<string>/.test(body);
+    check(`mail-instellen: ${href} is een mailprofiel zonder wachtwoord`, ok);
+  }
+  const ov = await p.evaluate(() => document.documentElement.scrollWidth - innerWidth);
+  check("mail-instellen: geen horizontale overflow op 390px", ov <= 0, `${ov}px`);
+  check("mail-instellen: geen console-errors", errors.length === 0, errors.join(" | "));
+  await ctx.close();
+}
+
 // 7 · prijzen op de homepage: een lijn van €45 via €125 naar €295, geen prijskaarten
 {
   const { p, ctx, errors } = await page(browser);
