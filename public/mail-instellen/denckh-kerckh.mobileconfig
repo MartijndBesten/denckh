@@ -24,7 +24,7 @@
       <key>EmailAddress</key>
       <string>kerckh@denckh.nl</string>
       <key>IncomingMailServerHostName</key>
-      <string>shared218.cloud86-host.io</string>
+      <string>mail.denckh.nl</string>
       <key>IncomingMailServerPortNumber</key>
       <integer>993</integer>
       <key>IncomingMailServerUseSSL</key>
@@ -34,7 +34,7 @@
       <key>IncomingMailServerUsername</key>
       <string>kerckh@denckh.nl</string>
       <key>OutgoingMailServerHostName</key>
-      <string>shared218.cloud86-host.io</string>
+      <string>mail.denckh.nl</string>
       <key>OutgoingMailServerPortNumber</key>
       <integer>465</integer>
       <key>OutgoingMailServerUseSSL</key>
