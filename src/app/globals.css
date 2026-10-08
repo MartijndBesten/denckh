@@ -511,17 +511,16 @@ nav .link-draw:hover, nav .link-draw:focus-visible { background-size: 100% 6px, 
 /* Ook gemaakt */
 .more-section { padding-block: clamp(2.5rem, 6vw, 5rem); border-top: 1px solid color-mix(in srgb, var(--ink) 14%, transparent); }
 .more-section .projects__head { margin-bottom: clamp(1.5rem, 4vw, 3rem); }
-.more { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3rem clamp(1.5rem, 3.5vw, 3.5rem); margin: 0; padding: 0; list-style: none; }
+.more { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem clamp(1.5rem, 3.5vw, 3.5rem); margin: 0; padding: 0; list-style: none; }
 .more__item h3 { font-size: clamp(1.5rem, 2.2vw, 1.8rem); margin-bottom: 0.7rem; }
 .more__item p { margin: 0 0 0.9rem; }
 .more__item .case__kind { margin-bottom: 0.6rem; }
-.more__figure { margin-bottom: 1.2rem; }
+.more__figure { max-width: 24rem; margin-bottom: 1.2rem; }
 .more__figure svg { display: block; width: 100%; height: auto; overflow: visible; }
 .more__line { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.5s; }
 .more__line.is-sketch { stroke: var(--idea); }
 .more__details path { fill: none; stroke: var(--ink); stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 0.5s var(--ease) forwards; }
 .more__details .is-accent { stroke: var(--idea); stroke-width: 2.2; }
-@media (max-width: 960px) { .more { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 620px) { .more { grid-template-columns: 1fr; } .more__figure { max-width: 22rem; } }
 
 @media (prefers-reduced-motion: reduce) {

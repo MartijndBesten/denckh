@@ -25,7 +25,7 @@ const ITEMS: Item[] = [
     kind: "vraag bij één kerk → eigen product",
     title: "Kerckh.",
     text: "Een eenvoudig reserveringssysteem voor kerken en kerkelijke gebouwen. Bezoekers vragen online een ruimte aan, de kerk beoordeelt en bevestigt, en de eigen agenda van de kerk blijft leidend. Een praktisch probleem, vertaald naar een zelfstandig digitaal product.",
-    link: { href: "https://www.kerckh.nl", label: "Bekijk Kerckh. →" },
+    link: { href: "https://kerckh.nl", label: "Bekijk Kerckh. →" },
     accentLast: true,
   },
   {

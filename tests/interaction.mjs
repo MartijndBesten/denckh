@@ -272,7 +272,7 @@ for (const [w, h] of [[390, 844], [320, 640]]) {
   for (let i = 0; i < nMore; i++) { await more.nth(i).scrollIntoViewIfNeeded(); await p.waitForTimeout(300); }
   await p.waitForTimeout(1200);
   check("ook gemaakt: vier vormen krijgen vorm", nMore === 4 && (await p.locator(".more__details").count()) === 4, `${nMore} projecten`);
-  check("ook gemaakt: Kerckh. linkt naar www.kerckh.nl", (await more.filter({ hasText: "Kerckh." }).getByRole("link", { name: "Bekijk Kerckh." }).getAttribute("href")) === "https://www.kerckh.nl");
+  check("ook gemaakt: Kerckh. linkt naar kerckh.nl", (await more.filter({ hasText: "Kerckh." }).getByRole("link", { name: "Bekijk Kerckh." }).getAttribute("href")) === "https://kerckh.nl");
   check("projecten: geen console-errors", errors.length === 0, errors.join(" | "));
   await ctx.close();
 }

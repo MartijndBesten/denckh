@@ -5,7 +5,8 @@
 - **Gecontroleerd op / door:** 2026-10-07 · Claude (homepage opgehaald en gelezen; geen beheeromgeving of
   aanvraagformulier bekeken).
 - **Commit-SHA:** n.v.t. (geen repository in deze werkomgeving).
-- **Status:** *Goedgekeurd voor publicatie (naam en link)*, 2026-10-07, eigenaar. Eigen product van Denckh.
+- **Status:** *Goedgekeurd voor publicatie (naam en link)*, 2026-10-07, eigenaar. Eigen product van Denckh. Live sinds
+  2026-10-08 (B-078).
 
 ## Wat is het
 
@@ -35,7 +36,8 @@ bevestigd is):
 - tekst: "Een eenvoudig reserveringssysteem voor kerken en kerkelijke gebouwen. Bezoekers vragen online een ruimte aan,
   de kerk beoordeelt en bevestigt, en de eigen agenda van de kerk blijft leidend. Een praktisch probleem, vertaald naar
   een zelfstandig digitaal product."
-- link: "Bekijk Kerckh. →" naar `https://www.kerckh.nl`
+- link: "Bekijk Kerckh. →" rechtstreeks naar `https://kerckh.nl` (eerst `https://www.kerckh.nl`, aangepast op verzoek van
+  de eigenaar, B-078)
 
 Bewust **niet** overgenomen: "daar wordt het nu in de praktijk beproefd" (een status die verandert), de naam Google
 (merk van derden, niet nodig voor de zin), en alles over tarieven of facturatie.
