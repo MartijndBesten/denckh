@@ -21,6 +21,14 @@ const ITEMS: Item[] = [
     accentLast: true,
   },
   {
+    shape: "kerk",
+    kind: "vraag bij één kerk → eigen product",
+    title: "Kerckh.",
+    text: "Een eenvoudig reserveringssysteem voor kerken en kerkelijke gebouwen. Bezoekers vragen online een ruimte aan, de kerk beoordeelt en bevestigt, en de eigen agenda van de kerk blijft leidend. Een praktisch probleem, vertaald naar een zelfstandig digitaal product.",
+    link: { href: "https://kerckh.nl", label: "Bekijk Kerckh. →" },
+    accentLast: true,
+  },
+  {
     shape: "presentatie",
     kind: "complexe techniek → een verhaal in schermen",
     title: "Een presentatie die je bedient",
