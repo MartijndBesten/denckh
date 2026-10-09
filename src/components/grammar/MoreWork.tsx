@@ -22,7 +22,7 @@ const ITEMS: Item[] = [
   },
   {
     shape: "kerk",
-    kind: "vraag bij één kerk → eigen product",
+    kind: "zaalreservering voor kerken → eigen product",
     title: "Kerckh.",
     text: "Een eenvoudig reserveringssysteem voor kerken en kerkelijke gebouwen. Bezoekers vragen online een ruimte aan, de kerk beoordeelt en bevestigt, en de eigen agenda van de kerk blijft leidend. Een praktisch probleem, vertaald naar een zelfstandig digitaal product.",
     link: { href: "https://kerckh.nl", label: "Bekijk Kerckh. →" },
