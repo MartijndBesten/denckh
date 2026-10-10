@@ -116,7 +116,8 @@ export default function Home() {
           <p>Dat hangt af van wat het idee nodig heeft. Maar je hoeft niet eerst een offerte aan te vragen om enig idee van de prijs te krijgen.</p>
         </header>
         <PriceLine stops={HOME_STOPS} label="Van even samen denken tot echt maken" />
-        <Promo className="promo promo--home" />
+        <Promo which="website" className="promo promo--home" />
+        <Promo which="uitleg" className="promo" />
         <div className="prices__more">
           <p>Benieuwd naar de richtprijzen per vorm?</p>
           <div className="prices__cta">
