@@ -241,6 +241,22 @@ for (const [w, h] of [[390, 844], [320, 640]]) {
   await ctx.close();
 }
 
+// 4d · oktoberactie: de punt naar het label slepen brengt je naar de actie (alleen zolang de actie loopt)
+if (Date.now() < Date.parse("2026-11-01T00:00:00+01:00")) {
+  const { p, ctx, errors } = await page(browser);
+  const dot = await p.locator(".punt__dot").boundingBox(), t = await p.locator(".punt__promo-ring").boundingBox();
+  const sx = dot.x + dot.width / 2, sy = dot.y + dot.height / 2, tx = t.x + t.width / 2, ty = t.y + t.height / 2;
+  await p.mouse.move(sx, sy); await p.mouse.down();
+  for (let i = 1; i <= 40; i++) { await p.mouse.move(sx + (tx - sx) * i / 40, sy + (ty - sy) * i / 40); await p.waitForTimeout(8); }
+  for (let i = 0; i < 10; i++) { await p.mouse.move(tx, ty); await p.waitForTimeout(8); }
+  await p.mouse.up();
+  await p.waitForTimeout(1500);
+  check("oktoberactie: punt naar het label brengt je naar de actie", (await p.locator("#oktoberactie.is-arrived").count()) === 1 && (await p.locator(".punt.punt--idle").count()) === 1 && (await p.evaluate(() => scrollY)) > 1000);
+  check("oktoberactie: alleen de websiteactie", (await p.locator(".promo").count()) === 1 && /compacte website/.test((await p.locator(".promo").textContent()) ?? ""));
+  check("oktoberactie: geen console-errors", errors.length === 0, errors.join(" | "));
+  await ctx.close();
+}
+
 // 5 · reduced motion: geen ademende punt, titels recht
 {
   const { p, ctx } = await page(browser, { reduced: true });

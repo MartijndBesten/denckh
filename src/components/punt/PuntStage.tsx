@@ -12,6 +12,7 @@ import { READINGS, readingFor } from "@/lib/ink/interpret";
 import { EXAMPLES, placeExample } from "@/lib/ink/examples";
 import { KRUL_BOX, KRUL_START, krulFit, krulPath } from "@/lib/ink/krul";
 import { normalize, setSketch } from "@/lib/ink/store";
+import { PROMOS } from "@/lib/prices";
 import { useReducedMotion } from "@/lib/ink/useReducedMotion";
 import { FormWidget } from "./FormWidget";
 
@@ -123,6 +124,26 @@ export function PuntStage() {
     return () => { cancelAnimationFrame(raf); clearTimeout(late); };
   }, [phase, features, form, concept, size]);
 
+  // --- tijdelijke actie rechtsboven in het tekenvlak: sleep de punt erheen (of klik) en de pagina gaat naar de actie
+  const promoRef = useRef<HTMLAnchorElement>(null);
+  const [promoOn, setPromoOn] = useState(false);
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setPromoOn(Date.now() < PROMOS.website.until));
+    return () => cancelAnimationFrame(id);
+  }, []);
+  function nearPromo(p: Pt) {
+    const el = promoRef.current, stage = stageRef.current;
+    if (!el || !stage) return false;
+    const r = el.getBoundingClientRect(), s = stage.getBoundingClientRect(), m = 20;
+    return p.x > r.left - s.left - m && p.x < r.right - s.left + m && p.y > r.top - s.top - m && p.y < r.bottom - s.top + m;
+  }
+  function goToPromo() {
+    const target = document.getElementById("oktoberactie");
+    if (!target) return;
+    target.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" });
+    target.classList.remove("is-arrived"); void target.offsetWidth; target.classList.add("is-arrived");
+  }
+
   // --- nabijheid: in rust leunt de punt een fractie naar de cursor
   useEffect(() => {
     if (phase !== "idle" || reduced) return;
@@ -209,6 +230,7 @@ export function PuntStage() {
     if (phase !== "drawing" || keyboard) return;
     const events = e.nativeEvent.getCoalescedEvents?.() ?? [e.nativeEvent];
     for (const ev of events) addPoint(localPoint(ev), ev.timeStamp, ev.pressure);
+    promoRef.current?.classList.toggle("is-near", nearPromo(pen.current));
   }
 
   const release = useCallback(() => {
@@ -251,6 +273,12 @@ export function PuntStage() {
 
   function end() {
     if (phase !== "drawing" || keyboard) return;
+    if (promoOn && nearPromo(pen.current)) {
+      promoRef.current?.classList.remove("is-near");
+      reset(false);
+      goToPromo();
+      return;
+    }
     release();
   }
 
@@ -375,6 +403,12 @@ export function PuntStage() {
       </div>
 
       <div className="punt__zone" data-zone aria-hidden="true" />
+      {promoOn && (
+        <a ref={promoRef} className="punt__promo" href="#oktoberactie" onClick={(e) => { e.preventDefault(); goToPromo(); }}>
+          <span className="punt__promo-ring" aria-hidden="true" />
+          <span><b>Oktoberactie</b>sleep de punt hierheen</span>
+        </a>
+      )}
 
       <svg ref={svgRef} className="punt__svg" width={size.w} height={size.h} viewBox={`0 0 ${size.w || 1} ${size.h || 1}`} aria-hidden={phase !== "vorm"}>
         {(showInk || phase === "vormen") && morphPts.length > 1 && (
