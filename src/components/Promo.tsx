@@ -2,13 +2,13 @@
 
 // Tijdelijke actie: verschijnt alleen tot de einddatum, ook zonder nieuwe build (de site is statisch).
 import { useEffect, useState } from "react";
-import { PROMO } from "@/lib/prices";
+import { PROMOS } from "@/lib/prices";
 
-export function Promo({ className }: { className?: string }) {
+export function Promo({ which, className }: { which: keyof typeof PROMOS; className?: string }) {
   const [on, setOn] = useState(false);
   useEffect(() => {
-    const id = requestAnimationFrame(() => setOn(Date.now() < PROMO.until));
+    const id = requestAnimationFrame(() => setOn(Date.now() < PROMOS[which].until));
     return () => cancelAnimationFrame(id);
-  }, []);
-  return on ? <p className={className}>{PROMO.text}</p> : null;
+  }, [which]);
+  return on ? <p className={className}>{PROMOS[which].text}</p> : null;
 }

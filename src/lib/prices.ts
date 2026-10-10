@@ -117,5 +117,9 @@ export const EXTRA = { title: "Iets extra nodig?", text: "Werk buiten de afgespr
 /** De prijslijst als PDF: pas zichtbaar als dit bestand in public/ staat (geen kapotte link). */
 export const PRICE_PDF = "/downloads/denckh-prijslijst.pdf";
 
-/** Oktoberactie 2026 (eigenaar): compacte website met 50% korting. Verdwijnt vanzelf na 31 oktober. */
-export const PROMO = { text: "Oktoberactie: een compacte website nu voor €147,50 excl. btw in plaats van €295. Alleen in oktober.", until: Date.parse("2026-11-01T00:00:00+01:00") };
+/** Oktoberactie 2026 (eigenaar). Verdwijnt vanzelf na 31 oktober. */
+const OKT = Date.parse("2026-11-01T00:00:00+01:00");
+export const PROMOS = {
+  website: { text: "Oktoberactie: een compacte website nu voor €147,50 excl. btw in plaats van €295. Alleen in oktober.", until: OKT },
+  uitleg: { text: "Oktoberactie: Even Denckh (normaal €45) is gratis bij een presentatie, visual of interactieve uitleg vanaf €125. Alleen in oktober.", until: OKT },
+};
