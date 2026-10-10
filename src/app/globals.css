@@ -149,6 +149,13 @@ nav .link-draw:hover, nav .link-draw:focus-visible { background-size: 100% 6px, 
 .punt__intro { font-size: clamp(1.05rem, 1.4vw, 1.2rem); color: var(--graphite); max-width: 32rem; margin: 0; }
 .punt__zone { grid-area: zone; min-height: 320px; border-radius: 4px; background-image: radial-gradient(color-mix(in srgb, var(--ink) 16%, transparent) 1px, transparent 1.2px); background-size: 22px 22px; mask-image: radial-gradient(closest-side, #000 55%, transparent); opacity: 0.55; transition: opacity 0.6s; }
 .punt--vorm .punt__zone { opacity: 0.25; }
+.punt__promo { grid-area: zone; align-self: start; justify-self: end; position: relative; z-index: 4; display: flex; align-items: center; gap: 0.6rem; margin: 0.3rem; padding: 0.4rem 0.8rem 0.4rem 0.45rem; border-radius: 999px; background: color-mix(in srgb, var(--paper) 88%, transparent); color: var(--graphite); font-size: 0.82rem; line-height: 1.25; text-decoration: none; }
+.punt__promo b { display: block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ochre-deep); }
+.punt__promo-ring { flex: none; width: 30px; height: 30px; border-radius: 50%; border: 1.5px dashed var(--ochre); transition: transform 0.3s var(--ease), background-color 0.3s; }
+.punt__promo:hover .punt__promo-ring, .punt__promo:focus-visible .punt__promo-ring, .punt__promo.is-near .punt__promo-ring { transform: scale(1.25); background: color-mix(in srgb, var(--ochre) 28%, transparent); }
+.punt:not(.punt--idle):not(.punt--drawing) .punt__promo { opacity: 0; pointer-events: none; }
+.promo.is-arrived { animation: promo-arrive 1.8s var(--ease); }
+@keyframes promo-arrive { 0%, 30% { background: color-mix(in srgb, var(--ochre) 26%, transparent); } 100% { background: transparent; } }
 .punt__panel { grid-area: panel; position: relative; z-index: 4; align-self: end; min-height: 11rem; padding-bottom: 0.5rem; transition: margin-top 0.4s var(--ease); }
 .punt--still .punt__panel { transition: none; }
 

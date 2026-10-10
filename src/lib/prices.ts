@@ -121,5 +121,4 @@ export const PRICE_PDF = "/downloads/denckh-prijslijst.pdf";
 const OKT = Date.parse("2026-11-01T00:00:00+01:00");
 export const PROMOS = {
   website: { text: "Oktoberactie: bij een compacte website (vanaf €295) krijg je Even Denckh (normaal €45) en een tweede correctieronde gratis. Meer pagina’s of een webshop kan ook, vanaf €495. Alleen in oktober.", until: OKT },
-  uitleg: { text: "Oktoberactie: Even Denckh (normaal €45) is gratis bij een presentatie, visual of interactieve uitleg vanaf €125. Alleen in oktober.", until: OKT },
 };

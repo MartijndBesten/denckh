@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Footer, Header } from "@/components/Header";
 import { FormPrices } from "@/components/grammar/FormPrices";
 import { PriceLine } from "@/components/grammar/PriceLine";
-import { Promo } from "@/components/Promo";
 import { EXTRA, FORM_PRICES, INCLUDED, NOT_INCLUDED, PRICE_PDF, START_STOPS, WEB_ADDRESS } from "@/lib/prices";
 
 const description = "Richtprijzen van Denckh: even samen denken voor €45, een eerste vorm vanaf €125 en een werkend resultaat vanaf €295. Na de intake weet je vooraf wat jouw idee kost.";
@@ -48,7 +47,6 @@ export default function Prijzen() {
           <header className="price-page__head">
             <h2 id="vormen-titel">Richtprijzen per vorm.</h2>
             <p>Alle bedragen zijn vanafprijzen, exclusief btw. Voor particuliere opdrachten vermeld ik vooraf ook de prijs inclusief btw.</p>
-            <Promo which="uitleg" className="promo" />
           </header>
           <FormPrices items={FORM_PRICES} />
         </section>
