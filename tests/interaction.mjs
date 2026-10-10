@@ -390,7 +390,7 @@ const dotOffset = (p) => p.evaluate(() => { const n = document.querySelector(".f
   }
   check("prijzen: vertel je idee naar contact", (await p.getByRole("link", { name: "Vertel je idee" }).getAttribute("href")) === "/#contact");
   check("prijzen: geen gedachtestreepjes en geen 'wij'", !/[—–]/.test(body) && !/\b(wij|ons|onze)\b/i.test(body));
-  await p.locator(".fp__row", { hasText: "Webshop" }).first().hover();
+  await p.locator(".fp__row", { has: p.locator(".fp__name", { hasText: /^Webshop$/ }) }).hover();
   await p.waitForTimeout(900);
   await p.waitForTimeout(700); // laatste detail: 420 ms + 40 ms per detail + 500 ms tekenen
   const partial = await p.locator(".fp__details path").evaluateAll((els) => els.filter((e) => { const c = getComputedStyle(e), da = parseFloat(c.strokeDasharray) || Infinity; return da < e.getTotalLength() - 0.5 || parseFloat(c.strokeDashoffset) !== 0; }).length);
