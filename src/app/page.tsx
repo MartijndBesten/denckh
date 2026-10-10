@@ -8,6 +8,7 @@ import { InkRule } from "@/components/grammar/InkRule";
 import { MoreWork } from "@/components/grammar/MoreWork";
 import { Outcomes } from "@/components/grammar/Outcomes";
 import { PriceLine } from "@/components/grammar/PriceLine";
+import { Promo } from "@/components/Promo";
 import { SettleTitle } from "@/components/grammar/SettleTitle";
 import { Werkwijze } from "@/components/grammar/Werkwijze";
 import { HOME_STOPS } from "@/lib/prices";
@@ -115,6 +116,7 @@ export default function Home() {
           <p>Dat hangt af van wat het idee nodig heeft. Maar je hoeft niet eerst een offerte aan te vragen om enig idee van de prijs te krijgen.</p>
         </header>
         <PriceLine stops={HOME_STOPS} label="Van even samen denken tot echt maken" />
+        <Promo className="promo promo--home" />
         <div className="prices__more">
           <p>Benieuwd naar de richtprijzen per vorm?</p>
           <div className="prices__cta">
