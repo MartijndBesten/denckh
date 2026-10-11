@@ -2,7 +2,7 @@
 
 - Bron: https://okkiedarts.nl en GitHub-repository `MartijndBesten/dartlog` (bron van app en publieke website).
 - Gecontroleerd: 2026-10-11; README van `dartlog` geraadpleegd.
-- Status: **toegevoegd aan "Ook gemaakt" op werkbranch `inhoud/okkie-portfolio-2026-10-11`; nog niet live op denckh.nl** (wacht op akkoord eigenaar).
+- Status: **live in "Ook gemaakt" op denckh.nl** (live na akkoord eigenaar, 2026-10-11).
 - Rechten: eigen project van de eigenaar. Publicatie van naam en link gevraagd op 2026-10-11.
 
 ## Wat is het
