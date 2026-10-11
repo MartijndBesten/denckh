@@ -180,6 +180,11 @@ export const SHAPES: Record<string, (b: Box) => Shape> = {
   },
   knop: ({ w, h }) => ({ outline: circle(w / 2, h / 2, Math.min(w, h) * 0.32), closed: true, details: [L(w / 2, h / 2, w / 2, h / 2 - Math.min(w, h) * 0.22)] }),
   deegbol: ({ w, h }) => ({ outline: circle(w / 2, h * 0.56, Math.min(w, h) * 0.26), closed: true, details: [`M${w / 2 - Math.min(w, h) * 0.12} ${h * 0.5} q${Math.min(w, h) * 0.08} ${-Math.min(w, h) * 0.05} ${Math.min(w, h) * 0.16} 0`] }),
+  dart: ({ w, h }) => {
+    const r = Math.min(w, h) * 0.4, cx = w / 2, cy = h / 2;
+    const spoke = (a: number) => L(cx + Math.cos(a) * r * 0.16, cy + Math.sin(a) * r * 0.16, cx + Math.cos(a) * r * 0.72, cy + Math.sin(a) * r * 0.72);
+    return { outline: circle(cx, cy, r), closed: true, details: [C(cx, cy, r * 0.72), C(cx, cy, r * 0.44), ...[0, 1, 2, 3].map((i) => spoke(-Math.PI / 4 + (i * Math.PI) / 2)), C(cx, cy, r * 0.1)] };
+  },
   pizza: ({ w, h }) => {
     const r = Math.min(w, h) * 0.36;
     return { outline: circle(w / 2, h / 2, r), closed: true, details: [C(w / 2, h / 2, r * 0.82), C(w / 2 - r * 0.3, h / 2 - r * 0.2, 7), C(w / 2 + r * 0.25, h / 2 + r * 0.1, 7), C(w / 2 - r * 0.05, h / 2 + r * 0.38, 7), C(w / 2 + r * 0.3, h / 2 - r * 0.35, 5)] };

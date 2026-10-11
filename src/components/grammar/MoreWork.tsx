@@ -29,6 +29,14 @@ const ITEMS: Item[] = [
     accentLast: true,
   },
   {
+    shape: "dart",
+    kind: "darten → een app op je telefoon",
+    title: "OKKIE.",
+    text: "Een dartapp om te trainen, wedstrijden te spelen en je scores bij te houden. Ontworpen voor de telefoon, ook als app op je beginscherm.",
+    link: { href: "https://okkiedarts.nl", label: "Bekijk OKKIE. →" },
+    accentLast: true,
+  },
+  {
     shape: "presentatie",
     kind: "complexe techniek → een verhaal in schermen",
     title: "Een presentatie die je bedient",

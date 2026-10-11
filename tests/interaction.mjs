@@ -287,7 +287,8 @@ if (Date.now() < Date.parse("2026-11-01T00:00:00+01:00")) {
   const more = p.locator(".more__item"), nMore = await more.count();
   for (let i = 0; i < nMore; i++) { await more.nth(i).scrollIntoViewIfNeeded(); await p.waitForTimeout(300); }
   await p.waitForTimeout(1200);
-  check("ook gemaakt: vier vormen krijgen vorm", nMore === 4 && (await p.locator(".more__details").count()) === 4, `${nMore} projecten`);
+  check("ook gemaakt: vijf vormen krijgen vorm", nMore === 5 && (await p.locator(".more__details").count()) === 5, `${nMore} projecten`);
+  check("ook gemaakt: OKKIE. linkt naar okkiedarts.nl", (await more.filter({ hasText: "OKKIE." }).getByRole("link", { name: "Bekijk OKKIE." }).getAttribute("href")) === "https://okkiedarts.nl");
   check("ook gemaakt: Kerckh. linkt naar kerckh.nl", (await more.filter({ hasText: "Kerckh." }).getByRole("link", { name: "Bekijk Kerckh." }).getAttribute("href")) === "https://kerckh.nl");
   check("projecten: geen console-errors", errors.length === 0, errors.join(" | "));
   await ctx.close();
