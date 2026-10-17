@@ -398,7 +398,7 @@ export function PuntStage() {
           Mooi<span ref={homeRef} className="punt__home" aria-hidden="true" /><span className="visually-hidden">.</span>
         </h1>
         <p className="punt__intro">
-          Een technisch product, een ingewikkeld verhaal, een praktisch probleem of een goed idee. Denckh zoekt uit welke vorm het begrijpelijk, bruikbaar of zichtbaar maakt.
+          Denckh maakt websites, handige apps en slimme technische oplossingen. Voor particulieren, zelfstandigen en kleine bedrijven.
         </p>
       </div>
 

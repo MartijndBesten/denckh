@@ -26,7 +26,7 @@ export function Footer() {
     <footer className="site-footer">
       <div className="site-footer__brand">
         <Wordmark living={false} />
-        <p>Een kleine conceptstudio. Van idee naar vorm.</p>
+        <p>Websites, handige apps en slimme technische oplossingen. Van idee naar vorm.</p>
       </div>
       <div className="footer-links">
         <Link className="link-draw" href="/#projecten">Projecten</Link>
