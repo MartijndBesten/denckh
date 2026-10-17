@@ -27,7 +27,7 @@ export default function Home() {
         <SettleTitle id="idee-titel" text="Van idee naar vorm." className="story__title" />
         <div className="story__text">
           <p className="story__lead">Een website voor je bedrijf. Een handige app. Een klus die elke week terugkomt en eigenlijk vanzelf zou moeten gaan.</p>
-          <p>Daarvoor kun je bij Denckh terecht. Ook voor hulp bij verlichting, sensoren of een technisch probleem, of voor een bijzonder idee dat je praktisch wilt uitwerken. Je hoeft nog niet te weten wat het moet worden: Denckh denkt mee en maakt het.</p>
+          <p>Daarvoor kun je bij Denckh terecht. Ook voor hulp bij verlichting, sensoren of een technisch probleem, of voor een bijzonder idee dat je praktisch wilt uitwerken. Je hoeft nog niet te weten wat het moet worden: Denckh denkt mee en maakt het. <Link className="link-draw" href="/diensten/">Bekijk wat je kunt aanvragen</Link></p>
         </div>
       </section>
 

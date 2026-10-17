@@ -29,6 +29,7 @@ export function Footer() {
         <p>Websites, handige apps en slimme technische oplossingen. Van idee naar vorm.</p>
       </div>
       <div className="footer-links">
+        <Link className="link-draw" href="/diensten/">Diensten</Link>
         <Link className="link-draw" href="/#projecten">Projecten</Link>
         <Link className="link-draw" href="/prijzen/">Prijzen</Link>
         <a className="link-draw" href="mailto:info@denckh.nl">info@denckh.nl</a>
