@@ -32,6 +32,7 @@ export function Footer() {
         <Link className="link-draw" href="/#projecten">Projecten</Link>
         <Link className="link-draw" href="/prijzen/">Prijzen</Link>
         <a className="link-draw" href="mailto:info@denckh.nl">info@denckh.nl</a>
+        <a className="link-draw" href="https://www.instagram.com/denckh.nl/" rel="me">Instagram</a>
         <Link className="link-draw" href="/privacy/">Privacy</Link>
       </div>
       <p className="footer-note">Denckh · Vlierweg 54, Houten · KvK 83176896 · btw NL003791952B15</p>

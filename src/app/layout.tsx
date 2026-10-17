@@ -40,6 +40,7 @@ const organization = {
   email: "info@denckh.nl",
   address: { "@type": "PostalAddress", streetAddress: "Vlierweg 54", addressLocality: "Houten", addressCountry: "NL" },
   vatID: "NL003791952B15",
+  sameAs: ["https://www.instagram.com/denckh.nl/"],
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
