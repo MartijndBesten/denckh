@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://denckh.nl"),
   title: {
-    default: "Denckh · van idee naar vorm",
+    default: "Denckh · websites, apps en slimme techniek in Houten",
     template: "%s · Denckh",
   },
   description: "Denckh maakt websites, handige apps en slimme technische oplossingen. Voor particulieren, zelfstandigen en kleine bedrijven in Houten en omgeving.",
@@ -13,14 +13,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "nl_NL",
     siteName: "Denckh",
-    title: "Denckh · van idee naar vorm",
+    title: "Denckh · websites, apps en slimme techniek in Houten",
     description: "Websites, handige apps en slimme technische oplossingen voor particulieren, zelfstandigen en kleine bedrijven.",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "denckh. van idee naar vorm" }],
   },
   twitter: {
     card: "summary_large_image",
     images: ["/og.png"],
-    title: "Denckh · van idee naar vorm",
+    title: "Denckh · websites, apps en slimme techniek in Houten",
     description: "Van idee naar vorm.",
   },
   icons: { icon: "/favicon.svg" },
@@ -33,13 +33,16 @@ export const viewport: Viewport = {
 
 const organization = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": "ProfessionalService",
+  "@id": "https://denckh.nl/#organisatie",
   name: "Denckh",
   url: "https://denckh.nl",
   description: "Websites, handige apps en slimme technische oplossingen voor particulieren, zelfstandigen en kleine bedrijven.",
   email: "info@denckh.nl",
   address: { "@type": "PostalAddress", streetAddress: "Vlierweg 54", addressLocality: "Houten", addressCountry: "NL" },
   vatID: "NL003791952B15",
+  areaServed: ["Houten", "Nieuwegein", "Utrecht", "Bunnik"],
+  knowsAbout: ["websites", "webshops", "apps", "automatiseren", "lichtsturing", "sensoren"],
   sameAs: ["https://www.instagram.com/denckh.nl/"],
 };
 
