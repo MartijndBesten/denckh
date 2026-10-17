@@ -23,7 +23,7 @@ const DIENSTEN: Dienst[] = [
     titel: "Een handige app of digitaal hulpmiddel",
     tekst: "Een kleine app of tool die één ding goed doet. Zonder account als dat niet nodig is, en werkend op de telefoon die je al hebt.",
     voorbeelden: ["een app voor je vereniging, club of hobby", "een rekenhulp of keuzehulp voor klanten", "een eerste werkende versie om een idee te testen"],
-    bewijs: [{ label: "OKKIE.: darttrainer, gratis en zonder account", href: "https://okkiedarts.nl" }],
+    bewijs: [{ label: "OKKIE.: darttrainer, gratis en zonder account", href: "/projecten/okkie/" }],
     prijs: `prototype vanaf €${vanaf("prototype")}, kleine tool vanaf €${vanaf("uitleg")}`,
   },
   {
@@ -31,7 +31,7 @@ const DIENSTEN: Dienst[] = [
     titel: "Een terugkerende klus automatiseren",
     tekst: "Werk dat elke week terugkomt en eigenlijk vanzelf zou moeten gaan: aanvragen verwerken, roosters bijhouden, bevestigingen mailen of gegevens overzetten.",
     voorbeelden: ["aanvragen of reserveringen op één plek", "automatische bevestigingen en herinneringen", "lijstjes en Excel-bestanden die op elkaar aansluiten"],
-    bewijs: [{ label: "Kerckh.: zaalverhuur en organisatie voor kerken", href: "https://kerckh.nl" }],
+    bewijs: [{ label: "Kerckh.: zaalverhuur en organisatie voor kerken", href: "/projecten/kerckh/" }],
   },
   {
     id: "techniek",

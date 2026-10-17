@@ -13,8 +13,9 @@ export function Header({ compact = false }: HeaderProps) {
         <span className="brand-link__tagline" aria-hidden="true">van idee naar vorm</span>
       </Link>
       <nav aria-label="Hoofdnavigatie">
+        <Link className="link-draw" href="/diensten/">Diensten</Link>
         <Link className="link-draw" href="/#projecten">Projecten</Link>
-        <Link className="link-draw" href="/#werkwijze">Werkwijze</Link>
+        <Link className="link-draw site-header__optional" href="/#werkwijze">Werkwijze</Link>
         <Link className="link-draw link-draw--dot" href="/#contact">Vertel het me</Link>
       </nav>
     </header>

@@ -119,6 +119,7 @@ nav .link-draw:hover, nav .link-draw:focus-visible { background-size: 100% 6px, 
 .site-header nav { display: flex; gap: clamp(0.9rem, 2.4vw, 2rem); font-size: 0.95rem; font-weight: 600; }
 .site-header nav a { white-space: nowrap; }
 @media (max-width: 640px) { .brand-link__tagline { display: none; } .site-header nav { font-size: 0.88rem; } }
+@media (max-width: 400px) { .site-header__optional { display: none; } }
 
 .site-footer { display: grid; grid-template-columns: 1fr auto; gap: 1.5rem 2rem; padding-block: 3rem 2.5rem; margin-top: 4rem; border-top: 1px solid color-mix(in srgb, var(--ink) 16%, transparent); }
 .site-footer__brand .wordmark { height: 28px; margin-bottom: 0.7rem; }
@@ -556,6 +557,8 @@ nav .link-draw:hover, nav .link-draw:focus-visible { background-size: 100% 6px, 
 .legal-page__intro { font-size: 1.2rem; }
 .legal-page__date { margin-top: 2rem; color: var(--graphite); font-size: 0.9rem; }
 .not-found { min-height: 70svh; padding-bottom: 4rem; }
+.case-page__shots { display: flex; flex-wrap: wrap; gap: 1.5rem; padding-block: 1rem 2rem; }
+.case-page__shots img { width: min(100%, 22rem); height: auto; border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent); }
 @media (max-width: 760px) { .case-page__facts { grid-template-columns: 1fr; } }
 
 /* ---------------- logo-lab (intern, noindex) ---------------- */
