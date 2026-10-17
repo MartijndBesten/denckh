@@ -26,8 +26,8 @@ export default function Home() {
       <section className="shell story" aria-labelledby="idee-titel">
         <SettleTitle id="idee-titel" text="Van idee naar vorm." className="story__title" />
         <div className="story__text">
-          <p className="story__lead">Soms weet je precies wat je wilt. Soms heb je alleen een gedachte waarvan je denkt: hier zit iets in.</p>
-          <p>Je hoeft nog niet te weten wat het moet worden. Denckh denkt mee, zoekt de vorm die bij het idee past en maakt die concreet. Dat kan een interactieve uitleg zijn, een prototype, een presentatie of iets fysieks. Soms is het een website. Of iets waarvoor nog geen goede naam bestaat.</p>
+          <p className="story__lead">Een website voor je bedrijf. Een handige app. Een klus die elke week terugkomt en eigenlijk vanzelf zou moeten gaan.</p>
+          <p>Daarvoor kun je bij Denckh terecht. Ook voor hulp bij verlichting, sensoren of een technisch probleem, of voor een bijzonder idee dat je praktisch wilt uitwerken. Je hoeft nog niet te weten wat het moet worden: Denckh denkt mee en maakt het.</p>
         </div>
       </section>
 
