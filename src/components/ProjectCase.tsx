@@ -36,7 +36,7 @@ export function ProjectCase({ eyebrow, title, lead, facts, shots, link, source }
           <section><h2>Denckh</h2><p>{facts.denckh}</p></section>
           <section><h2>Vorm</h2><p>{facts.vorm}</p></section>
         </div>
-        <aside className="case-page__source"><strong>Wat hier staat</strong><p>{source}</p></aside>
+        <aside className="case-page__source"><strong>Over de beelden</strong><p>{source}</p></aside>
         <div className="case-page__next"><p>Heb je zelf iets dat vorm mag krijgen?</p><Link className="button button--dark" href="/#contact">Vertel het me</Link></div>
         <Footer />
       </div>
