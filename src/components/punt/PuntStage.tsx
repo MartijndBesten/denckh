@@ -476,7 +476,7 @@ export function PuntStage() {
               <button type="button" className="link-button" onClick={() => reset()}>Nog een idee</button>
               {fromExample && <button type="button" className="link-button" onClick={playExample}>nog een voorbeeld</button>}
             </div>
-            <p className="punt__note">Dit prototype reageert met vaste regels in je browser. Er wordt niets verstuurd of bewaard.</p>
+            <p className="punt__note">Je tekening blijft in je browser. Er wordt niets verstuurd of bewaard.</p>
           </div>
         )}
       </div>

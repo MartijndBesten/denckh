@@ -14,7 +14,7 @@ export default function OkkieCase() {
     <ProjectCase
       eyebrow="eigen project · app"
       title={<>Een darttrainer die<br /><em>elke pijl telt.</em></>}
-      lead="OKKIE. begon als trainer voor thuis: elke beurt intikken en zien of je vooruitgaat. Het werd een volwaardige app voor de telefoon."
+      lead="Een handige dartsapp waarmee je je scores bijhoudt, wedstrijden speelt en ziet of je vooruitgaat. Op elke telefoon, ook offline."
       link={{ label: "Bekijk OKKIE.", href: "https://okkiedarts.nl" }}
       shots={[
         { src: "/images/projecten/okkie-training.webp", alt: "Invoerscherm van OKKIE. met gemiddelde, beurttotaal en knoppen voor double, triple en de getallen.", width: 540, height: 1015 },
@@ -22,10 +22,10 @@ export default function OkkieCase() {
       ]}
       facts={{
         idee: "Thuis darten is leuk, maar word je ook beter? Een trainer die elke pijl bijhoudt en die vraag beantwoordt.",
-        denckh: "Eigen concept en ontwikkeling: een installeerbare webapp die op elke telefoon werkt, ook offline. Geen account, geen reclame; je gegevens blijven op je eigen toestel.",
+        denckh: "Concept, ontwerp en ontwikkeling: een installeerbare webapp die op elke telefoon werkt, ook offline. Geen account, geen reclame; je gegevens blijven op je eigen toestel.",
         vorm: "Scoretraining, rond de klok, 301 en 501 met uitgooi-advies, statistieken met trendlijn, een trefferkaart en badges.",
       }}
-      source="Gebaseerd op de live app op okkiedarts.nl en de broncode. De schermen komen uit de echte app, met een fictieve speler."
+      source="Schermen uit de app, met een fictieve speler."
     />
   );
 }

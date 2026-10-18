@@ -14,7 +14,7 @@ export default function KerckhCase() {
     <ProjectCase
       eyebrow="eigen product · platform"
       title={<>De mensen veranderen.<br /><em>De organisatie blijft.</em></>}
-      lead="In een kerk gebeurt veel door vrijwilligers, maar de kennis zit vaak bij een paar mensen en in losse lijstjes. Kerckh. zet het op één plek."
+      lead="Een overzichtelijk platform voor kerkelijke organisatie. Zaalreserveringen, activiteiten, roosters en vrijwilligers op één plek, ook als de mensen wisselen."
       link={{ label: "Bekijk Kerckh.", href: "https://kerckh.nl" }}
       shots={[
         { src: "/images/projecten/kerckh-aanvraag-demo.webp", alt: "Mobiel aanvraagformulier voor zaalgebruik in de demo-omgeving van Kerckh., met fictieve gegevens.", width: 540, height: 1003 },
@@ -22,10 +22,10 @@ export default function KerckhCase() {
       ]}
       facts={{
         idee: "Taken, roosters en zaalverhuur blijven doorlopen, ook als vrijwilligers wisselen. Iedereen ziet alleen wat bij de eigen taak hoort.",
-        denckh: "Eigen product: ontwerp, ontwikkeling en beheer. Elke kerk krijgt een eigen omgeving; begonnen met één module die echt werkt, zaalverhuur.",
+        denckh: "Eigen product van Denckh: ontwerp, ontwikkeling en beheer. Elke kerk krijgt een eigen omgeving, met alleen de onderdelen die ze gebruikt.",
         vorm: "Modules voor organisatie, vrijwilligers, roosters, catechisatie, activiteiten en zaalverhuur met agendakoppeling en bevestigingsmails.",
       }}
-      source="Gebaseerd op kerckh.nl en de broncode. De schermen komen uit de demo-omgeving met fictieve gegevens."
+      source="Schermen uit de demo-omgeving, met fictieve gegevens."
     />
   );
 }
