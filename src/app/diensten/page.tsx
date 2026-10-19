@@ -15,7 +15,7 @@ const DIENSTEN: Dienst[] = [
     titel: "Een website of webshop",
     tekst: "Een duidelijke website voor je bedrijf, vereniging of idee. Goed leesbaar op de telefoon, snel en zonder overbodige toeters. Ook een compacte webshop op een bestaand platform.",
     voorbeelden: ["een website voor een zelfstandige of klein bedrijf", "een webshop met een geteste mobiele checkout", "een bestaande website die duidelijker moet"],
-    bewijs: [{ label: "Deegh: webshop voor een eigen product", href: "/projecten/deegh/" }, { label: "loflijn.nl: website en webshop voor een spel", href: "https://loflijn.nl" }],
+    bewijs: [{ label: "Deegh: webshop voor een eigen product", href: "/projecten/deegh/" }, { label: "LYEV.: webshop met eigen keuzes in kleur en naam", href: "/projecten/lyev/" }, { label: "loflijn.nl: website en webshop voor een spel", href: "https://loflijn.nl" }],
     prijs: `website vanaf €${vanaf("website")}, webshop vanaf €${vanaf("webshop")}`,
   },
   {

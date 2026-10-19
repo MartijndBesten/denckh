@@ -448,8 +448,59 @@ for (const [w, h, mobile] of [[320, 700, true], [390, 844, true], [1440, 900, fa
   await ctx.close();
 }
 
+// 8d · LYEV.: projectkaart wordt een telefoon met een echte schermafbeelding; links en projectpagina
+for (const [w, h, mobile] of [[390, 844, true], [1440, 900, false]]) {
+  const { p, ctx, errors } = await page(browser, { width: w, height: h, mobile });
+  const card = p.locator(".case--lyev");
+  check(`lyev op ${w}px: kaart met titel en ondertitel`, (await card.locator("h3").textContent()) === "LYEV." && (await card.locator(".case__lead").textContent()) === "Een webshop vol sparkle.");
+  check(`lyev op ${w}px: link naar lyev.nl`, (await card.getByRole("link", { name: "lyev.nl" }).getAttribute("href")) === "https://lyev.nl");
+  check(`lyev op ${w}px: link naar de projectpagina`, (await card.getByRole("link", { name: "Bekijk het project" }).getAttribute("href")) === "/projecten/lyev/");
+  const fig = card.locator(".construct");
+  const box = await fig.evaluate((el) => { const r = el.getBoundingClientRect(); return { top: r.top + scrollY, h: r.height }; });
+  await p.evaluate(({ top, h }) => scrollTo({ top: top - 20, behavior: "instant" }), box);
+  await p.waitForTimeout(600);
+  // op een telefoon tikken (geen muis die na het verspringen van de stappenregel een andere stap aanwijst)
+  const kies = (name) => (mobile ? fig.getByRole("button", { name }).tap() : fig.getByRole("button", { name }).click());
+  await kies("een strasssteentje");
+  await p.waitForFunction(() => document.querySelector(".case--lyev [aria-current=step]")?.textContent === "een strasssteentje", null, { timeout: 4000 }).catch(() => {});
+  check(`lyev op ${w}px: stap strasssteentje is klikbaar`, (await fig.getByRole("button", { name: "een strasssteentje" }).getAttribute("aria-current")) === "step");
+  await kies("lyev.nl op de telefoon");
+  await p.waitForFunction(() => Number(getComputedStyle(document.querySelector(".case--lyev .construct__final")).opacity) > 0.9, null, { timeout: 5000 }).catch(() => {});
+  const shot = fig.locator('.lyev-shot image[href="/images/projecten/lyev-home.webp"]');
+  const loaded = await p.evaluate(async () => { const r = await fetch("/images/projecten/lyev-home.webp"); return r.ok && (r.headers.get("content-type") ?? "").includes("webp"); });
+  const finalOpacity = Number(await fig.locator(".construct__final").evaluate((e) => getComputedStyle(e).opacity));
+  const current = await fig.locator("[aria-current=step]").textContent();
+  check(`lyev op ${w}px: echte schermafbeelding in beeld`, (await shot.count()) === 1 && finalOpacity > 0.9 && loaded, `opacity ${finalOpacity}, stap ${current}, geladen ${loaded}`);
+  check(`lyev op ${w}px: geen console-errors`, errors.length === 0, errors.join(" | "));
+  await ctx.close();
+}
+{
+  const { p, ctx, errors } = await page(browser, { width: 390, height: 844, mobile: true, path: "projecten/lyev/" });
+  check("lyev-pagina: titel, vier delen en link naar lyev.nl", (await p.locator("h1").textContent()).includes("Een webshop vol sparkle.") && (await p.locator(".case-page__parts h2").allTextContents()).join(",") === "De vraag,De oplossing,Achter de schermen,Het resultaat" && (await p.getByRole("link", { name: "Bekijk lyev.nl →" }).getAttribute("href")) === "https://lyev.nl");
+  const imgs = await p.locator(".case-page__shots img").evaluateAll((els) => els.map((i) => i.complete && i.naturalWidth > 0 && i.alt.length > 20));
+  check("lyev-pagina: drie geladen schermen met alt-tekst", imgs.length === 3 && imgs.every(Boolean), String(imgs));
+  check("lyev-pagina: geen console-errors", errors.length === 0, errors.join(" | "));
+  const sitemap = await (await p.request.get(new URL("sitemap.xml", BASE).href)).text();
+  check("lyev-pagina: in de sitemap", sitemap.includes("https://denckh.nl/projecten/lyev/"));
+  await ctx.close();
+}
+{
+  // reduced motion: geen scrollanimatie; via de laatste stap staat het eindbeeld er meteen, zonder zweef bij aanwijzen
+  const { p, ctx, errors } = await page(browser, { width: 1440, height: 900, reduced: true });
+  const fig = p.locator(".case--lyev .construct");
+  const box = await fig.evaluate((el) => { const r = el.getBoundingClientRect(); return { top: r.top + scrollY, h: r.height }; });
+  await p.evaluate(({ top, h }) => scrollTo(0, top + h / 2 - innerHeight * 0.2), box);
+  await fig.getByRole("button", { name: "lyev.nl op de telefoon" }).click();
+  await p.waitForTimeout(150);
+  await fig.locator("svg").hover();
+  await p.waitForTimeout(700);
+  const t = await fig.locator(".lyev-shot").evaluate((e) => getComputedStyle(e).transform);
+  check("lyev, reduced motion: eindbeeld direct zichtbaar, geen beweging", Number(await fig.locator(".construct__final").evaluate((e) => getComputedStyle(e).opacity)) > 0.9 && (t === "none" || t === "matrix(1, 0, 0, 1, 0, 0)") && errors.length === 0, t);
+  await ctx.close();
+}
+
 // 9 · geen horizontale overflow
-for (const path of ["", "prijzen/"]) for (const width of [320, 390, 768, 1024, 1440]) {
+for (const path of ["", "prijzen/", "projecten/lyev/"]) for (const width of [320, 390, 768, 1024, 1440]) {
   const { p, ctx } = await page(browser, { width, height: 800, mobile: width < 500, path });
   const ov = await p.evaluate(() => document.documentElement.scrollWidth - innerWidth);
   check(`geen horizontale overflow op ${width}px${path ? ` (/${path})` : ""}`, ov <= 0, `${ov}px`);

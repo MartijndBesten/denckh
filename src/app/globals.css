@@ -324,6 +324,19 @@ nav .link-draw:hover, nav .link-draw:focus-visible { background-size: 100% 6px, 
 .loflijn-shot text { fill: var(--graphite); font-weight: 600; letter-spacing: 0.04em; }
 .loflijn-shot__card { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.4; }
 .loflijn-shot__new { fill: color-mix(in srgb, var(--ochre) 28%, var(--paper)); stroke: var(--idea); stroke-width: 2; }
+.lyev-shot__frame { fill: var(--ink); stroke: none; }
+.lyev-shot { transition: transform 0.6s var(--ease); transform-box: fill-box; transform-origin: center; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .case--lyev .construct:hover .lyev-shot { transform: translateY(-6px) rotate(-1.2deg); }
+}
+.case-page__parts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem 3rem; padding-block: 3rem; max-width: 60rem; }
+.case-page__parts h2 { font-size: 1.6rem; margin-bottom: 0.6rem; }
+.case-page__parts p { margin: 0; }
+@media (max-width: 760px) { .case-page__parts { grid-template-columns: 1fr; } }
+.case-page__made { padding-block: 0 3rem; max-width: 44rem; }
+.case-page__made h2 { font-size: 1.6rem; margin-bottom: 0.8rem; }
+.case-page__made ul { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.35rem; }
+.case-page__made li::marker { color: var(--ochre-deep); }
 .construct__details .c-idea { stroke: var(--idea); stroke-width: 2; }
 .construct__details .c-fade { fill: var(--ink); stroke: none; opacity: 0; transition: opacity 0.5s 0.25s; }
 .construct__details .c-logo { opacity: 0; transition: opacity 0.6s 0.1s; }
