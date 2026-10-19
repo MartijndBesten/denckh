@@ -57,6 +57,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }} />
         <a className="skip-link" href="#inhoud">Ga naar de inhoud</a>
         {children}
+        <script defer src="https://dd-marketing.zaalverhuur-sion.workers.dev/s.js" data-brand="denckh" />
       </body>
     </html>
   );

@@ -38,7 +38,7 @@ export function Footer() {
         <Link className="link-draw" href="/privacy/">Privacy</Link>
       </div>
       <p className="footer-note">Denckh · Vlierweg 54, Houten · KvK 83176896 · btw NL003791952B15</p>
-      <p className="footer-note">Geen tracking, geen cookies. Je schets blijft in je eigen browser.</p>
+      <p className="footer-note">Geen cookies, geen advertentietrackers. Je schets blijft in je eigen browser.</p>
     </footer>
   );
 }
