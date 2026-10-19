@@ -63,7 +63,7 @@ de ingevulde tekst. Het adres staat ook als gewone tekst. Een echte verzendroute
 ## 5. Privacy
 
 Geen cookies en geen analytics van derden; fonts zelf gehost. Eén extern verzoek: de eigen cookieloze bezoekersteller
-(`dd-marketing` Worker, repo `marketing-dashboard`, sinds 2026-10-19) telt per dag pagina, herkomstsite en klikken op
+(`dd-marketing` Worker via https://dashboard.denckh.nl, repo `marketing-dashboard`, sinds 2026-10-19) telt per dag pagina, herkomstsite en klikken op
 mail/telefoon, zonder IP-adressen of browseropslag. De schets en de ingevulde zin staan alleen
 in `sessionStorage` van de eigen browser en verdwijnen met het tabblad. Privacyverklaring bijgewerkt (`/privacy/`).
 
