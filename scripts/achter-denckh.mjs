@@ -19,7 +19,7 @@ const PILLARS = [
   ["Techniek", "Van systeem tot toepassing.", ["Elektrotechnisch opgeleid", "Jarenlange ervaring in verlichtingstechniek", "Lichtsturing, smart lighting en smart building", "Elektrische en technische installaties", "Technische producten en systemen"]],
   ["Commercie", "Van eigenschap naar klantwaarde.", ["NIMA Sales A en B", "Jarenlange ervaring met klantcontact en verkoop", "Technische eigenschappen vertalen naar klantwaarde", "Ervaring met aansturen en organiseren"]],
   ["Concept en presentatie", "Van complex naar begrijpelijk.", ["Showroom- en beursstandconcepten", "Technische producten vertalen naar eenvoudige demonstraties", "Maquettes en 3D-presentaties laten ontwikkelen", "Interactieve productuitleg, presentaties en verkoopverhalen"]],
-  ["Maken en ondernemen", "Van idee naar praktijk.", ["Deegh vanaf nul opgezet", "Productontwikkeling, prijsstelling, verpakking en verkoop", "Websites, webshops, calculaties en Excel-tools", "Praktisch ontwerpen, bouwen en verbouwen"]],
+  ["Maken en ondernemen", "Van idee naar praktijk.", ["Deegh vanaf nul opgezet", "Webshop LYEV. ontworpen en gebouwd, met eigen beheer", "Productontwikkeling, prijsstelling, verpakking en verkoop", "Websites, webshops, calculaties en Excel-tools", "Praktisch ontwerpen, bouwen en verbouwen"]],
 ];
 const STEPS = [["Begrijpen", "Wat is de vraag?"], ["Vereenvoudigen", "Wat moet iemand snappen?"], ["Vorm geven", "Welke vorm past?"], ["Maken", "Van idee naar iets dat werkt."]];
 const OUTCOMES = ["interactieve uitleg", "prototype", "tool of calculator", "presentatie", "beurs- of showroomconcept", "website of webshop"];

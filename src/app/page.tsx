@@ -34,7 +34,7 @@ export default function Home() {
       <section className="shell projects" id="projecten" aria-labelledby="projecten-titel">
         <header className="projects__head">
           <h2 id="projecten-titel">Wat er al vorm kreeg.</h2>
-          <p>Drie ideeën, drie soorten denken. Scroll, en kijk hoe een lijn elk project wordt.</p>
+          <p>Vier ideeën, vier soorten denken. Scroll, en kijk hoe een lijn elk project wordt.</p>
         </header>
 
         <article className="case">
@@ -82,6 +82,24 @@ export default function Home() {
               <div><dt>Vorm</dt><dd>loflijn.nl, waar je het spel leert kennen en bestelt.</dd></div>
             </dl>
             <p className="case__links"><a className="link-draw" href="https://loflijn.nl" rel="noopener">loflijn.nl</a></p>
+          </div>
+        </article>
+
+        <article className="case case--lyev">
+          <Construct project="lyev" label="LYEV.: van strasssteentje tot webshop, met een echte schermafbeelding van lyev.nl op de telefoon" end="lyev.nl op de telefoon" ratio={0.85} narrowRatio={1.3} />
+          <div className="case__text">
+            <p className="case__kind">zelfgemaakte accessoires → eigen webshop</p>
+            <h3>LYEV.</h3>
+            <p className="case__lead">Een webshop vol sparkle.</p>
+            <dl className="case__facts">
+              <div><dt>Aanleiding</dt><dd>Lynn en Evy versieren accessoires met strass en wilden een eigen plek om ze te laten zien en te verkopen.</dd></div>
+              <div><dt>Denckh</dt><dd>Merkuitstraling, ontwerp en de complete webshop: producten waarbij je zelf een kleur of naam kiest, een eigen bestel- en aanvraagproces en een eenvoudig beheer op de telefoon.</dd></div>
+              <div><dt>Vorm</dt><dd>lyev.nl: een vrolijke, mobielvriendelijke webshop waarin de producten centraal staan.</dd></div>
+            </dl>
+            <p className="case__links">
+              <Link className="link-draw" href="/projecten/lyev/">Bekijk het project</Link>
+              <a className="link-draw" href="https://lyev.nl" rel="noopener">lyev.nl</a>
+            </p>
           </div>
         </article>
       </section>

@@ -8,13 +8,17 @@ export type ProjectCaseProps = {
   eyebrow: string;
   title: React.ReactNode;
   lead: string;
-  facts: { idee: string; denckh: string; vorm: string };
+  facts?: { idee: string; denckh: string; vorm: string };
+  /** Eigen indeling in plaats van idee/Denckh/vorm (bijv. vraag, oplossing, achter de schermen, resultaat). */
+  parts?: { title: string; text: string }[];
+  /** Korte opsomming van wat Denckh maakte. */
+  made?: string[];
   shots: Shot[];
   link: { label: string; href: string };
   source: string;
 };
 
-export function ProjectCase({ eyebrow, title, lead, facts, shots, link, source }: ProjectCaseProps) {
+export function ProjectCase({ eyebrow, title, lead, facts, parts, made, shots, link, source }: ProjectCaseProps) {
   return (
     <main id="inhoud">
       <div className="section-shell case-page">
@@ -31,11 +35,24 @@ export function ProjectCase({ eyebrow, title, lead, facts, shots, link, source }
             <Image key={s.src} src={s.src} alt={s.alt} width={s.width} height={s.height} sizes="(max-width: 760px) 90vw, 360px" />
           ))}
         </div>
-        <div className="case-page__facts">
-          <section><h2>Idee</h2><p>{facts.idee}</p></section>
-          <section><h2>Denckh</h2><p>{facts.denckh}</p></section>
-          <section><h2>Vorm</h2><p>{facts.vorm}</p></section>
-        </div>
+        {facts && (
+          <div className="case-page__facts">
+            <section><h2>Idee</h2><p>{facts.idee}</p></section>
+            <section><h2>Denckh</h2><p>{facts.denckh}</p></section>
+            <section><h2>Vorm</h2><p>{facts.vorm}</p></section>
+          </div>
+        )}
+        {parts && (
+          <div className="case-page__parts">
+            {parts.map((part) => <section key={part.title}><h2>{part.title}</h2><p>{part.text}</p></section>)}
+          </div>
+        )}
+        {made && (
+          <section className="case-page__made">
+            <h2>Wat Denckh maakte</h2>
+            <ul>{made.map((m) => <li key={m}>{m}</li>)}</ul>
+          </section>
+        )}
         <aside className="case-page__source"><strong>Over de beelden</strong><p>{source}</p></aside>
         <div className="case-page__next"><p>Heb je zelf iets dat vorm mag krijgen?</p><Link className="button button--dark" href="/#contact">Vertel het me</Link></div>
         <Footer />

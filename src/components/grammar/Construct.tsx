@@ -20,8 +20,9 @@ const ease = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) /
 /** Binnen een overgang: 12% rust aan beide kanten, zodat elke vorm even blijft staan. */
 const settle = (local: number) => ease(clamp((local - 0.12) / 0.76, 0, 1));
 
-export function Construct({ project, label, end, ratio = 0.72, tone = "paper" }: {
-  project: keyof typeof BUILDS; label: string; end?: string; ratio?: number; tone?: "paper" | "night";
+/** `narrowRatio`: andere hoogte/breedte-verhouding onder 520 px breed (bijv. een staande telefoon die anders te klein wordt). */
+export function Construct({ project, label, end, ratio = 0.72, narrowRatio, tone = "paper" }: {
+  project: keyof typeof BUILDS; label: string; end?: string; ratio?: number; narrowRatio?: number; tone?: "paper" | "night";
 }) {
   const build = BUILDS[project];
   const ref = useRef<HTMLDivElement>(null);
@@ -30,7 +31,7 @@ export function Construct({ project, label, end, ratio = 0.72, tone = "paper" }:
   // 1 als het midden op 28% staat.
   const p = useScrollProgress(ref, !reduced, { from: 0.92, to: 0.28 });
   const width = useWidth(ref, 520);
-  const w = width, h = Math.round(width * ratio);
+  const w = width, h = Math.round(width * (narrowRatio && width < 520 ? narrowRatio : ratio));
   const sketch = useSketch();
   const { stages, final } = useMemo(() => build(w, h), [build, w, h]);
   const start = useMemo(() => resample(place(sketch.points, w * 0.15, h * 0.15, w * 0.7, h * 0.7), SN), [sketch, w, h]);

@@ -1,5 +1,6 @@
-// Drie projecten, drie soorten denken. Alleen geverifieerde inhoud (zie docs/cases/). Geen logo's of beelden van derden:
-// de eindbeelden zijn schematische weergaven, zo gemarkeerd.
+// Vier projecten, vier soorten denken. Alleen geverifieerde inhoud (zie docs/cases/). Geen logo's of beelden van derden:
+// de eindbeelden zijn schematische weergaven, zo gemarkeerd. Uitzondering: LYEV. (eigen project) eindigt in een echte
+// schermafbeelding van de eigen site.
 import { SHAPES } from "@/lib/ink/shapes";
 import { resample } from "@/lib/ink/geometry";
 import { rr, type Build } from "./Construct";
@@ -158,6 +159,67 @@ export const spelBuild: Build = (w, h) => {
   };
 };
 
+/** LYEV.: een strasssteentje → een product met jouw kleur en naam → een webshop op de telefoon. Het eindbeeld is een
+ *  echte schermafbeelding van de homepage van lyev.nl (docs/cases/lyev.md), in het telefoonkader dat de lijn tekende. */
+export const lyevBuild: Build = (w, h) => {
+  // 1 · een strasssteentje van boven: achthoek met facetten en een glinstering
+  const s = Math.min(w, h) * 0.3, gx = w / 2, gy = h / 2;
+  const oct = Array.from({ length: 9 }, (_, i) => {
+    const a = -Math.PI / 2 + Math.PI / 8 + (i / 8) * Math.PI * 2;
+    return { x: gx + Math.cos(a) * s, y: gy + Math.sin(a) * s };
+  });
+  const gem = resample(oct, 128);
+  const inner = oct.slice(0, 8).map((p) => ({ x: gx + (p.x - gx) * 0.5, y: gy + (p.y - gy) * 0.5 }));
+  const sx = gx + s * 0.95, sy = gy - s * 0.95, sr = s * 0.2;
+  const gemDetails = [
+    D(`M${inner.map((p) => `${p.x} ${p.y}`).join(" L")} Z`, 0),
+    D(inner.map((p, i) => `M${p.x} ${p.y} L${oct[i].x} ${oct[i].y}`).join(" "), 1),
+    <path key="spark" d={`M${sx} ${sy - sr} V${sy + sr} M${sx - sr} ${sy} H${sx + sr}`} pathLength={1} className="c-anim c-idea" />,
+  ];
+
+  // 2 · een product dat je zelf kiest: een label met kleurrondjes en een naamregel
+  const tW = Math.min(w * 0.6, h * 0.95), tH = tW * 0.62, tx = (w - tW) / 2, ty = (h - tH) / 2;
+  const tag = resample(rrPts(tx, ty, tW, tH, 14), 128);
+  const dr = tH * 0.085;
+  const ring = (cx: number, cy: number, r: number) => `M${cx - r} ${cy} a${r} ${r} 0 1 0 ${2 * r} 0 a${r} ${r} 0 1 0 ${-2 * r} 0`;
+  const tagDetails = [
+    <path key="gat" d={ring(tx + tW * 0.1, ty + tH * 0.2, dr * 0.6)} pathLength={1} className="c-anim" />,
+    ...[0, 1, 2, 3].map((i) => (
+      <path key={`k${i}`} d={ring(tx + tW * 0.24 + i * dr * 3, ty + tH * 0.42, dr)} pathLength={1} className={i === 1 ? "c-anim c-idea" : "c-anim"} />
+    )),
+    <path key="naam" d={`M${tx + tW * 0.24 - dr} ${ty + tH * 0.72} H${tx + tW * 0.82}`} pathLength={1} className="c-anim" />,
+  ];
+
+  // 3 · een webshop op de telefoon, in dezelfde verhouding als de schermafbeelding (540 × 1169)
+  const pH = h * 0.92, pW = pH * (540 / 1169), px = (w - pW) / 2, py = (h - pH) / 2;
+  const phone = resample(rrPts(px, py, pW, pH, pW * 0.12), 128);
+  const m = pW * 0.1, cell = (pW - m * 3) / 2;
+  const shopDetails = [
+    `M${px + m} ${py + pH * 0.1} H${px + pW - m}`,
+    `M${px + m} ${py + pH * 0.2} H${px + pW * 0.7} M${px + m} ${py + pH * 0.26} H${px + pW * 0.55}`,
+    ...[0, 1, 2, 3].map((i) => rr(px + m + (i % 2) * (cell + m), py + pH * 0.36 + Math.floor(i / 2) * (cell + m), cell, cell, 5)),
+    rr(px + m, py + pH * 0.36 + 2 * (cell + m), pW - 2 * m, pH * 0.07, pH * 0.035),
+  ].map(D);
+  const bezel = pW * 0.035;
+  return {
+    stages: [
+      { outline: gem, closed: true, caption: "een strasssteentje", details: gemDetails },
+      { outline: tag, closed: true, caption: "jouw kleur, jouw naam", details: tagDetails },
+      { outline: phone, closed: true, caption: "een webshop op je telefoon", details: shopDetails },
+    ],
+    final: (
+      <g className="lyev-shot">
+        <defs>
+          <clipPath id="lyev-scherm"><path d={rr(px + bezel, py + bezel, pW - bezel * 2, pH - bezel * 2, pW * 0.1)} /></clipPath>
+        </defs>
+        <path d={rr(px, py, pW, pH, pW * 0.12)} className="lyev-shot__frame" />
+        <image href="/images/projecten/lyev-home.webp" x={px + bezel} y={py + bezel} width={pW - bezel * 2} height={pH - bezel * 2}
+          preserveAspectRatio="xMidYMin slice" clipPath="url(#lyev-scherm)" />
+      </g>
+    ),
+  };
+};
+
 /** Afgeronde rechthoek als puntenreeks (voor vormen die moeten kunnen morphen). */
 function rrPts(x: number, y: number, w: number, h: number, r: number) {
   const pts: { x: number; y: number }[] = [];
@@ -169,4 +231,4 @@ function rrPts(x: number, y: number, w: number, h: number, r: number) {
   return pts;
 }
 
-export const BUILDS = { deegh: deeghBuild, koffer: kofferBuild, spel: spelBuild };
+export const BUILDS = { deegh: deeghBuild, koffer: kofferBuild, spel: spelBuild, lyev: lyevBuild };
