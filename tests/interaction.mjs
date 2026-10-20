@@ -457,7 +457,7 @@ for (const [w, h, mobile] of [[390, 844, true], [1440, 900, false]]) {
   check(`lyev op ${w}px: link naar de projectpagina`, (await card.getByRole("link", { name: "Bekijk het project" }).getAttribute("href")) === "/projecten/lyev/");
   const fig = card.locator(".construct");
   const box = await fig.evaluate((el) => { const r = el.getBoundingClientRect(); return { top: r.top + scrollY, h: r.height }; });
-  await p.evaluate(({ top, h }) => scrollTo({ top: top - 20, behavior: "instant" }), box);
+  await p.evaluate(({ top }) => scrollTo({ top: top - 20, behavior: "instant" }), box);
   await p.waitForTimeout(600);
   // op een telefoon tikken (geen muis die na het verspringen van de stappenregel een andere stap aanwijst)
   const kies = (name) => (mobile ? fig.getByRole("button", { name }).tap() : fig.getByRole("button", { name }).click());
