@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Footer, Header } from "@/components/Header";
 import { DeeghCase, TclpCase } from "@/components/Cases";
 import { PuntStage } from "@/components/punt/PuntStage";
+import { AllProjectsLink } from "@/components/grammar/AllProjectsLink";
 import { ContactReturn } from "@/components/grammar/ContactReturn";
 import { InkRule } from "@/components/grammar/InkRule";
 import { Outcomes } from "@/components/grammar/Outcomes";
@@ -38,7 +39,7 @@ export default function Home() {
 
         <DeeghCase />
         <TclpCase />
-        <p className="projects__all"><Link className="link-draw" href="/projecten/">Bekijk alle projecten →</Link></p>
+        <p className="projects__all"><AllProjectsLink /></p>
       </section>
 
       <section className="shell outcomes-section" aria-labelledby="uitkomst-titel">

@@ -283,7 +283,24 @@ nav .link-draw:hover, nav .link-draw:focus-visible { background-size: 100% 6px, 
 .projects { padding-block: clamp(2rem, 6vw, 5rem); }
 .projects__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 1rem 3rem; margin-bottom: clamp(2rem, 5vw, 4rem); }
 .projects__head p { color: var(--graphite); max-width: 28rem; margin: 0; }
-.projects__all { margin: 0; padding-top: 1.6rem; border-top: 1px solid color-mix(in srgb, var(--ink) 14%, transparent); font-weight: 600; }
+.projects__all { margin: 0; padding-top: 1.8rem; border-top: 1px solid color-mix(in srgb, var(--ink) 14%, transparent); }
+/* "Bekijk alle projecten": een inktknop waarin jouw lijn door de overige projecten bladert (AllProjectsLink) */
+.all-link { display: inline-flex; align-items: center; gap: 1.1rem; max-width: 100%; padding: 0.6rem 1.4rem 0.6rem 0.7rem; border: 1.5px solid var(--ink); border-radius: 3px; color: var(--ink); text-decoration: none;
+  background: linear-gradient(var(--ink), var(--ink)) no-repeat 0 0 / 0% 100%; transition: background-size 0.4s var(--ease), color 0.25s; }
+.all-link:hover, .all-link:focus-visible { background-size: 100% 100%; color: var(--paper); }
+.all-link:active { transform: translateY(1px); }
+.all-link svg { flex: none; width: 7.5rem; height: auto; overflow: visible; }
+.all-link__line { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; transition: stroke 0.4s; }
+.all-link__line.is-sketch { stroke: var(--idea); }
+.all-link__details path { fill: none; stroke: currentColor; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 0.45s var(--ease) var(--wait, 0ms) forwards; }
+.all-link__dot { fill: var(--ochre); }
+.all-link__text { display: grid; gap: 0.3rem; min-width: 0; }
+.all-link__label { font-size: 1.05rem; font-weight: 650; }
+.all-link__arrow { display: inline-block; transition: transform 0.3s var(--ease); }
+.all-link:hover .all-link__arrow, .all-link:focus-visible .all-link__arrow { transform: translateX(0.3em); }
+.all-link__now { font-size: 0.72rem; font-weight: 650; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ochre-deep); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.all-link:hover .all-link__now, .all-link:focus-visible .all-link__now { color: var(--ochre); }
+@media (max-width: 400px) { .all-link { gap: 0.8rem; padding-right: 1rem; } .all-link svg { width: 5.6rem; } }
 .case { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 2rem clamp(2rem, 5vw, 5rem); align-items: center; padding-block: clamp(2.5rem, 6vw, 5.5rem); border-top: 1px solid color-mix(in srgb, var(--ink) 14%, transparent); }
 .case--flip { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
 .case--flip .construct { order: 2; }
