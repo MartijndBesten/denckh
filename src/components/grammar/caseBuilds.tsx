@@ -1,4 +1,4 @@
-// Vier projecten, vier soorten denken. Alleen geverifieerde inhoud (zie docs/cases/). Geen logo's of beelden van derden:
+// Vijf projecten, vijf soorten denken. Alleen geverifieerde inhoud (zie docs/cases/). Geen logo's of beelden van derden:
 // de eindbeelden zijn schematische weergaven, zo gemarkeerd. Uitzondering: LYEV. (eigen project) eindigt in een echte
 // schermafbeelding van de eigen site.
 import { SHAPES } from "@/lib/ink/shapes";
@@ -220,6 +220,72 @@ export const lyevBuild: Build = (w, h) => {
   };
 };
 
+/** TCLP: een armatuur → de keten als kringloop → alle partijen verbonden. Schematisch, zonder het TCLP-logo of beelden
+ *  van de site; stapnamen en rollen zoals op tclp.nl (docs/cases/tclp.md). */
+export const tclpBuild: Build = (w, h) => {
+  // 1 · een armatuur aan het eind van een project: pendelkap aan een snoer
+  const cx = w / 2, s = Math.min(w, h), ky = h * 0.36, kh = s * 0.3, top = s * 0.14, bot = s * 0.34;
+  const shade = resample([
+    { x: cx - top, y: ky }, { x: cx + top, y: ky }, { x: cx + bot, y: ky + kh }, { x: cx - bot, y: ky + kh }, { x: cx - top, y: ky },
+  ], 128);
+  const lampDetails = [
+    `M${cx} ${ky} V${h * 0.06}`,
+    `M${cx - s * 0.08} ${ky + kh} A${s * 0.08} ${s * 0.08} 0 0 0 ${cx + s * 0.08} ${ky + kh}`,
+  ].map(D);
+
+  // 2 · zes stappen in een kring: van demonteren tot opnieuw inzetten (de korte namen uit de draaiende hero)
+  const r = s * 0.33, cy = h / 2;
+  const ring = resample(Array.from({ length: 129 }, (_, i) => {
+    const a = -Math.PI / 2 + (i / 128) * Math.PI * 2;
+    return { x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r };
+  }), 128);
+  const names = ["Demonteren", "Ophalen", "Controleren", "Herstellen", "Opslaan", "Herinzetten"];
+  const at = (i: number, k = 1) => { const a = -Math.PI / 2 + (i / 6) * Math.PI * 2; return { x: cx + Math.cos(a) * r * k, y: cy + Math.sin(a) * r * k }; };
+  const roomy = w >= 440;
+  const ringDetails = names.map((n, i) => {
+    const p = at(i), l = at(i, i % 3 === 0 ? 1.3 : 1.14), side = Math.abs(l.x - cx) < 4 ? "middle" : l.x > cx ? "start" : "end";
+    return (
+      <g key={n} className="callout">
+        <circle cx={p.x} cy={p.y} r={12} />
+        <text x={p.x} y={p.y + 4} textAnchor="middle">{i + 1}</text>
+        {roomy && <text x={l.x} y={l.y + 4} textAnchor={side} className="callout__label">{n}</text>}
+      </g>
+    );
+  });
+
+  // 3 · alle partijen verbonden: vijf rollen rond een middelpunt, het middelpunt is TCLP
+  const pr = s * 0.36;
+  const pts = Array.from({ length: 5 }, (_, i) => {
+    const a = -Math.PI / 2 + (i / 5) * Math.PI * 2;
+    return { x: cx + Math.cos(a) * pr, y: cy + Math.sin(a) * pr };
+  });
+  const net = resample([...pts, pts[0]], 128);
+  const roles = ["klant", "installateur", "fabrikant", "logistiek", "volgend project"];
+  const netDetails = [
+    ...pts.map((p, i) => {
+      const k = 12 / pr; // de spaken beginnen buiten het middelpunt
+      return <path key={`s${i}`} d={`M${cx + (p.x - cx) * k} ${cy + (p.y - cy) * k} L${p.x} ${p.y}`} pathLength={1} className="c-anim" />;
+    }),
+    ...pts.map((p, i) => {
+      const l = { x: cx + (p.x - cx) * 1.3, y: cy + (p.y - cy) * 1.3 }, side = Math.abs(l.x - cx) < 4 ? "middle" : l.x > cx ? "start" : "end";
+      return (
+        <g key={`p${i}`} className="callout">
+          <circle cx={p.x} cy={p.y} r={7} />
+          {roomy && <text x={l.x} y={l.y + 4} textAnchor={side} className="callout__label">{roles[i]}</text>}
+        </g>
+      );
+    }),
+    <path key="tclp" d={`M${cx - 9} ${cy} a9 9 0 1 0 18 0 a9 9 0 1 0 -18 0`} pathLength={1} className="c-anim c-idea" />,
+  ];
+  return {
+    stages: [
+      { outline: shade, closed: true, caption: "een armatuur", details: lampDetails },
+      { outline: ring, closed: true, caption: "zes stappen in een kring", details: ringDetails },
+      { outline: net, closed: true, caption: "alle partijen verbonden", details: netDetails },
+    ],
+  };
+};
+
 /** Afgeronde rechthoek als puntenreeks (voor vormen die moeten kunnen morphen). */
 function rrPts(x: number, y: number, w: number, h: number, r: number) {
   const pts: { x: number; y: number }[] = [];
@@ -231,4 +297,4 @@ function rrPts(x: number, y: number, w: number, h: number, r: number) {
   return pts;
 }
 
-export const BUILDS = { deegh: deeghBuild, koffer: kofferBuild, spel: spelBuild, lyev: lyevBuild };
+export const BUILDS = { deegh: deeghBuild, koffer: kofferBuild, spel: spelBuild, lyev: lyevBuild, tclp: tclpBuild };

@@ -14,7 +14,7 @@ export function Header({ compact = false }: HeaderProps) {
       </Link>
       <nav aria-label="Hoofdnavigatie">
         <Link className="link-draw" href="/diensten/">Diensten</Link>
-        <Link className="link-draw" href="/#projecten">Projecten</Link>
+        <Link className="link-draw" href="/projecten/">Projecten</Link>
         <Link className="link-draw site-header__optional" href="/#werkwijze">Werkwijze</Link>
         <Link className="link-draw link-draw--dot" href="/#contact">Vertel het me</Link>
       </nav>
@@ -31,7 +31,7 @@ export function Footer() {
       </div>
       <div className="footer-links">
         <Link className="link-draw" href="/diensten/">Diensten</Link>
-        <Link className="link-draw" href="/#projecten">Projecten</Link>
+        <Link className="link-draw" href="/projecten/">Projecten</Link>
         <Link className="link-draw" href="/prijzen/">Prijzen</Link>
         <a className="link-draw" href="mailto:info@denckh.nl">info@denckh.nl</a>
         <a className="link-draw" href="https://www.instagram.com/denckh.nl/" rel="me">Instagram</a>

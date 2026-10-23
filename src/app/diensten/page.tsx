@@ -15,7 +15,7 @@ const DIENSTEN: Dienst[] = [
     titel: "Een website of webshop",
     tekst: "Een duidelijke website voor je bedrijf, vereniging of idee. Goed leesbaar op de telefoon, snel en zonder overbodige toeters. Ook een compacte webshop op een bestaand platform.",
     voorbeelden: ["een website voor een zelfstandige of klein bedrijf", "een webshop met een geteste mobiele checkout", "een bestaande website die duidelijker moet"],
-    bewijs: [{ label: "Deegh: webshop voor een eigen product", href: "/projecten/deegh/" }, { label: "LYEV.: webshop met eigen keuzes in kleur en naam", href: "/projecten/lyev/" }, { label: "loflijn.nl: website en webshop voor een spel", href: "https://loflijn.nl" }],
+    bewijs: [{ label: "Deegh: webshop voor een eigen product", href: "/projecten/deegh/" }, { label: "LYEV.: webshop met eigen keuzes in kleur en naam", href: "/projecten/lyev/" }, { label: "loflijn.nl: website en webshop voor een spel", href: "https://loflijn.nl" }, { label: "tclp.nl: website voor hergebruik van professionele verlichting", href: "https://tclp.nl" }],
     prijs: `website vanaf €${vanaf("website")}, webshop vanaf €${vanaf("webshop")}`,
   },
   {
@@ -45,7 +45,7 @@ const DIENSTEN: Dienst[] = [
     titel: "Een bijzonder idee praktisch uitwerken",
     tekst: "Je hebt een idee, maar nog geen plan. We halen het samen uit elkaar en ik maak er een eerste vorm van: een schets, een visual, een prototype of een presentatie.",
     voorbeelden: ["een idee voor een product of dienst", "een presentatie of uitleg die moet overtuigen", "iets waarvoor nog geen goede naam bestaat"],
-    bewijs: [{ label: "Bekijk de projecten op de homepage", href: "/#projecten" }],
+    bewijs: [{ label: "Bekijk alle projecten", href: "/projecten/" }],
     prijs: `eerste vorm vanaf €${vanaf("visual")}`,
   },
 ];

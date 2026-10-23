@@ -23,7 +23,7 @@ export function ProjectCase({ eyebrow, title, lead, facts, parts, made, shots, l
     <main id="inhoud">
       <div className="section-shell case-page">
         <Header compact />
-        <Link className="back-link" href="/#projecten">← Alle projecten</Link>
+        <Link className="back-link" href="/projecten/">← Alle projecten</Link>
         <header className="case-page__header">
           <p className="eyebrow">{eyebrow}</p>
           <h1>{title}</h1>

@@ -14,6 +14,7 @@ Hier staat welke projecten mogelijk als case op de Denckh-site komen, wat er al 
 | Interactieve presentatie | Privé-repository van de eigenaar | Anoniem en schematisch in "Ook gemaakt"; akkoord eigenaar 2026-09-29 | 2026-09-29 | [presentatie.md](presentatie.md) |
 | Autowasdag Sionkerk | Publieke repo `MartijndBesten/autowasdag-sionkerk` (`3162784`) | Goedgekeurd voor publicatie (naam en link), 2026-09-29, via eigenaar | 2026-09-29 | [autowasdag-sionkerk.md](autowasdag-sionkerk.md) |
 | Kerckh. | https://kerckh.nl | Goedgekeurd voor publicatie (naam en link), 2026-10-07, eigenaar; eigen product van Denckh | 2026-10-07 | [kerckh.md](kerckh.md) |
+| TCLP | https://tclp.nl · websiterepository van de eigenaar | Goedgekeurd voor publicatie (naam en link): toestemming opdrachtgever, doorgegeven door de eigenaar op 2026-10-23; schematisch, zonder logo of beelden | 2026-10-23 | [tclp.md](tclp.md) |
 
 Statussen: *Niet onderzocht* → *In onderzoek* → *Geverifieerd* → *Goedgekeurd voor publicatie*.
 
