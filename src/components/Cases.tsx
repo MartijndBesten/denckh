@@ -9,13 +9,13 @@ export function DeeghCase() {
     <article className="case">
       <Construct project="deegh" label="deegh.nl, schematisch" />
       <div className="case__text">
-        <p className="case__kind">product → merk → webshop</p>
+        <p className="case__kind">ambachtelijk pizzadeeg → webshop met uitleg</p>
         <h3>Deegh</h3>
         <p className="case__lead">Van deegbol tot een plek waar je bestelt en leert hoe het werkt.</p>
         <dl className="case__facts">
-          <div><dt>Aanleiding</dt><dd>Een eigen product, ambachtelijk pizzadeeg, had een plek nodig die net zo helder is als het product zelf.</dd></div>
-          <div><dt>Denckh</dt><dd>Een eigen webshop op WordPress en WooCommerce, met een eigen thema: producten, uitleg in stappen, recepten, verkooppunten en een zakelijke route.</dd></div>
-          <div><dt>Vorm</dt><dd>deegh.nl: bestellen, en leren hoe je van een bol deeg een pizza maakt.</dd></div>
+          <div><dt>Aanleiding</dt><dd>Deegh, een merk voor ambachtelijk pizzadeeg, had een webshop nodig die net zo helder is als het product.</dd></div>
+          <div><dt>Denckh</dt><dd>Ontwerp en ontwikkeling van de webshop op WordPress en WooCommerce, met een thema op maat: producten, uitleg in stappen, recepten, verkooppunten en een zakelijke route.</dd></div>
+          <div><dt>Vorm</dt><dd>deegh.nl: een webshop met producten, recepten, uitleg en verkooppunten.</dd></div>
         </dl>
         <p className="case__links">
           <Link className="link-draw" href="/projecten/deegh/">Bekijk het project</Link>

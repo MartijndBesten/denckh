@@ -337,7 +337,7 @@ nav .link-draw:hover, nav .link-draw:focus-visible { background-size: 100% 6px, 
 .construct--night .callout circle { fill: var(--night); }
 .construct--night .callout text { fill: var(--night-ink); }
 .construct--night .callout__label { fill: color-mix(in srgb, var(--night-ink) 65%, transparent); }
-.deegh-shot text, .loflijn-shot text { font-family: var(--font-sans); }
+.loflijn-shot text { font-family: var(--font-sans); }
 .loflijn-shot { color: var(--ink); }
 .loflijn-shot text { fill: var(--graphite); font-weight: 600; letter-spacing: 0.04em; }
 .loflijn-shot__card { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.4; }

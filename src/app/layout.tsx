@@ -31,19 +31,37 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
+// Denckh als eigen merk (B-091). Bewust zonder straat en btw-nummer: die deelt Denckh met Deegh (zelfde inschrijving)
+// en ze staan zichtbaar in de footer. In de gestructureerde gegevens maakten ze van twee merken één bedrijf.
 const organization = {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "@id": "https://denckh.nl/#organisatie",
-  name: "Denckh",
-  url: "https://denckh.nl",
-  description: "Websites, handige apps en slimme technische oplossingen voor particulieren, zelfstandigen en kleine bedrijven.",
-  email: "info@denckh.nl",
-  address: { "@type": "PostalAddress", streetAddress: "Vlierweg 54", addressLocality: "Houten", addressCountry: "NL" },
-  vatID: "NL003791952B15",
-  areaServed: ["Houten", "Nieuwegein", "Utrecht", "Bunnik"],
-  knowsAbout: ["websites", "webshops", "apps", "automatiseren", "lichtsturing", "sensoren"],
-  sameAs: ["https://www.instagram.com/denckh.nl/"],
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://denckh.nl/#organisatie",
+      name: "Denckh",
+      alternateName: "Denckh.",
+      url: "https://denckh.nl/",
+      logo: "https://denckh.nl/brand/denckh-logo-signature-transparent-web.png",
+      image: "https://denckh.nl/og.png",
+      slogan: "van idee naar vorm",
+      description: "Websites, handige apps en slimme technische oplossingen voor particulieren, zelfstandigen en kleine bedrijven.",
+      email: "info@denckh.nl",
+      address: { "@type": "PostalAddress", addressLocality: "Houten", addressRegion: "Utrecht", addressCountry: "NL" },
+      areaServed: ["Houten", "Nieuwegein", "Utrecht", "Bunnik"],
+      knowsAbout: ["websites", "webshops", "apps", "automatiseren", "lichtsturing", "sensoren"],
+      sameAs: ["https://www.instagram.com/denckh.nl/"],
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://denckh.nl/#website",
+      name: "Denckh",
+      alternateName: ["Denckh.", "denckh.nl"],
+      url: "https://denckh.nl/",
+      inLanguage: "nl-NL",
+      publisher: { "@id": "https://denckh.nl/#organisatie" },
+    },
+  ],
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
