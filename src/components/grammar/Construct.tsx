@@ -93,15 +93,19 @@ export function Construct({ project, label, end, ratio = 0.72, narrowRatio, tone
 
   return (
     <figure className={`construct construct--${tone}`} ref={ref} style={{ ["--final" as string]: finalT }}>
-      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} role="img" aria-label={label}>
-        {final && <g className="construct__final" style={{ opacity: finalT }}>{final}</g>}
-        <path d={linePath(pts, closed)} className={`construct__line${shapeIdx === 0 ? " is-sketch" : ""}`} style={{ opacity: all[shapeIdx].hideLine && atRest ? 0 : 1 - finalT * 0.85 }} />
-        {all.map((s, si) => s.details && (
-          <g key={si} className={`construct__details${si === shapeIdx && atRest ? " is-on" : ""}`} style={{ opacity: si === shapeIdx ? 1 - finalT : 0 }}>
-            {s.details}
-          </g>
-        ))}
-      </svg>
+      {/* Schematisch beeld: de woorden erin (zoals productnamen in de Deegh-webshop) horen niet in zoekfragmenten
+          over Denckh (B-091). Google leest data-nosnippet alleen op div, span en section. */}
+      <div data-nosnippet="">
+        <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} role="img" aria-label={label}>
+          {final && <g className="construct__final" style={{ opacity: finalT }}>{final}</g>}
+          <path d={linePath(pts, closed)} className={`construct__line${shapeIdx === 0 ? " is-sketch" : ""}`} style={{ opacity: all[shapeIdx].hideLine && atRest ? 0 : 1 - finalT * 0.85 }} />
+          {all.map((s, si) => s.details && (
+            <g key={si} className={`construct__details${si === shapeIdx && atRest ? " is-on" : ""}`} style={{ opacity: si === shapeIdx ? 1 - finalT : 0 }}>
+              {s.details}
+            </g>
+          ))}
+        </svg>
+      </div>
       <figcaption className="construct__steps">
         <span className="visually-hidden">Stappen van lijn naar vorm. Kies een stap om die te bekijken.</span>
         <ol>

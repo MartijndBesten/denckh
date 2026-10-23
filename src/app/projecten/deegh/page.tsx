@@ -3,15 +3,30 @@ import Link from "next/link";
 import { Footer, Header } from "@/components/Header";
 import { Construct } from "@/components/grammar/Construct";
 
+const description = "Denckh maakte de webshop van Deegh, een apart merk voor ambachtelijk pizzadeeg: producten, bereiding, recepten, verkooppunten en een zakelijke route.";
+
 export const metadata: Metadata = {
-  title: "Deegh",
-  description: "Een eigen product kreeg een webshop met producten, bereiding, recepten, verkooppunten en een zakelijke route.",
+  title: "Deegh: webshop voor een pizzadeegmerk",
+  description,
   alternates: { canonical: "/projecten/deegh/" },
+};
+
+// Deegh is hier het onderwerp van werk van Denckh, met een eigen site; geen onderdeel van Denckh (B-091).
+const project = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "@id": "https://denckh.nl/projecten/deegh/#project",
+  name: "Webshop deegh.nl",
+  url: "https://denckh.nl/projecten/deegh/",
+  description,
+  creator: { "@id": "https://denckh.nl/#organisatie" },
+  about: { "@type": "Brand", name: "Deegh", url: "https://deegh.nl/" },
 };
 
 export default function DeeghCase() {
   return (
     <main id="inhoud">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(project) }} />
       <div className="section-shell case-page">
         <Header compact />
         <Link className="back-link" href="/projecten/">← Alle projecten</Link>

@@ -13,7 +13,7 @@ export function DeeghCase() {
         <h3>Deegh</h3>
         <p className="case__lead">Van deegbol tot een plek waar je bestelt en leert hoe het werkt.</p>
         <dl className="case__facts">
-          <div><dt>Aanleiding</dt><dd>Een eigen product, ambachtelijk pizzadeeg, had een plek nodig die net zo helder is als het product zelf.</dd></div>
+          <div><dt>Aanleiding</dt><dd>Deegh, een apart merk voor ambachtelijk pizzadeeg, had een plek nodig die net zo helder is als het product zelf.</dd></div>
           <div><dt>Denckh</dt><dd>Een eigen webshop op WordPress en WooCommerce, met een eigen thema: producten, uitleg in stappen, recepten, verkooppunten en een zakelijke route.</dd></div>
           <div><dt>Vorm</dt><dd>deegh.nl: bestellen, en leren hoe je van een bol deeg een pizza maakt.</dd></div>
         </dl>
