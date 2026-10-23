@@ -347,10 +347,19 @@ for (const [w, h, mobile] of [[320, 700, true], [393, 852, true], [1440, 900, fa
   await fig.getByRole("button", { name: /deegh\.nl/ }).click();
   await p.waitForTimeout(1500);
   const nav = await p.evaluate(() => {
-    const t = [...document.querySelectorAll(".deegh-shot text")].slice(0, 5).map((e) => e.getBBox()), frame = document.querySelector(".deegh-shot path").getBBox();
+    // schermcoördinaten: de teksten zijn geschaalde contourgroepen (B-092), getBBox() zou font-eenheden geven
+    const t = [...document.querySelectorAll(".deegh-shot .shot-tekst")].slice(0, 5).map((e) => e.getBoundingClientRect()), frame = document.querySelector(".deegh-shot path").getBoundingClientRect();
     return { gaps: t.slice(1).map((b, i) => Math.round(b.x - (t[i].x + t[i].width))), over: Math.round(t[4].x + t[4].width - (frame.x + frame.width)) };
   });
   check(`deegh-eindbeeld op ${w}px: menu zonder overlap, binnen het kader`, nav.gaps.every((g) => g >= 4) && nav.over < 0, `ruimtes ${nav.gaps.join(",")} · rand ${nav.over}`);
+  await ctx.close();
+}
+
+// 6e · merkscheiding (B-092): de Deegh-producten in het eindbeeld zijn contouren, geen paginatekst van Denckh
+for (const path of ["", "projecten/", "projecten/deegh/"]) {
+  const { p, ctx } = await page(browser, { path });
+  const tekst = await p.evaluate(() => document.body.textContent);
+  check(`merkscheiding /${path}: geen Deegh-productnamen in de paginatekst`, !/pizzabollen|Deegh Gezin|Deegh Voorraad|Pizza-avond/.test(tekst) && (await p.locator(".deegh-shot text").count()) === 0 && (await p.locator(".deegh-shot .shot-tekst").count()) === 12);
   await ctx.close();
 }
 

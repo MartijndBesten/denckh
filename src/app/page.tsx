@@ -81,7 +81,7 @@ export default function Home() {
         <div className="small__text">
           <h2 id="klein-titel">Denckh is klein. Bewust.</h2>
           <p>Heb je een idee, product of technisch verhaal dat nog niet helemaal in vorm is? Dan help ik je uitzoeken wat het eigenlijk nodig heeft, en maak ik het concreet. Je werkt rechtstreeks met mij: degene die meedenkt én maakt.</p>
-          <p>Mijn achtergrond ligt op het snijvlak van techniek en commercie: elektrotechnisch opgeleid en al jaren bezig met verlichting, lichtsturing en slimme gebouwen. Los van Denckh heb ik een eigen merk voor ambachtelijk pizzadeeg: Deegh.</p>
+          <p>Mijn achtergrond ligt op het snijvlak van techniek en commercie: elektrotechnisch opgeleid en al jaren bezig met verlichting, lichtsturing en slimme gebouwen.</p>
           <p><a className="link-draw" href="/downloads/denckh-achter-denckh.pdf">Meer over mijn achtergrond →</a></p>
         </div>
       </section>

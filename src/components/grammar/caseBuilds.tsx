@@ -4,8 +4,17 @@
 import { SHAPES } from "@/lib/ink/shapes";
 import { resample } from "@/lib/ink/geometry";
 import { rr, type Build } from "./Construct";
+import { GLYPHS, TEKSTEN, UPM } from "./deeghShotGlyphs";
 
 const D = (d: string, key: number) => <path key={key} d={d} pathLength={1} className="c-anim" />;
+
+/** Vaste tekst als contouren (scripts/tekst-als-pad.py): ziet eruit als tekst in Manrope, maar is geen paginatekst. Zo
+ *  lezen zoekmachines de productnamen van Deegh niet als aanbod van Denckh (B-092). Oorsprong = begin van de basislijn. */
+const Tekst = ({ t, x, y, size }: { t: string; x: number; y: number; size: number }) => (
+  <g className="shot-tekst" transform={`translate(${x} ${y}) scale(${size / UPM})`} fill="#554f4f">
+    {TEKSTEN[t].map(([g, dx], i) => <path key={i} d={GLYPHS[g]} transform={`translate(${dx} 0)`} />)}
+  </g>
+);
 
 /** Deegh: product → merk → webshop. Namen uit de broncode van de webshop (menu en producten).
  *  Het logo is eigen werk van de eigenaar (docs/cases/deegh.md); de deegbol rijst, de lijn wordt een cirkel en maakt
@@ -47,15 +56,15 @@ export const deeghBuild: Build = (w, h) => {
       <g className="deegh-shot">
         <path d={rr(x, y, W, H, 10)} fill="#ffffff" stroke="#554f4f" strokeOpacity=".35" />
         <path d={rr(x, y, W, 26, 10)} fill="#f0e8d3" />
-        <text x={x + 14} y={y + 17} fontSize={fs + 3} fontWeight="700" fill="#554f4f">deegh</text>
-        {nav.map((n, i) => <text key={n} x={navX[i]} y={y + 17} fontSize={nfs} fill="#554f4f">{n}</text>)}
-        <text x={x + 16} y={y + 56} fontSize={fs + 5} fontWeight="700" fill="#554f4f">Ons deeg</text>
+        <Tekst t="deegh" x={x + 14} y={y + 17} size={fs + 3} />
+        {nav.map((n, i) => <Tekst key={n} t={n} x={navX[i]} y={y + 17} size={nfs} />)}
+        <Tekst t="Ons deeg" x={x + 16} y={y + 56} size={fs + 5} />
         {products.map(([n, s], i) => (
           <g key={n}>
             <path d={rr(x + 16 + i * (tw + 12), y + 70, tw, H * 0.38, 6)} fill="#f0e8d3" />
             <circle cx={x + 16 + i * (tw + 12) + tw / 2} cy={y + 70 + H * 0.19} r={Math.min(tw, H * 0.38) * 0.22} fill="#fbf7ec" stroke="#554f4f" strokeOpacity=".25" />
-            <text x={x + 16 + i * (tw + 12)} y={y + 86 + H * 0.38} fontSize={pfs} fontWeight="700" fill="#554f4f">{n}</text>
-            <text x={x + 16 + i * (tw + 12)} y={y + 100 + H * 0.38} fontSize={pfs - 1} fill="#554f4f">{s}</text>
+            <Tekst t={n} x={x + 16 + i * (tw + 12)} y={y + 86 + H * 0.38} size={pfs} />
+            <Tekst t={s} x={x + 16 + i * (tw + 12)} y={y + 100 + H * 0.38} size={pfs - 1} />
           </g>
         ))}
       </g>
