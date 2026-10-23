@@ -284,13 +284,36 @@ if (Date.now() < Date.parse("2026-11-01T00:00:00+01:00")) {
   check("construct: stap is klikbaar", (await merk.getAttribute("aria-current")) === "step");
   check("construct: Deegh-logo in de stap merk", (await fig.locator(".construct__details.is-on image").count()) === 1);
   check("construct: echt Deegh-logo (PNG), lijn maakt plaats", (await fig.locator('.construct__details.is-on image[href="/images/deegh-logo.png"]').count()) === 1 && (await fig.locator(".construct__line").evaluate((e) => getComputedStyle(e).opacity)) === "0");
+  // homepage: alleen Deegh en TCLP, plus een link naar alle projecten (B-090)
+  check("homepage: precies twee projecten, Deegh en TCLP", (await p.locator("article.case h3").allTextContents()).join(",") === "Deegh,TCLP");
+  check("homepage: link 'Bekijk alle projecten →' naar /projecten/", (await p.getByRole("link", { name: "Bekijk alle projecten →" }).getAttribute("href")) === "/projecten/");
+  check("homepage: geen 'Ook gemaakt' meer", (await p.locator(".more__item").count()) === 0);
+  const tclp = p.locator(".case--tclp");
+  check("projecten: TCLP met link naar tclp.nl", (await tclp.locator("h3").textContent()) === "TCLP" && (await tclp.getByRole("link", { name: "tclp.nl" }).getAttribute("href")) === "https://tclp.nl");
+  await tclp.getByRole("button", { name: "alle partijen verbonden" }).click();
+  await p.waitForTimeout(1200);
+  check("projecten: TCLP-stap 'alle partijen verbonden' is klikbaar", (await tclp.getByRole("button", { name: "alle partijen verbonden" }).getAttribute("aria-current")) === "step");
+  check("homepage: geen console-errors", errors.length === 0, errors.join(" | "));
+  await ctx.close();
+}
+
+// 6a · /projecten/: het volledige openbare portfolio, met dezelfde lijnanimaties en "Ook gemaakt"
+{
+  const { p, ctx, errors } = await page(browser, { width: 390, height: 844, mobile: true, path: "projecten/" });
+  check("projectenpagina: kop en vijf uitgewerkte projecten", (await p.locator("h1").textContent()) === "Wat er al vorm kreeg." && (await p.locator("article.case h3").allTextContents()).join(",") === "Deegh,Een koffer die zichzelf uitlegt,Loflijn,LYEV.,TCLP");
+  check("projectenpagina: elk project bouwt zich op uit een lijn", (await p.locator("article.case .construct").count()) === 5);
   const more = p.locator(".more__item"), nMore = await more.count();
   for (let i = 0; i < nMore; i++) { await more.nth(i).scrollIntoViewIfNeeded(); await p.waitForTimeout(300); }
   await p.waitForTimeout(1200);
   check("ook gemaakt: vijf vormen krijgen vorm", nMore === 5 && (await p.locator(".more__details").count()) === 5, `${nMore} projecten`);
+  // alleen het openbare portfolio: precies deze vijf
+  check("ook gemaakt: precies de vijf openbare projecten", (await more.locator("h3").allTextContents()).join(",") === "Autowasdag Sionkerk,Kerckh.,OKKIE.,Een presentatie die je bedient,Een werkdag in 3D");
   check("ook gemaakt: OKKIE. linkt naar okkiedarts.nl", (await more.filter({ hasText: "OKKIE." }).getByRole("link", { name: "Bekijk OKKIE." }).getAttribute("href")) === "https://okkiedarts.nl");
   check("ook gemaakt: Kerckh. linkt naar kerckh.nl", (await more.filter({ hasText: "Kerckh." }).getByRole("link", { name: "Bekijk Kerckh." }).getAttribute("href")) === "https://kerckh.nl");
-  check("projecten: geen console-errors", errors.length === 0, errors.join(" | "));
+  check("projectenpagina: menu-item Projecten wijst hierheen", (await p.getByRole("navigation", { name: "Hoofdnavigatie" }).getByRole("link", { name: "Projecten" }).getAttribute("href")) === "/projecten/");
+  const sitemap = await (await p.request.get(new URL("sitemap.xml", BASE).href)).text();
+  check("projectenpagina: in de sitemap", sitemap.includes("https://denckh.nl/projecten/<"));
+  check("projectenpagina: geen console-errors", errors.length === 0, errors.join(" | "));
   await ctx.close();
 }
 
@@ -339,7 +362,7 @@ for (const [w, h, mobile] of [[320, 700, true], [393, 852, true], [1440, 900, fa
 {
   const { p, ctx, errors } = await page(browser);
   const block = p.locator("#prijzen");
-  check("prijsblok: kop en intro", ((await block.locator("h2").textContent()) ?? "") === "Wat kost zoiets?" && /hoeft niet eerst een offerte aan te vragen/.test((await block.locator(".prices__head p").textContent()) ?? ""));
+  check("prijsblok: kop en intro", ((await block.locator("h2").textContent()) ?? "") === "Wat kost zoiets?" && /zonder eerst een offerte aan te vragen/.test((await block.locator(".prices__head p").textContent()) ?? ""));
   const stops = await block.locator(".pl__stop").evaluateAll((els) => els.map((e) => ({ label: e.querySelector(".pl__label")?.textContent, price: e.querySelector(".pl__price")?.textContent?.replace(/\s+/g, " ").trim() })));
   check("prijsblok: drie haltes in de goede volgorde", stops.map((s) => s.label).join(",") === "Eerst even Denckh,Eerste vorm,Echt maken", stops.map((s) => s.label).join(","));
   check("prijsblok: €45, vanaf €125, vanaf €295, alle excl. btw", stops.map((s) => s.price).join(" | ") === "€45 excl. btw | vanaf €125 excl. btw | vanaf €295 excl. btw", stops.map((s) => s.price).join(" | "));
@@ -450,7 +473,7 @@ for (const [w, h, mobile] of [[320, 700, true], [390, 844, true], [1440, 900, fa
 
 // 8d · LYEV.: projectkaart wordt een telefoon met een echte schermafbeelding; links en projectpagina
 for (const [w, h, mobile] of [[390, 844, true], [1440, 900, false]]) {
-  const { p, ctx, errors } = await page(browser, { width: w, height: h, mobile });
+  const { p, ctx, errors } = await page(browser, { width: w, height: h, mobile, path: "projecten/" });
   const card = p.locator(".case--lyev");
   check(`lyev op ${w}px: kaart met titel en ondertitel`, (await card.locator("h3").textContent()) === "LYEV." && (await card.locator(".case__lead").textContent()) === "Een webshop vol sparkle.");
   check(`lyev op ${w}px: link naar lyev.nl`, (await card.getByRole("link", { name: "lyev.nl" }).getAttribute("href")) === "https://lyev.nl");
@@ -486,7 +509,7 @@ for (const [w, h, mobile] of [[390, 844, true], [1440, 900, false]]) {
 }
 {
   // reduced motion: geen scrollanimatie; via de laatste stap staat het eindbeeld er meteen, zonder zweef bij aanwijzen
-  const { p, ctx, errors } = await page(browser, { width: 1440, height: 900, reduced: true });
+  const { p, ctx, errors } = await page(browser, { width: 1440, height: 900, reduced: true, path: "projecten/" });
   const fig = p.locator(".case--lyev .construct");
   const box = await fig.evaluate((el) => { const r = el.getBoundingClientRect(); return { top: r.top + scrollY, h: r.height }; });
   await p.evaluate(({ top, h }) => scrollTo(0, top + h / 2 - innerHeight * 0.2), box);
@@ -500,10 +523,38 @@ for (const [w, h, mobile] of [[390, 844, true], [1440, 900, false]]) {
 }
 
 // 9 · geen horizontale overflow
-for (const path of ["", "prijzen/", "projecten/lyev/"]) for (const width of [320, 390, 768, 1024, 1440]) {
+for (const path of ["", "projecten/", "diensten/", "prijzen/", "projecten/lyev/"]) for (const width of [320, 390, 768, 1024, 1440]) {
   const { p, ctx } = await page(browser, { width, height: 800, mobile: width < 500, path });
   const ov = await p.evaluate(() => document.documentElement.scrollWidth - innerWidth);
   check(`geen horizontale overflow op ${width}px${path ? ` (/${path})` : ""}`, ov <= 0, `${ov}px`);
+  await ctx.close();
+}
+
+// 10 · interne links: elke link op elke pagina leidt naar een bestaande pagina, bestand of anker
+{
+  const { p, ctx } = await page(browser);
+  const pages = ["", "projecten/", "diensten/", "prijzen/", "privacy/", "projecten/deegh/", "projecten/kerckh/", "projecten/lyev/", "projecten/okkie/"];
+  const broken = [];
+  const seen = new Set();
+  for (const path of pages) {
+    await p.goto(new URL(path, BASE).href, { waitUntil: "domcontentloaded" });
+    const links = await p.evaluate(() => [...document.querySelectorAll("a[href]")].map((a) => a.getAttribute("href")));
+    for (const href of links) {
+      if (/^(https?:|mailto:)/.test(href)) continue;
+      const url = new URL(href, new URL(path, BASE));
+      const key = url.pathname + url.hash;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const res = await p.request.get(url.origin + url.pathname);
+      let ok = res.ok();
+      if (ok && url.hash) {
+        const html = await res.text();
+        ok = html.includes(`id="${decodeURIComponent(url.hash.slice(1))}"`);
+      }
+      if (!ok) broken.push(`/${path} → ${href}`);
+    }
+  }
+  check(`interne links: ${seen.size} doelen, allemaal bereikbaar`, broken.length === 0, broken.join(" | "));
   await ctx.close();
 }
 

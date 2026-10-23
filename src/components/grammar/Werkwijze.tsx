@@ -11,9 +11,9 @@ const W = 240, H = 170;
 const kindToShape: Record<string, keyof typeof SHAPES> = { knop: "knop", scherm: "website", schuif: "tool", grafiek: "visualisatie", route: "uitleg", kaart: "uitleg", punt: "knop" };
 
 const STEPS = [
-  { title: "Vertel", text: "Een idee, een probleem of alleen een losse gedachte. Je hoeft nog geen briefing te hebben: een krabbel of één zin is genoeg om te beginnen." },
-  { title: "Denckh", text: "Samen uitzoeken wat er eigenlijk nodig is. Ik stel de vragen die ertoe doen en zoek de vorm die erbij past. Soms blijkt dat iets anders dan je dacht." },
-  { title: "Vorm", text: "Het wordt zichtbaar, testbaar of bruikbaar. En waar nodig bouw ik het verder uit." },
+  { title: "Vertel", text: "Een idee, een probleem of een losse gedachte. Een krabbel of één zin is genoeg." },
+  { title: "Denckh", text: "Samen uitzoeken wat er nodig is en welke vorm erbij past." },
+  { title: "Vorm", text: "Het wordt zichtbaar, testbaar of bruikbaar, en waar nodig verder uitgebouwd." },
 ];
 
 export function Werkwijze() {

@@ -19,7 +19,7 @@ const PILLARS = [
   ["Techniek", "Van systeem tot toepassing.", ["Elektrotechnisch opgeleid", "Jarenlange ervaring in verlichtingstechniek", "Lichtsturing, smart lighting en smart building", "Elektrische en technische installaties", "Technische producten en systemen"]],
   ["Commercie", "Van eigenschap naar klantwaarde.", ["NIMA Sales A en B", "Jarenlange ervaring met klantcontact en verkoop", "Technische eigenschappen vertalen naar klantwaarde", "Ervaring met aansturen en organiseren"]],
   ["Concept en presentatie", "Van complex naar begrijpelijk.", ["Showroom- en beursstandconcepten", "Technische producten vertalen naar eenvoudige demonstraties", "Maquettes en 3D-presentaties laten ontwikkelen", "Interactieve productuitleg, presentaties en verkoopverhalen"]],
-  ["Maken en ondernemen", "Van idee naar praktijk.", ["Deegh vanaf nul opgezet", "Webshop LYEV. ontworpen en gebouwd, met eigen beheer", "Productontwikkeling, prijsstelling, verpakking en verkoop", "Websites, webshops, calculaties en Excel-tools", "Praktisch ontwerpen, bouwen en verbouwen"]],
+  ["Maken en ondernemen", "Van idee naar praktijk.", ["Deegh vanaf nul opgezet", "Webshop LYEV. ontworpen en gebouwd", "Website en beeldtaal voor TCLP: <a href=\"https://tclp.nl\">tclp.nl</a>", "Productontwikkeling, prijsstelling, verpakking en verkoop", "Websites, webshops, calculaties en Excel-tools", "Praktisch ontwerpen, bouwen en verbouwen"]],
 ];
 const STEPS = [["Begrijpen", "Wat is de vraag?"], ["Vereenvoudigen", "Wat moet iemand snappen?"], ["Vorm geven", "Welke vorm past?"], ["Maken", "Van idee naar iets dat werkt."]];
 const OUTCOMES = ["interactieve uitleg", "prototype", "tool of calculator", "presentatie", "beurs- of showroomconcept", "website of webshop"];
@@ -48,6 +48,7 @@ p { margin: 0; }
 .pillar h2 { font-size: 13pt; margin: 1.2mm 0 2mm; letter-spacing: -0.015em; }
 ul { margin: 0; padding: 0; list-style: none; }
 li { position: relative; padding-left: 4.5mm; margin-bottom: 0.5mm; color: ${C.graphite}; }
+li a { color: ${C.ochreDeep}; font-weight: 700; text-decoration: underline; text-underline-offset: 0.5mm; }
 li::before { content: ""; position: absolute; left: 0.5mm; top: 1.55mm; width: 1.7mm; height: 1.7mm; border-radius: 50%; background: ${C.ochre}; }
 .thread { margin-top: 5mm; padding-top: 4.5mm; border-top: 0.3mm solid ${C.rule}; }
 .thread h2 { font-size: 19pt; margin-bottom: 2mm; }
@@ -74,7 +75,7 @@ footer span:last-child { margin-left: auto; }
 .foot-mark svg { height: 3.4mm; width: auto; display: block; }
 </style></head><body>
 <section class="page">
-  <div class="top"><span class="mark">${svg("denckh-logo-compact.svg")}</span><p class="label">Profiel · september 2026</p></div>
+  <div class="top"><span class="mark">${svg("denckh-logo-compact.svg")}</span><p class="label">Profiel · oktober 2026</p></div>
   <div class="hero">
     <h1>Achter Denckh</h1>
     <p class="sub">Techniek begrijpen. Ideeën eenvoudig maken.</p>
@@ -93,7 +94,7 @@ footer span:last-child { margin-left: auto; }
     <div><h3>Martijn den Besten</h3><p class="muted">techniek · commercie · concept · maken</p></div>
     <div class="site"><p><b>denckh.nl</b></p><p class="muted">info@denckh.nl</p></div>
   </div>
-  <footer><span class="foot-mark">${svg("denckh-logo-compact.svg")}</span><span>van idee naar vorm · achter Denckh · september 2026</span><span>begrijpen ${ARROW} vereenvoudigen ${ARROW} vorm geven ${ARROW} maken</span></footer>
+  <footer><span class="foot-mark">${svg("denckh-logo-compact.svg")}</span><span>van idee naar vorm · achter Denckh · oktober 2026</span><span>begrijpen ${ARROW} vereenvoudigen ${ARROW} vorm geven ${ARROW} maken</span></footer>
 </section>
 </body></html>`;
 

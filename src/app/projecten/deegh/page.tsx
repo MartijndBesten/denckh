@@ -14,7 +14,7 @@ export default function DeeghCase() {
     <main id="inhoud">
       <div className="section-shell case-page">
         <Header compact />
-        <Link className="back-link" href="/#projecten">← Alle projecten</Link>
+        <Link className="back-link" href="/projecten/">← Alle projecten</Link>
         <header className="case-page__header">
           <p className="eyebrow">eigen product · webshop</p>
           <h1>Van deegbol naar<br /><em>een plek die klopt.</em></h1>

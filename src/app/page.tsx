@@ -1,11 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Footer, Header } from "@/components/Header";
+import { DeeghCase, TclpCase } from "@/components/Cases";
 import { PuntStage } from "@/components/punt/PuntStage";
 import { ContactReturn } from "@/components/grammar/ContactReturn";
-import { Construct } from "@/components/grammar/Construct";
 import { InkRule } from "@/components/grammar/InkRule";
-import { MoreWork } from "@/components/grammar/MoreWork";
 import { Outcomes } from "@/components/grammar/Outcomes";
 import { PriceLine } from "@/components/grammar/PriceLine";
 import { Promo } from "@/components/Promo";
@@ -34,82 +33,12 @@ export default function Home() {
       <section className="shell projects" id="projecten" aria-labelledby="projecten-titel">
         <header className="projects__head">
           <h2 id="projecten-titel">Wat er al vorm kreeg.</h2>
-          <p>Vier ideeën, vier soorten denken. Scroll, en kijk hoe een lijn elk project wordt.</p>
+          <p>Twee ideeën, twee soorten denken. Scroll, en kijk hoe een lijn elk project wordt.</p>
         </header>
 
-        <article className="case">
-          <Construct project="deegh" label="deegh.nl, schematisch" />
-          <div className="case__text">
-            <p className="case__kind">product → merk → webshop</p>
-            <h3>Deegh</h3>
-            <p className="case__lead">Van deegbol tot een plek waar je bestelt en leert hoe het werkt.</p>
-            <dl className="case__facts">
-              <div><dt>Aanleiding</dt><dd>Een eigen product, ambachtelijk pizzadeeg, had een plek nodig die net zo helder is als het product zelf.</dd></div>
-              <div><dt>Denckh</dt><dd>Een eigen webshop op WordPress en WooCommerce, met een eigen thema: producten, uitleg in stappen, recepten, verkooppunten en een zakelijke route.</dd></div>
-              <div><dt>Vorm</dt><dd>deegh.nl: bestellen, en leren hoe je van een bol deeg een pizza maakt.</dd></div>
-            </dl>
-            <p className="case__links">
-              <Link className="link-draw" href="/projecten/deegh/">Bekijk het project</Link>
-              <a className="link-draw" href="https://deegh.nl" rel="noopener">deegh.nl</a>
-            </p>
-          </div>
-        </article>
-
-        <article className="case case--flip case--night">
-          <Construct project="koffer" label="interactieve gids bij een demokoffer" tone="night" />
-          <div className="case__text">
-            <p className="case__kind">complexe techniek → begrijpelijke uitleg</p>
-            <h3>Een koffer die zichzelf uitlegt</h3>
-            <p className="case__lead">Een demokoffer vol sensortechniek kreeg een digitale gids die je opent met een QR-code op de koffer.</p>
-            <dl className="case__facts">
-              <div><dt>Aanleiding</dt><dd>Hoe snapt iemand die de koffer openmaakt meteen wat erin zit en hoe je het bedient?</dd></div>
-              <div><dt>Denckh</dt><dd>Een verkenner van de koffer, de bediening stap voor stap nagebootst en een demomodus om mee te presenteren. In drie talen, ook offline.</dd></div>
-              <div><dt>Vorm</dt><dd>Een interactieve uitleg die naast het echte product werkt.</dd></div>
-            </dl>
-            <p className="case__note">Zonder merknaam of productbeelden: het gaat hier om de manier van uitleggen.</p>
-          </div>
-        </article>
-
-        <article className="case case--flip">
-          <Construct project="spel" label="Loflijn, schematisch: een beurt van kaart tot tijdlijn" end="van psalm tot praise" ratio={0.62} />
-          <div className="case__text">
-            <p className="case__kind">spel op tafel → uitleg in drie tellen</p>
-            <h3>Loflijn</h3>
-            <p className="case__lead">Een muziekspel voor op tafel. Online moest je in een paar tellen snappen hoe een beurt werkt.</p>
-            <dl className="case__facts">
-              <div><dt>Aanleiding</dt><dd>Van Psalm tot Praise is een fysiek muziekspel: je scant een kaart, luistert naar het lied en legt de kaart op de tijdlijn. Wie het nog niet kent, moet dat meteen zien.</dd></div>
-              <div><dt>Denckh</dt><dd>De website en webshop: een beurt uitgelegd in drie stappen, productinformatie en een route naar bestellen.</dd></div>
-              <div><dt>Vorm</dt><dd>loflijn.nl, waar je het spel leert kennen en bestelt.</dd></div>
-            </dl>
-            <p className="case__links"><a className="link-draw" href="https://loflijn.nl" rel="noopener">loflijn.nl</a></p>
-          </div>
-        </article>
-
-        <article className="case case--lyev">
-          <Construct project="lyev" label="LYEV.: van strasssteentje tot webshop, met een echte schermafbeelding van lyev.nl op de telefoon" end="lyev.nl op de telefoon" ratio={0.85} narrowRatio={1.3} />
-          <div className="case__text">
-            <p className="case__kind">zelfgemaakte accessoires → eigen webshop</p>
-            <h3>LYEV.</h3>
-            <p className="case__lead">Een webshop vol sparkle.</p>
-            <dl className="case__facts">
-              <div><dt>Aanleiding</dt><dd>Lynn en Evy versieren accessoires met strass en wilden een eigen plek om ze te laten zien en te verkopen.</dd></div>
-              <div><dt>Denckh</dt><dd>Merkuitstraling, ontwerp en de complete webshop: producten waarbij je zelf een kleur of naam kiest, een eigen bestel- en aanvraagproces en een eenvoudig beheer op de telefoon.</dd></div>
-              <div><dt>Vorm</dt><dd>lyev.nl: een vrolijke, mobielvriendelijke webshop waarin de producten centraal staan.</dd></div>
-            </dl>
-            <p className="case__links">
-              <Link className="link-draw" href="/projecten/lyev/">Bekijk het project</Link>
-              <a className="link-draw" href="https://lyev.nl" rel="noopener">lyev.nl</a>
-            </p>
-          </div>
-        </article>
-      </section>
-
-      <section className="shell more-section" id="ook-gemaakt" aria-labelledby="ook-titel">
-        <header className="projects__head">
-          <h2 id="ook-titel">Ook gemaakt.</h2>
-          <p>Kleinere vormen, dezelfde manier van denken.</p>
-        </header>
-        <MoreWork />
+        <DeeghCase />
+        <TclpCase />
+        <p className="projects__all"><Link className="link-draw" href="/projecten/">Bekijk alle projecten →</Link></p>
       </section>
 
       <section className="shell outcomes-section" aria-labelledby="uitkomst-titel">
@@ -131,12 +60,11 @@ export default function Home() {
       <section className="shell prices" id="prijzen" aria-labelledby="prijzen-titel">
         <header className="prices__head">
           <h2 id="prijzen-titel">Wat kost zoiets?</h2>
-          <p>Dat hangt af van wat het idee nodig heeft. Maar je hoeft niet eerst een offerte aan te vragen om enig idee van de prijs te krijgen.</p>
+          <p>Dat hangt af van wat het idee nodig heeft. Een richtprijs krijg je zonder eerst een offerte aan te vragen.</p>
         </header>
         <PriceLine stops={HOME_STOPS} label="Van even samen denken tot echt maken" />
         <Promo which="website" id="oktoberactie" className="promo promo--home" />
         <div className="prices__more">
-          <p>Benieuwd naar de richtprijzen per vorm?</p>
           <div className="prices__cta">
             <Link className="ink-button" href="/prijzen/">Bekijk de richtprijzen</Link>
             <a className="link-draw link-draw--dot" href="#contact">Vertel je idee</a>
@@ -151,11 +79,8 @@ export default function Home() {
         </figure>
         <div className="small__text">
           <h2 id="klein-titel">Denckh is klein. Bewust.</h2>
-          <p>Heb je een idee, product of technisch verhaal dat nog niet helemaal in vorm is? Dan help ik je uitzoeken wat het eigenlijk nodig heeft, en maak ik het concreet.</p>
-          <p>Soms wordt dat een interactieve uitleg, prototype, tool of presentatie. Soms iets fysieks. En soms gewoon een goede website.</p>
-          <p>Je werkt rechtstreeks met mij: degene die meedenkt én maakt.</p>
-          <p>Waarom ik juist dit soort vragen leuk vind? Mijn achtergrond ligt op het snijvlak van techniek en commercie. Ik ben elektrotechnisch opgeleid en werk al jaren met verlichting, lichtsturing en slimme gebouwen. Daardoor kijk ik vaak van twee kanten naar een vraag: hoe werkt het echt, en hoe maken we het zo eenvoudig dat een ander het begrijpt, gebruikt of kan verkopen?</p>
-          <p>Naast Denckh maak ik Deegh: van productidee tot herkenbaar merk voor ambachtelijk pizzadeeg.</p>
+          <p>Heb je een idee, product of technisch verhaal dat nog niet helemaal in vorm is? Dan help ik je uitzoeken wat het eigenlijk nodig heeft, en maak ik het concreet. Je werkt rechtstreeks met mij: degene die meedenkt én maakt.</p>
+          <p>Mijn achtergrond ligt op het snijvlak van techniek en commercie: elektrotechnisch opgeleid en al jaren bezig met verlichting, lichtsturing en slimme gebouwen. Naast Denckh maak ik Deegh, ambachtelijk pizzadeeg.</p>
           <p><a className="link-draw" href="/downloads/denckh-achter-denckh.pdf">Meer over mijn achtergrond →</a></p>
         </div>
       </section>

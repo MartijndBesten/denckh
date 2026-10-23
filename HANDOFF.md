@@ -3,7 +3,7 @@
 Overdrachtsdocument voor de Denckh-website. Hier staan de actuele stand, alle belangrijke technische en creatieve
 beslissingen, open punten en de volgende stappen. **Bijwerken aan het eind van elke werksessie.**
 
-- Laatst bijgewerkt: 2026-10-09
+- Laatst bijgewerkt: 2026-10-23
 - Live (`main`): "begin met een punt" (B-031), ronde 2 (B-038), ronde 3 (merge `5427b8e`, B-047) en Kerckh. (B-078)
 
 ---
@@ -93,7 +93,7 @@ aangescherpte positionering (B-044), Loflijn-beurt verwijderd (B-045) en de inte
 | Remote | `https://github.com/MartijndBesten/denckh` |
 | Zichtbaarheid | Publiek |
 | Hoofdbranch | `main` (live) |
-| Laatste werkbranch | `inhoud/kerckh` (gemerged, B-078) |
+| Laatste werkbranch | `claude/projecten-pagina` (B-089) |
 
 ---
 
@@ -195,6 +195,7 @@ Pas de oude regel niet aan. *Voorstel* = wacht op akkoord van de eigenaar.
 | B-084 | 2026-10-17 | Vindbaarheid: nieuwe pagina `/diensten/` (vijf diensten in gewone woorden, elk met een link naar echt werk en richtprijs uit `prices.ts`, Service-JSON-LD), homepagetitel met dienst en plaats, Organization wordt ProfessionalService met areaServed (Houten, Nieuwegein, Utrecht, Bunnik), link naar diensten in footer en eerste tekstblok, sitemap bijgewerkt. Geen kunstmatige SEO-tekst, kop en vormgeving ongewijzigd. | Opdracht eigenaar: vindbaarheid structureel verbeteren. | Vast |
 | B-083 | 2026-10-17 | Introductieteksten concreet gemaakt: hero-intro, eerste tekstblok, footer en meta/OG/JSON-LD-beschrijving noemen nu wat Denckh maakt (websites, handige apps, slimme technische oplossingen) en voor wie (particulieren, zelfstandigen, kleine bedrijven), met voorbeelden van wat je kunt aanvragen. Kop "Heb je een idee? Mooi.", vormgeving en interactie ongewijzigd; test op de intro bijgewerkt. | Opdracht eigenaar: binnen vijf seconden duidelijk wat Denckh aanbiedt, gewone woorden, zelfde boodschap als Instagram. | Vast |
 | B-082 | 2026-10-17 | Instagram-account `@denckh.nl` (instagram.com/denckh.nl) toegevoegd: link *Instagram* in de footer (na het e-mailadres, `rel="me"`) en `sameAs` in de Organization-JSON-LD. Gewone link, geen embed of script, dus "geen tracking, geen cookies" blijft kloppen. | Opdracht eigenaar: Instagram-account voor Denckh. aangemaakt op 2026-10-17. | Vast (wacht op merge) |
+| B-089 | 2026-10-23 | Homepage korter en een aparte pagina `/projecten/`, zelfde ontwerp. Homepage: hero, *Van idee naar vorm*, twee uitgewerkte projecten (Deegh en TCLP) met *Bekijk alle projecten →*, *Wat kan een idee worden?*, werkwijze (korte stapteksten, zelfde tekeningen), prijzen (prijslijn en oktoberactie), *Denckh is klein* (twee alinea's plus link naar de A4), contact. `/projecten/`: Deegh, demokoffer, Loflijn, LYEV., TCLP en *Ook gemaakt*. Projectkaarten in `src/components/Cases.tsx` (één bron); lijnanimaties ongewijzigd. Nieuw: TCLP (`tclpBuild`: lijn → armatuur → zes ketenstappen in een kring → vijf rollen rond een koperen middelpunt; schematisch, zonder TCLP-logo of schermafbeeldingen; link naar tclp.nl), ook op `/diensten/` en als één regel met link in de PDF *Achter Denckh* (opmaak van B-075 ongewijzigd, 9,2 pt). Menu, footer, projectpagina's, `/diensten/` en sitemap wijzen naar `/projecten/`. *Ook gemaakt*: vertraging per kolom. Hoogte homepage: desktop 12.245 → 7.509 px, mobiel 17.947 → 9.700 px. e2e uitgebreid (projectenpagina, interne links). | Opdracht eigenaar 22/23-10-2026: overzichtelijker, aparte plek voor projecten, geen nieuw ontwerp. TCLP: toestemming van de opdrachtgever (oprichter TCLP) voor vermelding als gerealiseerd project met link, doorgegeven door de eigenaar op 2026-10-23. | Vast |
 
 ---
 
