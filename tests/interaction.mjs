@@ -287,6 +287,14 @@ if (Date.now() < Date.parse("2026-11-01T00:00:00+01:00")) {
   // homepage: alleen Deegh en TCLP, plus een link naar alle projecten (B-090)
   check("homepage: precies twee projecten, Deegh en TCLP", (await p.locator("article.case h3").allTextContents()).join(",") === "Deegh,TCLP");
   check("homepage: link 'Bekijk alle projecten →' naar /projecten/", (await p.getByRole("link", { name: "Bekijk alle projecten →" }).getAttribute("href")) === "/projecten/");
+  // de knop: jouw lijn bladert door de overige projecten; de wisselende naam telt niet mee voor schermlezers
+  const all = p.locator(".all-link");
+  await all.evaluate((el) => el.scrollIntoView({ block: "center", behavior: "instant" }));
+  await p.waitForTimeout(400);
+  const d0 = await all.locator(".all-link__line").getAttribute("d");
+  await p.waitForTimeout(2600);
+  check("knop alle projecten: lijn bladert door de projecten", d0 !== (await all.locator(".all-link__line").getAttribute("d")) && (await all.locator(".all-link__now").textContent()) !== "");
+  check("knop alle projecten: toegankelijke naam blijft gelijk", (await p.getByRole("link", { name: "Bekijk alle projecten →", exact: true }).count()) === 1 && (await all.locator(".all-link__now").getAttribute("aria-hidden")) === "true");
   check("homepage: geen 'Ook gemaakt' meer", (await p.locator(".more__item").count()) === 0);
   const tclp = p.locator(".case--tclp");
   check("projecten: TCLP met link naar tclp.nl", (await tclp.locator("h3").textContent()) === "TCLP" && (await tclp.getByRole("link", { name: "tclp.nl" }).getAttribute("href")) === "https://tclp.nl");
@@ -519,6 +527,18 @@ for (const [w, h, mobile] of [[390, 844, true], [1440, 900, false]]) {
   await p.waitForTimeout(700);
   const t = await fig.locator(".lyev-shot").evaluate((e) => getComputedStyle(e).transform);
   check("lyev, reduced motion: eindbeeld direct zichtbaar, geen beweging", Number(await fig.locator(".construct__final").evaluate((e) => getComputedStyle(e).opacity)) > 0.9 && (t === "none" || t === "matrix(1, 0, 0, 1, 0, 0)") && errors.length === 0, t);
+  await ctx.close();
+}
+
+// 8e · reduced motion: de knop naar alle projecten staat stil
+{
+  const { p, ctx } = await page(browser, { width: 1440, height: 900, reduced: true });
+  const all = p.locator(".all-link");
+  await all.evaluate((el) => el.scrollIntoView({ block: "center", behavior: "instant" }));
+  await p.waitForTimeout(400);
+  const d0 = await all.locator(".all-link__line").getAttribute("d");
+  await p.waitForTimeout(2200);
+  check("knop alle projecten, reduced motion: stilstaand, met 'en nog 8 projecten'", d0 === (await all.locator(".all-link__line").getAttribute("d")) && (await all.locator(".all-link__now").textContent()) === "en nog 8 projecten");
   await ctx.close();
 }
 
