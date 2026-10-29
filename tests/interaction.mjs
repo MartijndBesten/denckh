@@ -11,6 +11,8 @@ const check = (name, ok, detail = "") => { results.push({ name, ok, detail }); c
 
 async function page(browser, { width = 1440, height = 900, mobile = false, reduced = false, path = "" } = {}) {
   const ctx = await browser.newContext({ viewport: { width, height }, isMobile: mobile, hasTouch: mobile, reducedMotion: reduced ? "reduce" : "no-preference" });
+  // STUB_EXTERNAL=1: externe adressen (de bezoekersteller) leeg beantwoorden in een omgeving zonder internet.
+  if (process.env.STUB_EXTERNAL === "1") await ctx.route(/^https:\/\/(?!127\.0\.0\.1|localhost)/, (r) => r.fulfill({ status: 200, contentType: "text/javascript", body: "" }));
   const p = await ctx.newPage();
   const errors = [];
   p.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
@@ -39,7 +41,7 @@ async function drawCircle(p, touch = false, ctx = null) {
   }
 }
 
-const browser = await chromium.launch();
+const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
 
 // 1 · desktop: tekenen → kijken → lezen → vorm
 {
@@ -562,7 +564,7 @@ for (const path of ["", "projecten/", "diensten/", "prijzen/", "projecten/lyev/"
 // 10 · interne links: elke link op elke pagina leidt naar een bestaande pagina, bestand of anker
 {
   const { p, ctx } = await page(browser);
-  const pages = ["", "projecten/", "diensten/", "prijzen/", "privacy/", "projecten/deegh/", "projecten/kerckh/", "projecten/lyev/", "projecten/okkie/"];
+  const pages = ["", "projecten/", "diensten/", "prijzen/", "privacy/", "projecten/deegh/", "projecten/kerckh/", "projecten/lyev/", "projecten/okkie/", "ouderhulp/"];
   const broken = [];
   const seen = new Set();
   for (const path of pages) {
@@ -585,6 +587,65 @@ for (const path of ["", "projecten/", "diensten/", "prijzen/", "projecten/lyev/"
   }
   check(`interne links: ${seen.size} doelen, allemaal bereikbaar`, broken.length === 0, broken.join(" | "));
   await ctx.close();
+}
+
+// Ouderhulp. productpagina (B-096)
+{
+  const ext = (e) => !/ERR_TUNNEL|ERR_NAME|ERR_INTERNET|dashboard\.denckh\.nl/.test(e); // bezoekersteller is extern
+  for (const width of [320, 390, 1440]) {
+    const { p, ctx, errors } = await page(browser, { width, height: 900, mobile: width < 800, path: "ouderhulp/" });
+    const over = await p.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
+    check(`ouderhulp ${width}px: geen horizontale overloop`, !over);
+    check(`ouderhulp ${width}px: geen consolefouten`, errors.filter(ext).length === 0, errors.filter(ext).join(" | "));
+    if (width === 390) {
+      await p.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
+      await p.waitForTimeout(200);
+      check("ouderhulp: 200% tekst zonder horizontale overloop", await p.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
+    }
+    await ctx.close();
+  }
+  const { p, ctx } = await page(browser, { path: "ouderhulp/" });
+  check("ouderhulp: eigen titel", /^Ouderhulp\. · /.test(await p.title()));
+  check("ouderhulp: canonical", (await p.locator('link[rel="canonical"]').getAttribute("href")) === "https://denckh.nl/ouderhulp/");
+  const og = await p.locator('meta[property="og:image"]').getAttribute("content");
+  check("ouderhulp: eigen deelbeeld bestaat", /og-ouderhulp\.png$/.test(og ?? "") && (await p.request.get(new URL("/images/ouderhulp/og-ouderhulp.png", BASE).href)).ok());
+  check("ouderhulp: één h1", (await p.locator("h1").count()) === 1);
+  check("ouderhulp: makervermelding met officiële signatuur", (await p.locator('.oh-by img[src="/brand/denckh-logo-signature.svg"]').count()) === 1);
+  const mail = await p.locator(".oh-hero a.ink-button").getAttribute("href");
+  check("ouderhulp: hoofdactie opent een mail met onderwerp", /^mailto:[^?]+@denckh\.nl\?subject=Ouderhulp/.test(mail ?? ""), mail ?? "");
+  check("ouderhulp: geen formulier dat niets verstuurt", (await p.locator("form").count()) === 0);
+  const html = await p.content();
+  check("ouderhulp: geen schooladres, testomgeving of toegangscode", !/\.ouderhulp\.denckh\.nl|onrender|example\.test|toegangscode:/i.test(html.replace(/Toegangscodes staan nooit op deze site/, "")));
+  check("ouderhulp: geen prijzen genoemd", !/€\s?\d/.test(await p.locator("main").innerText()));
+  const imgs = await p.locator("main img").evaluateAll((els) => els.filter((e) => !e.getAttribute("alt")).length);
+  check("ouderhulp: alle beelden hebben een beschrijving", imgs === 0);
+  // rolwissel met het toetsenbord
+  const tab = p.getByRole("tab", { name: "Leerkrachten" });
+  await tab.focus(); await p.keyboard.press("ArrowRight");
+  check("ouderhulp: rolwissel met pijltjestoets", (await p.getByRole("tab", { name: "Schoolbeheerder" }).getAttribute("aria-selected")) === "true" && (await p.locator("#oh-paneel-beheerder").isVisible()));
+  await p.keyboard.press("End");
+  check("ouderhulp: End kiest de laatste rol", (await p.getByRole("tab", { name: "Ouders" }).getAttribute("aria-selected")) === "true");
+  // route: speelt één keer af en stopt bij stap 4; een stap kiezen kan altijd
+  await p.locator("#werking").scrollIntoViewIfNeeded(); await p.waitForTimeout(5600);
+  check("ouderhulp: route loopt eenmalig door tot de laatste stap", (await p.locator('.oh-route__step button[aria-current="step"]').innerText()).includes("School"));
+  await p.locator(".oh-route__step button").nth(1).click();
+  check("ouderhulp: stap kiezen toont het voorbeeld", /Beheerder bundelt/.test(await p.locator(".oh-route__panel").innerText()));
+  await p.waitForTimeout(1800);
+  check("ouderhulp: na kiezen loopt de route niet verder", (await p.locator('.oh-route__step button[aria-current="step"]').innerText()).includes("Beheerder"));
+  await ctx.close();
+  // met reduced motion: geen automatische voortgang
+  { const { p, ctx } = await page(browser, { reduced: true, path: "ouderhulp/" });
+    await p.locator("#werking").scrollIntoViewIfNeeded(); await p.waitForTimeout(2000);
+    check("ouderhulp reduced motion: route blijft op stap 1", (await p.locator('.oh-route__step button[aria-current="step"]').innerText()).includes("Leerkracht"));
+    await ctx.close(); }
+  // zonder JavaScript: alle inhoud leesbaar
+  { const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 900 } }); const p = await ctx.newPage();
+    await p.goto(new URL("ouderhulp/", BASE).href);
+    const text = await p.locator("main").innerText();
+    check("ouderhulp zonder JavaScript: vier stappen met uitleg", ["maakt een hulpvraag", "bundelt in een ouderhulplijst", "geven beschikbaarheid op", "maakt en bevestigt de indeling"].every((t) => text.includes(t)) && text.includes("Reacties en tekorten per dienst"));
+    check("ouderhulp zonder JavaScript: drie rollen", ["Leerkrachten", "Schoolbeheerder", "Ouders"].every((t) => text.includes(t)) && text.includes("Eén begrijpelijk overzicht vóór het indienen."));
+    check("ouderhulp zonder JavaScript: veelgestelde vragen aanwezig", (await p.locator(".oh-faq details").count()) === 8);
+    await ctx.close(); }
 }
 
 await browser.close();
