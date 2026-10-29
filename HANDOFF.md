@@ -3,12 +3,14 @@
 Overdrachtsdocument voor de Denckh-website. Hier staan de actuele stand, alle belangrijke technische en creatieve
 beslissingen, open punten en de volgende stappen. **Bijwerken aan het eind van elke werksessie.**
 
-- Laatst bijgewerkt: 2026-10-23
+- Laatst bijgewerkt: 2026-10-29
 - Live (`main`): "begin met een punt" (B-031), ronde 2 (B-038), ronde 3 (merge `5427b8e`, B-047) en Kerckh. (B-078)
 
 ---
 
 ## Huidige stand
+
+**Ouderhulp. (B-096, 2026-10-29).** Productpagina `/ouderhulp/` voor basisscholen; zie B-096. Contact via `info@denckh.nl` tot `school@denckh.nl` is ingericht (O-43).
 
 **Productie.** `denckh.nl` draait op GitHub Pages vanaf `main`. Op 2026-09-29 is `creatief/het-punt` na akkoord van
 de eigenaar gemerged (merge `960251b`, B-031). Mail via Cloud86/Plesk (`info@denckh.nl`). Aan DNS, Plesk en mail is
@@ -201,6 +203,7 @@ Pas de oude regel niet aan. *Voorstel* = wacht op akkoord van de eigenaar.
 | B-092 | 2026-10-23 | Deegh-eindbeeld: de twaalf vaste teksten (woordmerk, menu, "Ons deeg", productnamen en aantallen) zijn **contouren** in plaats van SVG-`<text>`: component `Tekst` in `caseBuilds.tsx`, glyphs in `deeghShotGlyphs.ts` (46 unieke glyphs, ±6,7 KB gzip), gemaakt met `scripts/tekst-als-pad.py` (HarfBuzz + fontTools; zelfde Manrope Denckh, gewicht 400/700, kerning en ss01; alleen nodig bij een andere tekst, geen runtime- of npm-afhankelijkheid). Plaatsing ongewijzigd (zelfde EM-schatting). Vergeleken met de tekstversie in de eindstand op 1440 px (1× en 2×), 390 px (3×) en 320 px (2×): alleen verschil in anti-aliasing van letterranden (≤ 0,5 % van de pixels boven 32/255, nergens boven 110/255), visueel gelijk. e2e: overlapcontrole meet nu in schermcoördinaten; nieuwe controle *merkscheiding* (geen Deegh-productnamen in de paginatekst van `/`, `/projecten/`, `/projecten/deegh/`). | Eigenaar: `data-nosnippet` houdt tekst alleen uit fragmenten; Google kan de woorden nog gebruiken om de pagina te begrijpen. Neutrale vervangteksten zouden het beeld veranderen (minder echt, "placeholder"-gevoel); contouren houden het beeld gelijk en halen de woorden volledig uit de paginatekst. `data-nosnippet` blijft voor de andere schematische beelden. | Vast (akkoord eigenaar 2026-10-23) |
 
 ---
+| B-096 | 2026-10-29 | Productpagina **Ouderhulp.** op `/ouderhulp/` (eigen product van Denckh voor basisscholen). Opbouw: eerste scherm met één hoofdactie (*Bespreek het voor onze school*, mailto met onderwerp en een paar invulregels) en een echt telefoonbeeld; het probleem; *Zo werkt het* als route in vier stappen (speelt één keer af als hij in beeld komt, stopt bij stap 4 of zodra je zelf een stap kiest; reduced motion: geen automatische voortgang); rolwissel leerkracht/beheerder/ouder als toegankelijke tabbladen (pijltjes, Home/End); voordelen; drie schermen uit één ronde; ingebruikname in vijf stappen; aanbod zonder bedragen (*Een voorstel passend bij uw school*: eenmalige inrichting, jaarlicentie, maatwerk apart); acht veelgestelde vragen als `details`. Zonder JavaScript staat alles onder elkaar. Beelden: echte schermen uit de applicatie met fictieve gegevens (*Voorbeeldschool*, geen schoolnaam of -logo), WebP 31–66 KB, gemaakt met het beeldscript in de Ouderhulp-repo; deelbeeld `og-ouderhulp.png` met los script `scripts/ouderhulp-og.mjs`. Eén productaccent: het groen van de applicatie (`--oh`), alleen voor de punt in *Ouderhulp.* en statussen in de voorbeelden. Makervermelding *Een product van* met de officiële signatuur (`DENCKH_MERKVERMELDING`). Footerlink *Ouderhulp. voor scholen*, sitemap. Contactadres op één plek (`src/lib/ouderhulp.ts`): `info@denckh.nl` tot `school@denckh.nl` is ingericht en getest (O-43). Geen formulier, geen prijzen, geen tracking erbij. e2e: 27 nieuwe controles (`tests/interaction.mjs`, ook zonder JavaScript, 200 % tekst, 320/390/1440 px); testharnas: `CHROMIUM_PATH` en `STUB_EXTERNAL=1` voor een omgeving zonder internet. | Opdracht eigenaar 29-10-2026: productwebsite bouwen en publiceren onder denckh.nl/ouderhulp/, alleen bewezen functionaliteit, geen verzonnen prijzen, geen schoollogo als klantreferentie. | Vast (opdracht eigenaar) |
 
 ## Geverifieerde feiten
 
@@ -235,6 +238,7 @@ Pas de oude regel niet aan. *Voorstel* = wacht op akkoord van de eigenaar.
 | O-34 | **Logo-lab** (`denckh.nl/logo-lab/`): nu merkproefpagina (B-048). Woordmerk blijft; lettersnedes staan als archief onder "eerdere proeven". | Pagina weghalen of houden zodra de krul-toepassingen vaststaan. |
 | O-36 | **GitHub Pages meldt `http://denckh.nl/` als omgeving-URL.** Mogelijk staat "Enforce HTTPS" uit. | Eigenaar controleert in GitHub → Settings → Pages; niet door Claude aangepast (buiten scope). |
 | O-37 | **Consumentenprijzen juridisch controleren.** Tekst over particulieren staat erbij (B-073). Voor prijzen aan consumenten gelden strengere regels dan voor B2B. | Vóór actieve verkoop aan consumenten laten controleren door een deskundige hoe de prijzen op de site gepresenteerd moeten worden; niet door Claude laten invullen. |
+| O-43 | **Contactadres Ouderhulp.:** bedoeld is `school@denckh.nl` als alias van `info@denckh.nl` (geen extra mailbox). Nog niet ingericht: Plesk was vanuit de browsersessie van de eigenaar geblokkeerd en is vanuit de cloudsessie niet bereikbaar. | Eigenaar maakt de alias in Plesk (Mail → info@denckh.nl → E-mailaliassen → `school`), stuurt een testmail naar `school@denckh.nl`, en laat daarna in `src/lib/ouderhulp.ts` het adres omzetten. |
 | O-02 | Repo is publiek. | Op privé zetten kan alleen met betaald GitHub-plan voor Pages; anders bewust publiek laten en niets vertrouwelijks opnemen. |
 
 Afgehandeld: O-01 (repo hernoemd naar `denckh`), O-08 (live sites via geautoriseerde browsersessie bekeken, zie
