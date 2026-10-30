@@ -16,7 +16,7 @@ export type Shot = { src: string; alt: string; width: number; height: number; ro
 
 export const SHOTS = {
   ouderActiviteit: { src: "/images/ouderhulp/ouder-activiteit.webp", width: 585, height: 1266, role: "Ouder", task: "Beschikbaarheid opgeven, één activiteit per scherm",
-    alt: "Telefoonscherm van een ouder bij de activiteit Excursie kinderboerderij: één dienst op zaterdag van 9:00 tot 12:00 met de keuzes Ik kan de hele tijd, Ik kan een deel en Ik kan niet. Een deel is gekozen." },
+    alt: "Telefoonscherm van een ouder bij de activiteit Excursie kinderboerderij: één dienst van 9:00 tot 12:00 met de keuzes Ik kan en Ik kan niet, en daaronder Alleen een deel van de tijd. Ik kan is gekozen." },
   ouderOverzicht: { src: "/images/ouderhulp/ouder-overzicht.webp", width: 585, height: 1266, role: "Ouder", task: "Overzicht vóór het indienen",
     alt: "Telefoonscherm Uw opgave: per activiteit wat de ouder heeft ingevuld, wat nog open staat, en de knoppen Verder invullen en Beschikbaarheid indienen." },
   ouderOntvangen: { src: "/images/ouderhulp/ouder-ontvangen.webp", width: 585, height: 1266, role: "Ouder", task: "Na het indienen",

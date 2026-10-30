@@ -10,7 +10,7 @@ import { useHydrated } from "./useHydrated";
 const STEPS = [
   { who: "Leerkracht", title: "maakt een hulpvraag", text: "Soort, klas, titel en tijdvak. Punten staan centraal vast. Bewaren als concept kan; doorzetten stuurt de vraag naar de beheerder." },
   { who: "Beheerder", title: "bundelt in een ouderhulplijst", text: "Hulpvragen en schoolactiviteiten in één uitvraag, voor de hele school of voor gekozen klassen. Eerst controleren, dan bewust versturen." },
-  { who: "Ouders", title: "geven beschikbaarheid op", text: "Per activiteit: de hele tijd, een deel of niet. Alles wordt meteen bewaard; de school ziet het pas na indienen." },
+  { who: "Ouders", title: "geven beschikbaarheid op", text: "Per dienst: ik kan of ik kan niet. Alleen een deel van de tijd kan ook. Alles wordt meteen bewaard; de school ziet het pas na indienen." },
   { who: "School", title: "maakt en bevestigt de indeling", text: "Reacties en tekorten per dienst in één overzicht. Eerst een voorlopige indeling, daarna publiceren. Ouders krijgen hun afspraken met agenda-bestand." },
 ] as const;
 
@@ -32,7 +32,8 @@ function Voorbeeld({ i }: { i: number }) {
   if (i === 2) return (
     <div className="oh-mini" aria-hidden="true">
       <p className="oh-mini__title">Excursie kinderboerderij</p>
-      <p className="oh-mini__opts"><span>de hele tijd</span><span className="is-on">een deel · 9:00–11:00</span><span>niet</span></p>
+      <p className="oh-mini__opts"><span className="is-on">ik kan</span><span>ik kan niet</span></p>
+      <p className="oh-mini__part">alleen een deel van de tijd</p>
       <p className="oh-mini__meta">Bewaard als concept</p>
     </div>
   );

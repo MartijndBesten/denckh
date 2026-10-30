@@ -15,7 +15,7 @@ const ROLLEN: { id: string; naam: string; kop: string; punten: string[]; shots: 
     punten: ["Nieuwe aanvragen beoordelen, of de leerkracht om aanvulling vragen.", "Ouderhulplijsten samenstellen in vijf stappen, met controle vóór versturen.", "Reacties, tekorten, planning en punten beheren, met een export voor Excel (CSV)."],
     shots: [SHOTS.beheerDashboard, SHOTS.beheerLijst, SHOTS.beheerReacties] },
   { id: "ouder", naam: "Ouders", kop: "Zien wat voor hun gezin relevant is.",
-    punten: ["Alleen activiteiten van de klassen van de eigen kinderen en van de hele school.", "Per dienst de hele tijd, een deel of niet aangeven.", "Eén begrijpelijk overzicht vóór het indienen.", "Definitieve afspraken terugvinden, ook in de eigen agenda."],
+    punten: ["Alleen activiteiten van de klassen van de eigen kinderen en van de hele school.", "Per dienst kiezen: ik kan of ik kan niet. Alleen een deel van de tijd kan ook.", "Eén begrijpelijk overzicht vóór het indienen.", "Definitieve afspraken terugvinden, ook in de eigen agenda."],
     shots: [SHOTS.ouderActiviteit, SHOTS.ouderOverzicht, SHOTS.ouderOntvangen] },
 ];
 
