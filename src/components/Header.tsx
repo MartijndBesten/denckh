@@ -34,6 +34,7 @@ export function Footer() {
         <Link className="link-draw" href="/projecten/">Projecten</Link>
         <Link className="link-draw" href="/prijzen/">Prijzen</Link>
         <Link className="link-draw" href="/ouderhulp/">Ouderhulp. voor scholen</Link>
+        <Link className="link-draw" href="/preekhulp/">Preekhulp. voor predikanten</Link>
         <a className="link-draw" href="mailto:info@denckh.nl">info@denckh.nl</a>
         <a className="link-draw" href="https://www.instagram.com/denckh.nl/" rel="me">Instagram</a>
         <Link className="link-draw" href="/privacy/">Privacy</Link>

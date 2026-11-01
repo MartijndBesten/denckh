@@ -3,12 +3,14 @@
 Overdrachtsdocument voor de Denckh-website. Hier staan de actuele stand, alle belangrijke technische en creatieve
 beslissingen, open punten en de volgende stappen. **Bijwerken aan het eind van elke werksessie.**
 
-- Laatst bijgewerkt: 2026-10-29
+- Laatst bijgewerkt: 2026-11-01
 - Live (`main`): "begin met een punt" (B-031), ronde 2 (B-038), ronde 3 (merge `5427b8e`, B-047) en Kerckh. (B-078)
 
 ---
 
 ## Huidige stand
+
+**Preekhulp. (B-098, 2026-11-01, branch `claude/preekhulp`, nog niet live).** Productpagina `/preekhulp/` voor predikanten, footerlink en sitemap. Publicatie (merge naar `main`) wacht op akkoord van de eigenaar (O-44).
 
 **Ouderhulp. (B-096, 2026-10-29).** Productpagina `/ouderhulp/` voor basisscholen; zie B-096. Contact via `info@denckh.nl` tot `school@denckh.nl` is ingericht (O-43).
 
@@ -205,6 +207,7 @@ Pas de oude regel niet aan. *Voorstel* = wacht op akkoord van de eigenaar.
 ---
 | B-096 | 2026-10-29 | Productpagina **Ouderhulp.** op `/ouderhulp/` (eigen product van Denckh voor basisscholen). Opbouw: eerste scherm met één hoofdactie (*Bespreek het voor onze school*, mailto met onderwerp en een paar invulregels) en een echt telefoonbeeld; het probleem; *Zo werkt het* als route in vier stappen (speelt één keer af als hij in beeld komt, stopt bij stap 4 of zodra je zelf een stap kiest; reduced motion: geen automatische voortgang); rolwissel leerkracht/beheerder/ouder als toegankelijke tabbladen (pijltjes, Home/End); voordelen; drie schermen uit één ronde; ingebruikname in vijf stappen; aanbod zonder bedragen (*Een voorstel passend bij uw school*: eenmalige inrichting, jaarlicentie, maatwerk apart); acht veelgestelde vragen als `details`. Zonder JavaScript staat alles onder elkaar. Beelden: echte schermen uit de applicatie met fictieve gegevens (*Voorbeeldschool*, geen schoolnaam of -logo), WebP 31–66 KB, gemaakt met het beeldscript in de Ouderhulp-repo; deelbeeld `og-ouderhulp.png` met los script `scripts/ouderhulp-og.mjs`. Eén productaccent: het groen van de applicatie (`--oh`), alleen voor de punt in *Ouderhulp.* en statussen in de voorbeelden. Makervermelding *Een product van* met de officiële signatuur (`DENCKH_MERKVERMELDING`). Footerlink *Ouderhulp. voor scholen*, sitemap. Contactadres op één plek (`src/lib/ouderhulp.ts`): `info@denckh.nl` tot `school@denckh.nl` is ingericht en getest (O-43). Geen formulier, geen prijzen, geen tracking erbij. e2e: 27 nieuwe controles (`tests/interaction.mjs`, ook zonder JavaScript, 200 % tekst, 320/390/1440 px); testharnas: `CHROMIUM_PATH` en `STUB_EXTERNAL=1` voor een omgeving zonder internet. | Opdracht eigenaar 29-10-2026: productwebsite bouwen en publiceren onder denckh.nl/ouderhulp/, alleen bewezen functionaliteit, geen verzonnen prijzen, geen schoollogo als klantreferentie. | Vast (opdracht eigenaar) |
 | B-097 | 2026-10-30 | Ouderhulp.: beschikbaarheid is in de praktijk meestal wel of niet. De applicatie toont nu twee hoofdkeuzes (*Ik kan* / *Ik kan niet*) en *Alleen een deel van de tijd* als kleinere, secundaire keuze. Productpagina mee aangepast: nieuwe ouderbeelden en deelbeeld, routevoorbeeld stap 3, rolteksten en de vraag over een deel van een tijdvak. | Feedback eigenaar 30-10-2026: "overal ik kan een deel, maar meestal is het wel of niet". | Vast |
+| B-098 | 2026-11-01 | Productpagina **Preekhulp.** op `/preekhulp/` (eigen product van Denckh: lokale onderzoeksassistent voor predikanten). Zelfde paginagrammatica en klassen als Ouderhulp. (`.oh`, plus `.ph` voor twee afwijkende rasters: acht stappen in vier kolommen, twee bureaubladschermen naast elkaar); geen nieuwe componenten of dependencies; hergebruikt `Scherm`. Opbouw: eerste scherm met makervermelding *Een product van* + officiële signatuur, hoofdactie *Doe mee aan de proefronde* (mailto met invulregels); het probleem; *Zo werkt het* in acht stappen; *Wat het anders doet* (zes punten); vier echte schermen (Genesis 31:13, onderzoek zonder AI); open bronnen; *Waar het nu staat* (werkt en getest / in de proefronde / daarna, zonder prijzen); zes veelgestelde vragen; contact. Footerlink *Preekhulp. voor predikanten*, sitemap. Geen deelbeeld (valt terug op het standaard-OG-beeld). e2e: 21 nieuwe controles (320/390/1440 px, 200 % tekst, zonder JavaScript, mailto, geen prijzen, beelden en alt-teksten, footerlink). | Opdracht eigenaar 01-11-2026: "koppel het aan Denckh.nl". Alleen bewezen functionaliteit als functie; wat nog niet live getest is (AI-laag, externe zoekdiensten) staat expliciet als proefronde. Dossier: `docs/cases/preekhulp.md`. | Voorstel (publicatie na akkoord, O-44) |
 
 ## Geverifieerde feiten
 
@@ -240,6 +243,7 @@ Pas de oude regel niet aan. *Voorstel* = wacht op akkoord van de eigenaar.
 | O-36 | **GitHub Pages meldt `http://denckh.nl/` als omgeving-URL.** Mogelijk staat "Enforce HTTPS" uit. | Eigenaar controleert in GitHub → Settings → Pages; niet door Claude aangepast (buiten scope). |
 | O-37 | **Consumentenprijzen juridisch controleren.** Tekst over particulieren staat erbij (B-073). Voor prijzen aan consumenten gelden strengere regels dan voor B2B. | Vóór actieve verkoop aan consumenten laten controleren door een deskundige hoe de prijzen op de site gepresenteerd moeten worden; niet door Claude laten invullen. |
 | O-43 | **Contactadres Ouderhulp.:** bedoeld is `school@denckh.nl` als alias van `info@denckh.nl` (geen extra mailbox). Nog niet ingericht: Plesk was vanuit de browsersessie van de eigenaar geblokkeerd en is vanuit de cloudsessie niet bereikbaar. | Eigenaar maakt de alias in Plesk (Mail → info@denckh.nl → E-mailaliassen → `school`), stuurt een testmail naar `school@denckh.nl`, en laat daarna in `src/lib/ouderhulp.ts` het adres omzetten. |
+| O-44 | **Preekhulp. publiceren?** Pagina `/preekhulp/` staat klaar op branch `claude/preekhulp` (B-098). Te bevestigen: (1) Preekhulp. presenteren als eigen product van Denckh, (2) proefronde via `info@denckh.nl`, (3) teksten. Merge naar `main` = live. | Eigenaar geeft akkoord of wijzigingen; daarna merge en live controle. Optioneel: eigen deelbeeld `og-preekhulp.png` zoals bij Ouderhulp. |
 | O-02 | Repo is publiek. | Op privé zetten kan alleen met betaald GitHub-plan voor Pages; anders bewust publiek laten en niets vertrouwelijks opnemen. |
 
 Afgehandeld: O-01 (repo hernoemd naar `denckh`), O-08 (live sites via geautoriseerde browsersessie bekeken, zie
@@ -249,6 +253,7 @@ cases), O-14 (domein actief op GitHub Pages), O-31/O-32/O-33 (B-038), O-27 (B-07
 
 ## Volgende stappen
 
+0. Akkoord O-44 → `claude/preekhulp` mergen, live controleren op `denckh.nl/preekhulp/` en een echte iPhone; daarna in Preekhulp. de makerslink naar `/preekhulp/` laten wijzen.
 0. Live controle van `/prijzen/` en het prijsblok op `denckh.nl` en een echte iPhone; besluiten O-37 (btw) en O-38.
 0. Live controle van ronde 2 op `denckh.nl` en een echte iPhone.
 1. Live controle op `denckh.nl` en op een echte iPhone (vanuit de werkomgeving niet bereikbaar).

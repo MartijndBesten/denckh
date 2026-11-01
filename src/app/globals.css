@@ -799,3 +799,12 @@ nav .link-draw:hover, nav .link-draw:focus-visible { background-size: 100% 6px, 
   .oh-route__line span { transition: none; }
   .oh-route__text, .oh-route__example, .oh-roles.is-enhanced .oh-role:not([hidden]) { animation: none; }
 }
+
+/* Preekhulp. (B-098): zelfde productpagina-grammatica als Ouderhulp.; alleen de rasters wijken af
+   (acht stappen in plaats van vijf, twee bureaubladschermen naast elkaar). Productaccent: hetzelfde groen. */
+.ph .oh-start { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 2.2rem; }
+.ph .oh-proof > .oh-shot { margin-bottom: 2rem; }
+.ph #werking .oh-note { margin-top: 2rem; }
+.ph .oh-proof__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 960px) { .ph .oh-start { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ph .oh-proof__row { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { .ph .oh-start { grid-template-columns: 1fr; } }

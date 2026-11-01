@@ -564,7 +564,7 @@ for (const path of ["", "projecten/", "diensten/", "prijzen/", "projecten/lyev/"
 // 10 · interne links: elke link op elke pagina leidt naar een bestaande pagina, bestand of anker
 {
   const { p, ctx } = await page(browser);
-  const pages = ["", "projecten/", "diensten/", "prijzen/", "privacy/", "projecten/deegh/", "projecten/kerckh/", "projecten/lyev/", "projecten/okkie/", "ouderhulp/"];
+  const pages = ["", "projecten/", "diensten/", "prijzen/", "privacy/", "projecten/deegh/", "projecten/kerckh/", "projecten/lyev/", "projecten/okkie/", "ouderhulp/", "preekhulp/"];
   const broken = [];
   const seen = new Set();
   for (const path of pages) {
@@ -645,6 +645,48 @@ for (const path of ["", "projecten/", "diensten/", "prijzen/", "projecten/lyev/"
     check("ouderhulp zonder JavaScript: vier stappen met uitleg", ["maakt een hulpvraag", "bundelt in een ouderhulplijst", "geven beschikbaarheid op", "maakt en bevestigt de indeling"].every((t) => text.includes(t)) && text.includes("Reacties en tekorten per dienst"));
     check("ouderhulp zonder JavaScript: drie rollen", ["Leerkrachten", "Schoolbeheerder", "Ouders"].every((t) => text.includes(t)) && text.includes("Eén begrijpelijk overzicht vóór het indienen."));
     check("ouderhulp zonder JavaScript: veelgestelde vragen aanwezig", (await p.locator(".oh-faq details").count()) === 8);
+    await ctx.close(); }
+}
+
+// Preekhulp. productpagina (B-098)
+{
+  const ext = (e) => !/ERR_TUNNEL|ERR_NAME|ERR_INTERNET|dashboard\.denckh\.nl/.test(e);
+  for (const width of [320, 390, 1440]) {
+    const { p, ctx, errors } = await page(browser, { width, height: 900, mobile: width < 800, path: "preekhulp/" });
+    check(`preekhulp ${width}px: geen horizontale overloop`, !(await p.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1)));
+    check(`preekhulp ${width}px: geen consolefouten`, errors.filter(ext).length === 0, errors.filter(ext).join(" | "));
+    if (width === 390) {
+      await p.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
+      await p.waitForTimeout(200);
+      check("preekhulp: 200% tekst zonder horizontale overloop", await p.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
+    }
+    await ctx.close();
+  }
+  const { p, ctx } = await page(browser, { path: "preekhulp/" });
+  check("preekhulp: eigen titel", /^Preekhulp\. · /.test(await p.title()));
+  check("preekhulp: canonical", (await p.locator('link[rel="canonical"]').getAttribute("href")) === "https://denckh.nl/preekhulp/");
+  check("preekhulp: één h1", (await p.locator("h1").count()) === 1);
+  check("preekhulp: makervermelding met officiële signatuur", (await p.locator('.oh-by img[src="/brand/denckh-logo-signature.svg"]').count()) === 1);
+  const mail = await p.locator(".oh-hero .ink-button").getAttribute("href");
+  check("preekhulp: hoofdactie opent een mail met onderwerp", /^mailto:[^?]+@denckh\.nl\?subject=Preekhulp/.test(mail ?? ""), mail ?? "");
+  check("preekhulp: geen formulier dat niets verstuurt", (await p.locator("form").count()) === 0);
+  const tekst = await p.locator("main").innerText();
+  check("preekhulp: geen prijzen genoemd", !/€\s?\d/.test(tekst));
+  check("preekhulp: geen beschermde vertaling als inhoud aangeprezen", !/HSV[^,.]*bevat|NBV21 zit erin/i.test(tekst));
+  check("preekhulp: proefronde eerlijk benoemd", tekst.includes("In de proefronde") && tekst.includes("Werkt en getest"));
+  check("preekhulp: alle beelden hebben een beschrijving", (await p.locator("main img:not([alt]), main img[alt='']").count()) === 0);
+  const beelden = await p.locator("main img").evaluateAll((els) => els.map((e) => e.getAttribute("src") ?? ""));
+  let kapot = 0;
+  for (const src of beelden) { const u = new URL(src, BASE); const q = u.searchParams.get("url"); if (!(await p.request.get(q ? new URL(q, BASE).href : u.href)).ok()) kapot++; }
+  check(`preekhulp: ${beelden.length} beelden bereikbaar`, kapot === 0 && beelden.length >= 5);
+  await ctx.close();
+  { const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 900 } }); const p = await ctx.newPage();
+    await p.goto(new URL("preekhulp/", BASE).href);
+    const text = await p.locator("main").innerText();
+    check("preekhulp zonder JavaScript: acht stappen en veelgestelde vragen", (await p.locator(".oh-start li").count()) === 8 && (await p.locator(".oh-faq details").count()) === 6 && text.includes("Elke bewering met bewijs"));
+    await ctx.close(); }
+  { const { p, ctx } = await page(browser, { path: "" });
+    check("footer linkt naar Preekhulp.", (await p.locator('.site-footer a[href="/preekhulp/"]').count()) === 1);
     await ctx.close(); }
 }
 
