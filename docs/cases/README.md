@@ -15,7 +15,7 @@ Hier staat welke projecten mogelijk als case op de Denckh-site komen, wat er al 
 | Autowasdag Sionkerk | Publieke repo `MartijndBesten/autowasdag-sionkerk` (`3162784`) | Goedgekeurd voor publicatie (naam en link), 2026-09-29, via eigenaar | 2026-09-29 | [autowasdag-sionkerk.md](autowasdag-sionkerk.md) |
 | Kerckh. | https://kerckh.nl | Goedgekeurd voor publicatie (naam en link), 2026-10-07, eigenaar; eigen product van Denckh | 2026-10-07 | [kerckh.md](kerckh.md) |
 | TCLP | https://tclp.nl · websiterepository van de eigenaar | Goedgekeurd voor publicatie (naam en link): toestemming opdrachtgever, doorgegeven door de eigenaar op 2026-10-23; schematisch, zonder logo of beelden | 2026-10-23 | [tclp.md](tclp.md) |
-| Preekhulp. | Privérepository `MartijndBesten/Preekhulp.` (`1ff5d6f`) | Geverifieerd tegen code, tests en lokale installatie; eigen product van Denckh — publicatie wacht op akkoord eigenaar | 2026-11-01 | [preekhulp.md](preekhulp.md) |
+| Preekhulp. | Privérepository `MartijndBesten/Preekhulp.` (`1ff5d6f`) | Goedgekeurd voor publicatie (naam, beelden), 2026-11-01, eigenaar; eigen product van Denckh | 2026-11-01 | [preekhulp.md](preekhulp.md) |
 
 Statussen: *Niet onderzocht* → *In onderzoek* → *Geverifieerd* → *Goedgekeurd voor publicatie*.
 

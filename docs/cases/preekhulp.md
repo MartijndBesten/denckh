@@ -21,8 +21,7 @@ pagina. Gebouwd maar nog niet live getest — de AI-laag met eigen sleutel en de
 boekcatalogi, YouTube) — staat apart onder *In de proefronde*.
 
 ## Te bevestigen
-- [TE BEVESTIGEN] Of de eigenaar Preekhulp. als eigen product van Denckh wil presenteren (afgeleid uit de opdracht "koppel het aan Denckh.nl").
-- [TE BEVESTIGEN] Contactweg en vorm van de proefronde (nu: mail naar info@denckh.nl).
+- Bevestigd door de eigenaar op 2026-11-01: eigen product van Denckh, proefronde via info@denckh.nl, publicatie akkoord.
 - Geen prijzen, geen gebruikers of predikanten als referentie genoemd.
 
 ## Rechten en toestemming
