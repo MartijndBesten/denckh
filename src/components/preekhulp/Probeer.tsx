@@ -1,6 +1,6 @@
 "use client";
-// Preekhulp.-demo: echte uitkomsten van Preekhulp 0.1 (zonder AI, zonder externe bronnen), vooraf berekend en als
-// JSON meegeleverd (public/preekhulp/demo/). Alles draait in de browser; er gaat niets naar een server.
+// Preekhulp. zelf proberen: echte uitkomsten van Preekhulp 0.1 (zonder AI, zonder externe bronnen), vooraf berekend en als
+// JSON meegeleverd (public/preekhulp/voorbeelden/). Alles draait in de browser; er gaat niets naar een server.
 // De controle "Wat zie ik over het hoofd?" met een eigen gedachte is een vereenvoudigde versie van die in de app.
 import { useEffect, useMemo, useState } from "react";
 
@@ -56,7 +56,7 @@ function noemtGedeelte(gedachte: string, label: string): boolean {
   return false;
 }
 
-export function PreekhulpDemo() {
+export function PreekhulpProbeer() {
   const [index, setIndex] = useState<Index | null>(null);
   const [id, setId] = useState("genesis-31-13");
   const [v, setV] = useState<Voorbeeld | null>(null);
@@ -68,7 +68,7 @@ export function PreekhulpDemo() {
   const [fout, setFout] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/preekhulp/demo/index.json").then((r) => r.json()).then(setIndex).catch(() => setFout("De voorbeelden konden niet worden geladen."));
+    fetch("/preekhulp/voorbeelden/index.json").then((r) => r.json()).then(setIndex).catch(() => setFout("De voorbeelden konden niet worden geladen."));
   }, []);
   function kies(nieuw: string) {
     if (nieuw === id) return;
@@ -79,7 +79,7 @@ export function PreekhulpDemo() {
     setId(nieuw);
   }
   useEffect(() => {
-    fetch(`/preekhulp/demo/${id}.json`).then((r) => r.json()).then((j: Voorbeeld) => { setV(j); setGedachte(j.voorbeeldGedachte); }).catch(() => setFout("Dit voorbeeld kon niet worden geladen."));
+    fetch(`/preekhulp/voorbeelden/${id}.json`).then((r) => r.json()).then((j: Voorbeeld) => { setV(j); setGedachte(j.voorbeeldGedachte); }).catch(() => setFout("Dit voorbeeld kon niet worden geladen."));
   }, [id]);
 
   const bewijs = useMemo(() => new Map((v?.bewijs ?? []).map((b) => [b.label, b])), [v]);
@@ -106,7 +106,7 @@ export function PreekhulpDemo() {
   const paneel = (labels: string[]) => {
     if (!open || !labels.includes(open)) return null;
     const b = bewijs.get(open);
-    if (!b) return <p className="phd-paneel">Dit bewijsstuk zit niet in de demo-uitsnede.</p>;
+    if (!b) return <p className="phd-paneel">Dit bewijsstuk zit niet in deze uitsnede.</p>;
     return (
       <div className="phd-paneel">
         <p className="phd-paneel__kop"><b>{b.label}</b> · {b.bron} · {b.locatie}{b.url && <> · <a href={b.url} target="_blank" rel="noreferrer">bron</a></>}</p>
@@ -206,7 +206,7 @@ export function PreekhulpDemo() {
                     {lijst.map((b) => <blockquote key={b.label} className="phd-citaat"><p className="phd-meta"><b>{b.label}</b> · {b.locatie}{b.url && <> · <a href={b.url} target="_blank" rel="noreferrer">bron</a></>}</p><p>{b.tekst}</p></blockquote>)}
                   </details>
                 ))}
-                {perWerk.size === 0 && <p>Geen oude uitleg bij precies deze verzen in de demo-uitsnede.</p>}
+                {perWerk.size === 0 && <p>Geen oude uitleg bij precies deze verzen in deze uitsnede.</p>}
               </>
             )}
 
@@ -221,7 +221,7 @@ export function PreekhulpDemo() {
                 {gecontroleerd && (extra.length ? signaalLijst(extra) : <p>Geen extra signalen bij deze gedachte. Dat betekent niet dat er niets ontbreekt.</p>)}
                 <h3 className="phd-tussenkop">Signalen uit het dossier zelf</h3>
                 {signaalLijst(v.overHetHoofd)}
-                <p className="phd-meta">In de app kun je hierna ook de AI laten meelezen (met je eigen sleutel en een vooraf getoonde kostengrens). Dat zit niet in deze demo.</p>
+                <p className="phd-meta">In de app kun je hierna ook de AI laten meelezen (met je eigen sleutel en een vooraf getoonde kostengrens). Dat zit niet op deze pagina.</p>
               </>
             )}
 
