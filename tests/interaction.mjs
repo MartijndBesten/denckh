@@ -259,7 +259,9 @@ for (const [w, h] of [[390, 844], [320, 640]]) {
   const { p, ctx, errors } = await page(browser, { width: 390, height: 844, mobile: true });
   const fig = p.locator(".construct").first();
   const box = await fig.evaluate((el) => { const r = el.getBoundingClientRect(); return { top: r.top + scrollY, h: r.height }; });
-  await p.evaluate(({ top, h }) => scrollTo(0, top + h / 2 - innerHeight * 0.8), box);
+  // Midden van het beeld op 90% van de schermhoogte: binnen de eerste 4% van de scrollweg (Construct.tsx), dus
+  // gegarandeerd nog de schets, ongeacht het aantal vormen (O-38: 80% lag al voorbij die grens).
+  await p.evaluate(({ top, h }) => scrollTo(0, top + h / 2 - innerHeight * 0.9), box);
   await p.waitForTimeout(400);
   check("construct: nog een lijn zolang het beeld binnenkomt", (await fig.locator(".construct__line.is-sketch").count()) === 1);
   await p.evaluate(({ top, h }) => scrollTo(0, top + h / 2 - innerHeight * 0.55), box);
@@ -510,7 +512,13 @@ for (const [w, h, mobile] of [[390, 844, true], [1440, 900, false]]) {
 {
   const { p, ctx, errors } = await page(browser, { width: 390, height: 844, mobile: true, path: "projecten/lyev/" });
   check("lyev-pagina: titel, vier delen en link naar lyev.nl", (await p.locator("h1").textContent()).includes("Een webshop vol sparkle.") && (await p.locator(".case-page__parts h2").allTextContents()).join(",") === "De vraag,De oplossing,Achter de schermen,Het resultaat" && (await p.getByRole("link", { name: "Bekijk lyev.nl →" }).getAttribute("href")) === "https://lyev.nl");
-  const imgs = await p.locator(".case-page__shots img").evaluateAll((els) => els.map((i) => i.complete && i.naturalWidth > 0 && i.alt.length > 20));
+  // Beelden laden lui: eerst elk beeld in beeld brengen en op het laden wachten (O-38: het derde stond onder de vouw).
+  const shots = p.locator(".case-page__shots img");
+  for (let n = 0; n < (await shots.count()); n++) {
+    await shots.nth(n).scrollIntoViewIfNeeded();
+    await shots.nth(n).evaluate((i) => (i.complete && i.naturalWidth > 0) || new Promise((r) => { i.addEventListener("load", r, { once: true }); i.addEventListener("error", r, { once: true }); setTimeout(r, 8000); }));
+  }
+  const imgs = await shots.evaluateAll((els) => els.map((i) => i.complete && i.naturalWidth > 0 && i.alt.length > 20));
   check("lyev-pagina: drie geladen schermen met alt-tekst", imgs.length === 3 && imgs.every(Boolean), String(imgs));
   check("lyev-pagina: geen console-errors", errors.length === 0, errors.join(" | "));
   const sitemap = await (await p.request.get(new URL("sitemap.xml", BASE).href)).text();
