@@ -6,7 +6,7 @@ import { PreekhulpProbeer } from "@/components/preekhulp/Probeer";
 import { PROEF_MAIL } from "@/lib/preekhulp";
 
 // Preekhulp. zelf proberen (B-101): echte uitkomsten van Preekhulp 0.1, vooraf berekend zonder AI en zonder externe
-// databanken, geëxporteerd met `scripts/demo-export.ts` uit de Preekhulp-repository. Geen server, geen AI, geen sleutel.
+// databanken, geëxporteerd met `scripts/voorbeelden-export.ts` uit de Preekhulp-repository. Geen server, geen AI, geen sleutel.
 const title = "Preekhulp. · probeer het zelf";
 const description = "Klik zelf door echte uitkomsten van Preekhulp. bij Genesis 31:13, Psalm 23 en Lucas 15:20: grondtekst, verbanden, oude uitleg en ‘Wat zie ik over het hoofd?’. Zonder account, zonder AI.";
 
