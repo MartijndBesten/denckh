@@ -1,6 +1,10 @@
 // Alle prijzen van Denckh op één plek (homepage, /prijzen/ en tests lezen hier). Bedragen in euro, exclusief btw.
 // Bron: prijsbesluit eigenaar, 2026-09-29 (HANDOFF B-062).
 
+/** Btw voor particulieren: 21%, per bedrag berekend uit het bedrag excl. btw (B-100). */
+export const VAT = 0.21;
+export const inclBtw = (excl: number) => `€${(Math.round(excl * (1 + VAT) * 100) / 100).toFixed(2).replace(".", ",")}`;
+
 export type StopGlyph = "punt" | "schets" | "vorm";
 
 /** Een halte op de prijslijn: van een kleine gedachte naar iets dat echt gemaakt is. */
@@ -27,11 +31,11 @@ export const HOME_STOPS: PriceStop[] = [
     glyph: "schets",
     label: "Samen uitwerken",
     price: "€45",
-    meta: "excl. btw · 60 minuten",
-    text: "Even Denckh: een uur echt aan je vraag werken, met een duidelijke volgende stap. Meer uitzoekwerk: vanaf €95.",
+    meta: `excl. btw · ${inclBtw(45)} incl. · 60 minuten`,
+    text: "Even Denckh: een uur echt aan je vraag werken, met een duidelijke volgende stap. Meer uitzoekwerk: vanaf €95 excl. btw.",
     note: "Wordt het daarna een opdracht vanaf €295? Dan verreken ik die €45.",
   },
-  { glyph: "vorm", label: "Echt maken", from: true, price: "€295", meta: "excl. btw", text: "Een afgebakend werkend resultaat. Vooraf spreken we een vaste prijs af." },
+  { glyph: "vorm", label: "Echt maken", from: true, price: "€295", meta: `excl. btw · ${inclBtw(295)} incl.`, text: "Een afgebakend werkend resultaat. Vooraf spreken we een vaste prijs af." },
 ];
 
 /** Hoe het begint: kennismaken, samen denken, en een project met een vaste prijs. */
@@ -48,7 +52,7 @@ export const START_STOPS: PriceStop[] = [
     glyph: "schets",
     label: "Even Denckh",
     price: "€45",
-    meta: "excl. btw · 60 minuten",
+    meta: `excl. btw · ${inclBtw(45)} incl. · 60 minuten`,
     text: "Een uur echt samen aan je vraag werken. Je gaat weg met een duidelijke richting, ook als je het daarna zelf oppakt.",
     note: "Wordt het daarna een opdracht vanaf €295? Dan verreken ik die €45.",
   },
@@ -56,7 +60,7 @@ export const START_STOPS: PriceStop[] = [
 ];
 
 /** Btw: één zin voor homepage, /prijzen/ en de PDF (B-073). */
-export const BTW_NOTE = "Alle bedragen zijn vanafprijzen, exclusief btw. Voor particuliere opdrachten vermeld ik vooraf ook de prijs inclusief btw.";
+export const BTW_NOTE = "Alle bedragen zijn vanafprijzen: exclusief btw voor zakelijk, met het bedrag inclusief 21% btw voor particulieren.";
 
 /** Kleine maatschappelijke initiatieven: per geval, vooraf afgesproken, geen vaste regeling (B-099). */
 export const SOCIAL = {
@@ -64,7 +68,7 @@ export const SOCIAL = {
   text: "Een klein maatschappelijk initiatief met weinig budget? Vertel het gerust. Soms past een lagere vergoeding of een vrijwillige bijdrage, soms draag ik iets kosteloos bij. Dat spreken we per idee vooraf af; een vaste korting is het niet.",
 };
 
-export const DOMAIN_NOTE = "Je eigen domeinnaam is het eerste jaar inbegrepen, tot maximaal €20 excl. btw. Hosting is niet inbegrepen.";
+export const DOMAIN_NOTE = `Je eigen domeinnaam is het eerste jaar inbegrepen, tot maximaal €20 excl. btw (${inclBtw(20)} incl.). Hosting is niet inbegrepen.`;
 
 export type FormGroup = "zichtbaar" | "digitaal" | "online";
 export const FORM_GROUPS: Record<FormGroup, string> = { zichtbaar: "Zichtbaar maken", digitaal: "Digitaal maken", online: "Online zetten" };

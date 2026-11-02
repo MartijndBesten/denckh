@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer, Header } from "@/components/Header";
-import { FORM_PRICES } from "@/lib/prices";
+import { FORM_PRICES, inclBtw } from "@/lib/prices";
 
 // Waar Denckh mee helpt, in gewone woorden. Elke categorie wijst naar echt, gerealiseerd werk (B-084); de toon is
 // meedenken eerst, maken waar het helpt (B-099).
 const description = "Een website, app of tool, terugkerend werk automatiseren, techniek en verlichting, of hulp met wat je al hebt. Denckh in Houten denkt mee voor particulieren, ondernemers, verenigingen en andere kleine initiatieven.";
-const vanaf = (key: string) => FORM_PRICES.find((f) => f.key === key)?.price;
+// "€295 excl. btw (€356,95 incl.)": excl. btw voor zakelijk, incl. btw voor particulieren (B-100)
+const vanaf = (key: string) => { const p = FORM_PRICES.find((f) => f.key === key)?.price ?? 0; return `${p} excl. btw (${inclBtw(p)} incl.)`; };
 
 type Dienst = { id: string; titel: string; tekst: string; voorbeelden: string[]; bewijs: { label: string; href: string }[]; prijs?: string };
 
@@ -92,7 +93,7 @@ export default function Diensten() {
           <section key={d.id} id={d.id} className="price-page__section" aria-labelledby={`${d.id}-titel`}>
             <header className="price-page__head">
               <h2 id={`${d.id}-titel`}>{d.titel}</h2>
-              {d.prijs && <p>{d.prijs}, excl. btw</p>}
+              {d.prijs && <p>{d.prijs}</p>}
             </header>
             <p className="price-page__lead" style={{ maxWidth: "42rem", marginBottom: "1.2rem" }}>{d.tekst}</p>
             <ul className="scope-list">{d.voorbeelden.map((v) => <li key={v}>{v}</li>)}</ul>

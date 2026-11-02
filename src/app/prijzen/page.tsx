@@ -7,7 +7,7 @@ import { FormPrices } from "@/components/grammar/FormPrices";
 import { PriceLine } from "@/components/grammar/PriceLine";
 import { BTW_NOTE, EXTRA, FORM_PRICES, INCLUDED, NOT_INCLUDED, PRICE_PDF, SOCIAL, START_STOPS, WEB_ADDRESS } from "@/lib/prices";
 
-const description = "Richtprijzen van Denckh: het eerste gesprek is gratis, een uur samen denken kost €45 en een werkend resultaat begint vanaf €295. Je weet vooraf wat jouw idee kost.";
+const description = "Richtprijzen van Denckh: het eerste gesprek is gratis, een uur samen denken kost €45 (€54,45 incl. btw) en een werkend resultaat begint vanaf €295 (€356,95 incl. btw). Je weet vooraf wat jouw idee kost.";
 
 export const metadata: Metadata = {
   title: "Prijzen",

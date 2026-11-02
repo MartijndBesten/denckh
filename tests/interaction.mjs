@@ -368,7 +368,7 @@ for (const path of ["", "projecten/", "projecten/deegh/"]) {
   check("prijsblok: kop en intro", ((await block.locator("h2").textContent()) ?? "") === "Wat kost zoiets?" && /Een eerste gesprek kost niets\./.test((await block.locator(".prices__head p").textContent()) ?? ""));
   const stops = await block.locator(".pl__stop").evaluateAll((els) => els.map((e) => ({ label: e.querySelector(".pl__label")?.textContent, price: e.querySelector(".pl__price")?.textContent?.replace(/\s+/g, " ").trim() })));
   check("prijsblok: drie haltes in de goede volgorde", stops.map((s) => s.label).join(",") === "Kennismaken,Samen uitwerken,Echt maken", stops.map((s) => s.label).join(","));
-  check("prijsblok: gratis kennismaken, €45, vanaf €295 excl. btw", stops.map((s) => s.price).join(" | ") === "gratis circa 20 minuten | €45 excl. btw · 60 minuten | vanaf €295 excl. btw", stops.map((s) => s.price).join(" | "));
+  check("prijsblok: gratis kennismaken, €45, vanaf €295 excl. btw", stops.map((s) => s.price).join(" | ") === "gratis circa 20 minuten | €45 excl. btw · €54,45 incl. · 60 minuten | vanaf €295 excl. btw · €356,95 incl.", stops.map((s) => s.price).join(" | "));
   const home = (await p.locator("main").textContent()) ?? "";
   check("positionering: eerste gesprek gratis, bestaande oplossing kan, geen verkooptaal", /het eerste gesprek is gratis/.test(home) && /Soms bestaat de oplossing al/.test(home) && !/Bekijk wat je kunt aanvragen|particulieren, zelfstandigen en kleine bedrijven/.test(home));
   check("werkwijze: Vertel, Samen denken, Vorm geven", (await p.locator(".werkwijze h3").allTextContents()).map((t) => t.replace(/^\d/, "")).join(",") === "Vertel,Samen denken,Vorm geven");
@@ -415,12 +415,15 @@ const dotOffset = (p) => p.evaluate(() => { const n = document.querySelector(".f
   const rows = await p.locator(".fp__row").evaluateAll((els) => els.map((e) => ({ name: e.querySelector(".fp__name")?.textContent, price: e.querySelector(".fp__price")?.textContent?.replace(/\s+/g, " ").trim(), domain: !!e.querySelector(".fp__domain"), aside: e.querySelector(".fp__aside")?.textContent ?? "" })));
   const wrong = rows.filter((r) => r.price !== `vanaf €${prices[r.name]}`);
   check("prijzen: elf vormen met de juiste vanafprijs", rows.length === 11 && wrong.length === 0, wrong.map((r) => `${r.name}: ${r.price}`).join(", ") || `${rows.length} rijen`);
-  check("prijzen: vermelding exclusief btw bij de vormen", /Alle bedragen zijn vanafprijzen, exclusief btw\./.test(await p.locator("#vormen-titel + p").textContent() ?? ""));
+  check("prijzen: vermelding excl. btw (zakelijk) en incl. btw (particulier)", /exclusief btw voor zakelijk, met het bedrag inclusief 21% btw voor particulieren/.test(await p.locator("#vormen-titel + p").textContent() ?? ""));
+  const incl = await p.locator(".fp__row").evaluateAll((els) => els.map((e) => [e.querySelector(".fp__price")?.textContent?.match(/€(\d+)/)?.[1], e.querySelector(".fp__incl")?.textContent ?? ""]));
+  const inclWrong = incl.filter(([ex, t]) => !t.includes(`€${(Math.round(Number(ex) * 121) / 100).toFixed(2).replace(".", ",")} incl. btw`));
+  check("prijzen: bij elke vorm ook het bedrag incl. 21% btw", incl.length === 11 && inclWrong.length === 0, inclWrong.map(([ex, t]) => `${ex}: ${t}`).join(", "));
   check("prijzen: domeinnaam bij alle websites en webshops", rows.filter((r) => r.domain).map((r) => r.name).join(",") === "Website,Uitgebreidere website,Webshop,Uitgebreidere webshop");
-  check("prijzen: domeinnaam tot maximaal €20 excl. btw", /eerste jaar inbegrepen, tot maximaal €20 excl\. btw\./.test((await p.locator(".fp__domain").first().textContent()) ?? ""));
+  check("prijzen: domeinnaam tot maximaal €20 excl. btw", /eerste jaar inbegrepen, tot maximaal €20 excl\. btw \(€24,20 incl\.\)\./.test((await p.locator(".fp__domain").first().textContent()) ?? ""));
   check("prijzen: €95 is anders dan Even Denckh", /Anders dan Even Denckh/.test(rows.find((r) => r.name === "Iets zonder naam")?.aside ?? ""));
   const start = await p.locator(".pl__stop").evaluateAll((els) => els.map((e) => `${e.querySelector(".pl__label")?.textContent}: ${e.querySelector(".pl__price")?.textContent?.replace(/\s+/g, " ").trim()}`));
-  check("prijzen: kennismaken, Even Denckh, project", start.join(" | ") === "Kennismaken: gratis circa 20 minuten | Even Denckh: €45 excl. btw · 60 minuten | Project: vaste prijs vooraf afgesproken", start.join(" | "));
+  check("prijzen: kennismaken, Even Denckh, project", start.join(" | ") === "Kennismaken: gratis circa 20 minuten | Even Denckh: €45 excl. btw · €54,45 incl. · 60 minuten | Project: vaste prijs vooraf afgesproken", start.join(" | "));
   const body = (await p.locator("main").textContent()) ?? "";
   check("prijzen: meerwerk na overleg, geen uurtarief op de site", /Iets extra nodig\?/.test(body) && /Je hoort vooraf wat het extra kost\./.test(body) && !/per uur/.test(body));
   check("prijzen: maatschappelijke initiatieven per idee, geen vaste korting", (await p.locator("#maatschappelijk h2").textContent()) === "Vereniging of vrijwilligers?" && /per idee vooraf af/.test(body) && /een vaste korting is het niet/.test(body));

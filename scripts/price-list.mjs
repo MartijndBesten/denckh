@@ -6,7 +6,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { chromium } from "playwright";
-import { BTW_NOTE, DOMAIN_NOTE, FORM_PRICES, HOME_STOPS, EXTRA, INCLUDED, NOT_INCLUDED, PRICE_PDF, SOCIAL, WEB_ADDRESS } from "../src/lib/prices.ts";
+import { BTW_NOTE, DOMAIN_NOTE, FORM_PRICES, HOME_STOPS, EXTRA, INCLUDED, NOT_INCLUDED, PRICE_PDF, SOCIAL, WEB_ADDRESS, inclBtw } from "../src/lib/prices.ts";
 
 const BRAND = path.resolve("public/brand"), FONTS = path.resolve("public/fonts");
 const OUT = path.join(path.resolve("public"), PRICE_PDF);
@@ -50,7 +50,7 @@ const stops = HOME_STOPS.map((s) => `<div class="stop">
 </div>`).join("");
 
 const form = (it) => `<div class="form">
-  <div class="form__top"><h3>${esc(it.name)}</h3><p class="form__price"><span class="from">vanaf</span> €${it.price}</p></div>
+  <div class="form__top"><h3>${esc(it.name)}</h3><p class="form__price"><span class="from">vanaf</span> €${it.price}<span class="incl">${inclBtw(it.price)} incl.</span></p></div>
   <p class="form__text">${esc(it.text)}</p>${it.aside ? `<p class="form__aside">${esc(it.aside)}</p>` : ""}
 </div>`;
 
@@ -108,6 +108,7 @@ p { margin: 0; }
 .form__top { display: flex; align-items: baseline; justify-content: space-between; gap: 4mm; margin-bottom: 0.8mm; }
 .form__price { font-family: "Fraunces Denckh", serif; font-weight: 560; font-size: 12pt; letter-spacing: -0.02em; white-space: nowrap; }
 .form__price .from { margin-right: 0.6mm; }
+.form__price .incl { margin-left: 1.6mm; font-family: "Manrope Denckh", sans-serif; font-size: 7pt; font-weight: 600; letter-spacing: 0; color: ${C.graphite}; }
 .form__text { color: ${C.graphite}; font-size: 8pt; line-height: 1.4; }
 .form__aside, .form__domain { font-size: 7.4pt; line-height: 1.35; margin-top: 0.8mm; }
 .form__domain { color: ${C.ochreDeep}; }
@@ -153,7 +154,7 @@ footer span:last-child { margin-left: auto; }
     <svg viewBox="0 0 ${W} 12"><path d="${priceLine(xs, 6, GW)}" fill="none" stroke="${C.idea}" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <div class="stops">${stops}</div>
   </div>
-  <div class="forms-head"><h2>Richtprijzen per vorm.</h2><p>${esc(BTW_NOTE).replace(". ", ".<br>")}</p></div>
+  <div class="forms-head"><h2>Richtprijzen per vorm.</h2><p>${esc(BTW_NOTE).replace(": ", ":<br>")}</p></div>
   <div class="forms">${FORM_PRICES.map(form).join("")}</div>
   ${foot(1)}
 </section>
