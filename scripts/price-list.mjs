@@ -1,12 +1,12 @@
 // Prijslijst (A4-PDF, twee pagina's) uit dezelfde bron als de site: bedragen en teksten uit src/lib/prices.ts, woordmerk
 // en krul uit public/brand/, de lettertypes van de site. De intro en de stappen van "Zo werkt het" komen uit de
-// prijslijst van de eigenaar (september 2026); de site heeft daar geen eigen tekst voor.
+// prijslijst van de eigenaar (september 2026), met gratis kennismaken en maatschappelijke initiatieven uit B-099.
 // Gebruik: npm run prijslijst  →  public/downloads/denckh-prijslijst.pdf (+ scripts/prijslijst.bron.txt voor de test)
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { chromium } from "playwright";
-import { DOMAIN_NOTE, FORM_PRICES, HOME_STOPS, EXTRA, INCLUDED, NOT_INCLUDED, PRICE_PDF, WEB_ADDRESS } from "../src/lib/prices.ts";
+import { BTW_NOTE, DOMAIN_NOTE, FORM_PRICES, HOME_STOPS, EXTRA, INCLUDED, NOT_INCLUDED, PRICE_PDF, SOCIAL, WEB_ADDRESS } from "../src/lib/prices.ts";
 
 const BRAND = path.resolve("public/brand"), FONTS = path.resolve("public/fonts");
 const OUT = path.join(path.resolve("public"), PRICE_PDF);
@@ -55,7 +55,7 @@ const form = (it) => `<div class="form">
 </div>`;
 
 const STEPS = [
-  ["Kennismaken", "Circa 20 minuten vrijblijvend: past de vraag bij Denckh?"],
+  ["Kennismaken", "Circa 20 minuten, gratis en vrijblijvend: kan Denckh helpen?"],
   ["Intake", "Doel, materiaal, wensen en gewenste vorm scherp krijgen."],
   ["Prijs vooraf", "Bij duidelijke scope een vaste prijs. Anders eerst Even Denckh."],
   ["Maken", "Concept, ontwerp en realisatie in korte lijnen."],
@@ -63,9 +63,9 @@ const STEPS = [
   ["Opleveren", "Werkende vorm, link of bestanden zoals vooraf afgesproken."],
 ];
 
-const foot = (n) => `<footer><span class="foot-mark">${svg("denckh-logo-compact.svg")}</span><span>van idee naar vorm · prijslijst september 2026</span><span>${n}/2</span></footer>`;
+const foot = (n) => `<footer><span class="foot-mark">${svg("denckh-logo-compact.svg")}</span><span>van idee naar vorm · prijslijst november 2026</span><span>${n}/2</span></footer>`;
 
-const html = `<!doctype html><html lang="nl"><head><meta charset="utf-8"><title>Prijslijst Denckh · september 2026</title><style>
+const html = `<!doctype html><html lang="nl"><head><meta charset="utf-8"><title>Prijslijst Denckh · november 2026</title><style>
 @font-face { font-family: "Fraunces Denckh"; src: url(${font("fraunces-denckh.woff2")}) format("woff2"); font-weight: 400 700; }
 @font-face { font-family: "Manrope Denckh"; src: url(${font("manrope-denckh.woff2")}) format("woff2"); font-weight: 200 800; }
 @page { size: A4; margin: 0; }
@@ -142,32 +142,33 @@ footer span:last-child { margin-left: auto; }
 </style></head><body>
 
 <section class="page p1">
-  <div class="top"><span class="mark">${svg("denckh-logo-compact.svg")}</span><p class="label">Prijslijst · september 2026</p></div>
+  <div class="top"><span class="mark">${svg("denckh-logo-compact.svg")}</span><p class="label">Prijslijst · november 2026</p></div>
   <div class="hero">
     <h1>Wat kan een idee kosten?</h1>
     <p class="sub">Richtprijzen voor compacte ideeën die concreet mogen worden.</p>
-    <p class="lead">Je hoeft nog niet precies te weten wat het moet worden. Na een korte kennismaking maken we de vraag scherp. Daarna weet je vooraf wat Denckh voor je kan maken en wat dat kost.</p>
+    <p class="lead">Je hoeft nog niet precies te weten wat het moet worden. Een eerste gesprek is gratis. Pas als we afspreken dat ik iets voor je uitwerk of maak, kost het iets, en dat weet je vooraf.</p>
     <span class="curl">${svg("denckh-curl.svg")}</span>
   </div>
   <div class="line">
     <svg viewBox="0 0 ${W} 12"><path d="${priceLine(xs, 6, GW)}" fill="none" stroke="${C.idea}" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <div class="stops">${stops}</div>
   </div>
-  <div class="forms-head"><h2>Richtprijzen per vorm.</h2><p>Alle bedragen zijn vanafprijzen, exclusief btw.<br>Voor particuliere opdrachten vermeld ik vooraf ook de prijs inclusief btw.</p></div>
+  <div class="forms-head"><h2>Richtprijzen per vorm.</h2><p>${esc(BTW_NOTE).replace(". ", ".<br>")}</p></div>
   <div class="forms">${FORM_PRICES.map(form).join("")}</div>
   ${foot(1)}
 </section>
 
 <section class="page p2">
-  <div class="top"><span class="mark">${svg("denckh-logo-compact.svg")}</span><p class="label">Prijslijst · september 2026</p></div>
-  <div style="margin-top:11mm">
+  <div class="top"><span class="mark">${svg("denckh-logo-compact.svg")}</span><p class="label">Prijslijst · november 2026</p></div>
+  <div style="margin-top:6mm">
     <h1 style="font-size:26pt">Zo werkt het.</h1>
     <p class="muted" style="font-size:9.8pt">Geen groot bureauproces. Eerst begrijpen wat er nodig is, daarna gericht maken.</p>
   </div>
   <div class="steps">${STEPS.map(([t, d]) => `<div class="step"><span class="dot"></span><h3>${t}</h3><p>${d}</p></div>`).join("")}</div>
   <div class="cols">
     <div><h2>Wat zit er standaard bij?</h2><ul>${INCLUDED.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>
-      <h3 style="margin-top:8mm">${esc(EXTRA.title)}</h3><p class="small" style="margin-top:1.4mm">${esc(EXTRA.text)}</p></div>
+      <h3 style="margin-top:6mm">${esc(EXTRA.title)}</h3><p class="small" style="margin-top:1.4mm">${esc(EXTRA.text)}</p>
+      <h3 style="margin-top:4.5mm">${esc(SOCIAL.title)}</h3><p class="small" style="margin-top:1.4mm">${esc(SOCIAL.text)}</p></div>
     <div><h2>Niet standaard inbegrepen</h2><ul class="not">${NOT_INCLUDED.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>
       <p class="small">Heb je iets hiervan nodig? Dan spreken we het vooraf apart af.</p></div>
   </div>

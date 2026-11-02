@@ -10,7 +10,6 @@ import { useMorph } from "@/lib/ink/hooks";
 import { SHAPES, SN } from "@/lib/ink/shapes";
 import { place, useSketch } from "@/lib/ink/store";
 import { useReducedMotion } from "@/lib/ink/useReducedMotion";
-import { Promo } from "@/components/Promo";
 import { DOMAIN_NOTE, FORM_GROUPS, type FormPrice } from "@/lib/prices";
 
 export function FormPrices({ items }: { items: FormPrice[] }) {
@@ -115,7 +114,6 @@ export function FormPrices({ items }: { items: FormPrice[] }) {
             <p className="fp__text">{it.text}</p>
             {it.aside && <p className="fp__aside">{it.aside}</p>}
             {it.domain && <p className="fp__domain">{DOMAIN_NOTE}</p>}
-            {it.key === "website" && <Promo which="website" className="promo" />}
           </li>
         ))}
       </ul>

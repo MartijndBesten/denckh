@@ -30,7 +30,7 @@ export default function Projecten() {
         <header className="price-page__header">
           <p className="eyebrow">projecten</p>
           <h1>Wat er al vorm kreeg.</h1>
-          <p>Vijf ideeën, vijf soorten denken. Scroll, en kijk hoe een lijn elk project wordt.</p>
+          <p>Een ambachtelijk product dat online moest, techniek die begrijpelijk moest worden, een kerk die een autowasdag organiseerde. Elk idee kreeg zijn eigen vorm. Scroll, en kijk hoe een lijn elk project wordt.</p>
         </header>
       </div>
 
