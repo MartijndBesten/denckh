@@ -8,7 +8,6 @@ import { ContactReturn } from "@/components/grammar/ContactReturn";
 import { InkRule } from "@/components/grammar/InkRule";
 import { Outcomes } from "@/components/grammar/Outcomes";
 import { PriceLine } from "@/components/grammar/PriceLine";
-import { Promo } from "@/components/Promo";
 import { SettleTitle } from "@/components/grammar/SettleTitle";
 import { Werkwijze } from "@/components/grammar/Werkwijze";
 import { HOME_STOPS } from "@/lib/prices";
@@ -26,8 +25,8 @@ export default function Home() {
       <section className="shell story" aria-labelledby="idee-titel">
         <SettleTitle id="idee-titel" text="Van idee naar vorm." className="story__title" />
         <div className="story__text">
-          <p className="story__lead">Een website voor je bedrijf. Een handige app. Een klus die elke week terugkomt en eigenlijk vanzelf zou moeten gaan.</p>
-          <p>Daarvoor kun je bij Denckh terecht. Ook voor hulp bij verlichting, sensoren of een technisch probleem, of voor een bijzonder idee dat je praktisch wilt uitwerken. Je hoeft nog niet te weten wat het moet worden: Denckh denkt mee en maakt het. <Link className="link-draw" href="/diensten/">Bekijk wat je kunt aanvragen</Link></p>
+          <p className="story__lead">Het begint niet bij techniek, maar bij jouw vraag. Je hoeft zelf niets van techniek of AI te weten.</p>
+          <p>Soms bestaat de oplossing al en hoef je niets nieuws te laten maken. Dan zeg ik dat gewoon, en help ik je het goed in te stellen. Soms ontstaat er wel iets nieuws: een website, een app of digitaal hulpmiddel, een interactieve uitleg of presentatie, een automatisering of een technische oplossing met verlichting en sensoren. <Link className="link-draw" href="/diensten/">Bekijk waar ik mee help</Link></p>
         </div>
       </section>
 
@@ -45,7 +44,7 @@ export default function Home() {
       <section className="shell outcomes-section" aria-labelledby="uitkomst-titel">
         <header className="projects__head">
           <h2 id="uitkomst-titel">Wat kan een idee worden?</h2>
-          <p>Dat weet je niet altijd vooraf. De vorm volgt uit wat het idee nodig heeft. Juist iets technisch of ingewikkelds? Mooi. Daar begint het vaak.</p>
+          <p>Dat weet je niet altijd vooraf. De vorm volgt uit wat het idee nodig heeft, en soms is dat iets wat al bestaat. Juist iets technisch of ingewikkelds? Mooi. Daar begint het vaak.</p>
         </header>
         <Outcomes />
       </section>
@@ -61,10 +60,9 @@ export default function Home() {
       <section className="shell prices" id="prijzen" aria-labelledby="prijzen-titel">
         <header className="prices__head">
           <h2 id="prijzen-titel">Wat kost zoiets?</h2>
-          <p>Dat hangt af van wat het idee nodig heeft. Een richtprijs krijg je zonder eerst een offerte aan te vragen.</p>
+          <p>Een eerste gesprek kost niets. Pas als we afspreken dat ik iets voor je uitwerk of maak, kost het iets, en dat weet je vooraf. Een vereniging of vrijwilligersinitiatief met een klein budget? Vertel het gerust.</p>
         </header>
         <PriceLine stops={HOME_STOPS} label="Van even samen denken tot echt maken" />
-        <Promo which="website" id="oktoberactie" className="promo promo--home" />
         <div className="prices__more">
           <div className="prices__cta">
             <Link className="ink-button" href="/prijzen/">Bekijk de richtprijzen</Link>
@@ -80,7 +78,8 @@ export default function Home() {
         </figure>
         <div className="small__text">
           <h2 id="klein-titel">Denckh is klein. Bewust.</h2>
-          <p>Heb je een idee, product of technisch verhaal dat nog niet helemaal in vorm is? Dan help ik je uitzoeken wat het eigenlijk nodig heeft, en maak ik het concreet. Je werkt rechtstreeks met mij: degene die meedenkt én maakt.</p>
+          <p>Ik vind het leuk om nieuwe dingen te ontdekken en uit te zoeken wat ermee mogelijk is. Nog leuker vind ik het wanneer iemand anders daar echt iets aan heeft. Daar komt Denckh uit voort.</p>
+          <p>Je werkt rechtstreeks met mij: degene die meedenkt én maakt. Denckh hoeft niet groot te worden. Ik maak liever iets wat werkelijk helpt dan iets omdat het nu eenmaal kan.</p>
           <p>Mijn achtergrond ligt op het snijvlak van techniek en commercie: elektrotechnisch opgeleid en al jaren bezig met verlichting, lichtsturing en slimme gebouwen.</p>
           <p><a className="link-draw" href="/downloads/denckh-achter-denckh.pdf">Meer over mijn achtergrond →</a></p>
         </div>
@@ -89,8 +88,8 @@ export default function Home() {
       <div className="shell"><InkRule /></div>
 
       <section className="shell contact" id="contact" aria-labelledby="contact-titel">
-        <h2 id="contact-titel">En wat zit er bij jou in je hoofd?</h2>
-        <p className="contact__lead">Het hoeft nog geen plan te zijn. Een half idee, een vraag of een probleem is genoeg om mee te beginnen.</p>
+        <h2 id="contact-titel">Waar loop jij tegenaan?</h2>
+        <p className="contact__lead">Een idee, een probleem of gewoon een vraag is genoeg. Je hoeft nog geen plan of budget te hebben. Ik denk graag met je mee, en het eerste gesprek is gratis.</p>
         <ContactReturn />
       </section>
 

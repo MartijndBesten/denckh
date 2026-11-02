@@ -1,6 +1,10 @@
 // Alle prijzen van Denckh op één plek (homepage, /prijzen/ en tests lezen hier). Bedragen in euro, exclusief btw.
 // Bron: prijsbesluit eigenaar, 2026-09-29 (HANDOFF B-062).
 
+/** Btw voor particulieren: 21%, per bedrag berekend uit het bedrag excl. btw (B-100). */
+export const VAT = 0.21;
+export const inclBtw = (excl: number) => `€${(Math.round(excl * (1 + VAT) * 100) / 100).toFixed(2).replace(".", ",")}`;
+
 export type StopGlyph = "punt" | "schets" | "vorm";
 
 /** Een halte op de prijslijn: van een kleine gedachte naar iets dat echt gemaakt is. */
@@ -14,34 +18,57 @@ export type PriceStop = {
   note?: string;
 };
 
+// Homepage en prijslijst-PDF: gratis kennismaken, samen uitwerken, echt maken (B-099). Bedragen ongewijzigd (B-062).
 export const HOME_STOPS: PriceStop[] = [
   {
     glyph: "punt",
-    label: "Eerst even Denckh",
+    label: "Kennismaken",
+    price: "gratis",
+    meta: "circa 20 minuten",
+    text: "Je vertelt je idee, probleem of vraag. We kijken samen of en hoe ik kan helpen.",
+  },
+  {
+    glyph: "schets",
+    label: "Samen uitwerken",
     price: "€45",
-    meta: "excl. btw",
-    text: "60 minuten samen denken. We halen het idee uit elkaar, zoeken de richting en bepalen wat een goede volgende stap is.",
+    meta: `excl. btw · ${inclBtw(45)} incl. · 60 minuten`,
+    text: "Even Denckh: een uur echt aan je vraag werken, met een duidelijke volgende stap. Meer uitzoekwerk: vanaf €95 excl. btw.",
     note: "Wordt het daarna een opdracht vanaf €295? Dan verreken ik die €45.",
   },
-  { glyph: "schets", label: "Eerste vorm", from: true, price: "€125", meta: "excl. btw", text: "Een kleine visual, uitwerking of concrete eerste proef." },
-  { glyph: "vorm", label: "Echt maken", from: true, price: "€295", meta: "excl. btw", text: "Een afgebakend werkend resultaat. Vooraf spreken we een vaste prijs af." },
+  { glyph: "vorm", label: "Echt maken", from: true, price: "€295", meta: `excl. btw · ${inclBtw(295)} incl.`, text: "Een afgebakend werkend resultaat. Vooraf spreken we een vaste prijs af." },
 ];
 
 /** Hoe het begint: kennismaken, samen denken, en een project met een vaste prijs. */
 export const START_STOPS: PriceStop[] = [
-  { glyph: "punt", label: "Kennismaken", price: "vrijblijvend", meta: "circa 20 minuten", text: "Kort je idee vertellen en kijken of Denckh erbij past.", note: "Kost niets. Wil je daarna echt samen aan de slag, dan spreken we dat eerst af." },
+  {
+    glyph: "punt",
+    label: "Kennismaken",
+    price: "gratis",
+    meta: "circa 20 minuten",
+    text: "Je vertelt je idee, probleem of vraag. Ik luister, stel vragen en zeg eerlijk of en hoe ik kan helpen.",
+    note: "Kost niets en verplicht je tot niets. Wil je daarna dat ik iets voor je uitwerk of maak, dan spreken we dat eerst af.",
+  },
   {
     glyph: "schets",
     label: "Even Denckh",
     price: "€45",
-    meta: "excl. btw · 60 minuten",
-    text: "Een uur echt samen aan je idee werken, met een duidelijke volgende stap.",
+    meta: `excl. btw · ${inclBtw(45)} incl. · 60 minuten`,
+    text: "Een uur echt samen aan je vraag werken. Je gaat weg met een duidelijke richting, ook als je het daarna zelf oppakt.",
     note: "Wordt het daarna een opdracht vanaf €295? Dan verreken ik die €45.",
   },
   { glyph: "vorm", label: "Project", price: "vaste prijs", meta: "vooraf afgesproken", text: "Na de intake weet je wat jouw idee kost. Dat bedrag verandert niet zonder overleg." },
 ];
 
-export const DOMAIN_NOTE = "Je eigen domeinnaam is het eerste jaar inbegrepen, tot maximaal €20 excl. btw. Hosting is niet inbegrepen.";
+/** Btw: één zin voor homepage, /prijzen/ en de PDF (B-073). */
+export const BTW_NOTE = "Alle bedragen zijn vanafprijzen: exclusief btw voor zakelijk, met het bedrag inclusief 21% btw voor particulieren.";
+
+/** Kleine maatschappelijke initiatieven: per geval, vooraf afgesproken, geen vaste regeling (B-099). */
+export const SOCIAL = {
+  title: "Vereniging of vrijwilligers?",
+  text: "Een klein maatschappelijk initiatief met weinig budget? Vertel het gerust. Soms past een lagere vergoeding of een vrijwillige bijdrage, soms draag ik iets kosteloos bij. Dat spreken we per idee vooraf af; een vaste korting is het niet.",
+};
+
+export const DOMAIN_NOTE = `Je eigen domeinnaam is het eerste jaar inbegrepen, tot maximaal €20 excl. btw (${inclBtw(20)} incl.). Hosting is niet inbegrepen.`;
 
 export type FormGroup = "zichtbaar" | "digitaal" | "online";
 export const FORM_GROUPS: Record<FormGroup, string> = { zichtbaar: "Zichtbaar maken", digitaal: "Digitaal maken", online: "Online zetten" };
@@ -116,9 +143,3 @@ export const EXTRA = { title: "Iets extra nodig?", text: "Werk buiten de afgespr
 
 /** De prijslijst als PDF: pas zichtbaar als dit bestand in public/ staat (geen kapotte link). */
 export const PRICE_PDF = "/downloads/denckh-prijslijst.pdf";
-
-/** Oktoberactie 2026 (eigenaar). Verdwijnt vanzelf na 31 oktober. */
-const OKT = Date.parse("2026-11-01T00:00:00+01:00");
-export const PROMOS = {
-  website: { text: "Oktoberactie: bij een compacte website (vanaf €295) krijg je Even Denckh (normaal €45) en een tweede correctieronde gratis. Meer pagina’s of een webshop kan ook, vanaf €495. Alleen in oktober.", until: OKT },
-};

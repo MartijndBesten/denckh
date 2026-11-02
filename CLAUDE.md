@@ -5,10 +5,12 @@ voordat je iets wijzigt: daar staat de actuele stand.
 
 ## Het project
 
-- **Denckh** is een kleine creatieve conceptstudio.
+- **Denckh** is een kleine, onafhankelijke digitale werkplaats (B-099): meedenken eerst, maken waar het helpt.
 - **Tagline:** `van idee naar vorm` (altijd zo geschreven: kleine letters, geen punt).
-- Denckh werkt ideeën uit tot **digitale concepten, prototypes en bruikbare vormen**.
-- Denckh is **nadrukkelijk breder dan webdesign**. Positioneer het nooit als "webdesignbureau".
+- Denckh denkt mee over een idee, probleem of vraag en werkt het uit tot **iets bruikbaars**; soms is het advies
+  om iets bestaands te gebruiken. Eerste gesprek gratis. Mensen zelfstandig verder helpen, niet afhankelijk maken.
+- Denckh is **nadrukkelijk breder dan webdesign** en geen traditioneel bureau. Positioneer het nooit als
+  "webdesignbureau" of als verkoper van zoveel mogelijk opdrachten.
 - Deze repo bevat de nieuwe website voor Denckh. Het beoogde domein is `denckh.nl`.
 
 ## Harde regels

@@ -1,6 +1,6 @@
 "use client";
 
-// Vertel → Denckh → Vorm, getekend met jouw eigen lijn. Wat er in de hero gebeurde, is de werkwijze in het klein.
+// Vertel → Samen denken → Vorm geven, getekend met jouw eigen lijn. Wat er in de hero gebeurde, is de werkwijze in het klein.
 import { useRef } from "react";
 import { bbox, linePath, resample } from "@/lib/ink/geometry";
 import { useInView } from "@/lib/ink/hooks";
@@ -11,9 +11,9 @@ const W = 240, H = 170;
 const kindToShape: Record<string, keyof typeof SHAPES> = { knop: "knop", scherm: "website", schuif: "tool", grafiek: "visualisatie", route: "uitleg", kaart: "uitleg", punt: "knop" };
 
 const STEPS = [
-  { title: "Vertel", text: "Een idee, een probleem of een losse gedachte. Een krabbel of één zin is genoeg." },
-  { title: "Denckh", text: "Samen uitzoeken wat er nodig is en welke vorm erbij past." },
-  { title: "Vorm", text: "Het wordt zichtbaar, testbaar of bruikbaar, en waar nodig verder uitgebouwd." },
+  { title: "Vertel", text: "Je hebt een idee, een probleem of een vraag. Eén zin of een krabbel is genoeg." },
+  { title: "Samen denken", text: "We zoeken uit wat je werkelijk nodig hebt. Soms is het antwoord: gebruik iets wat al bestaat." },
+  { title: "Vorm geven", text: "Is het zinvol om iets te maken, dan maak ik het. Zo dat je er zelf mee verder kunt." },
 ];
 
 export function Werkwijze() {

@@ -12,7 +12,6 @@ import { READINGS, readingFor } from "@/lib/ink/interpret";
 import { EXAMPLES, placeExample } from "@/lib/ink/examples";
 import { KRUL_BOX, KRUL_START, krulFit, krulPath } from "@/lib/ink/krul";
 import { normalize, setSketch } from "@/lib/ink/store";
-import { PROMOS } from "@/lib/prices";
 import { useReducedMotion } from "@/lib/ink/useReducedMotion";
 import { FormWidget } from "./FormWidget";
 
@@ -117,32 +116,14 @@ export function PuntStage() {
         const b = svg.getBBox(), top = panel.offsetTop - (parseFloat(getComputedStyle(panel).marginTop) || 0); // ook midden in de overgang
         if (b.height > 0) next = Math.max(0, Math.ceil(b.y + b.height + 16 - top));
       }
-      if (next !== pushRef.current) { pushRef.current = next; setPush(next); }
+      // 1 px speling: de verschuiving verandert zelf de maat van het podium, zonder speling wiebelt hij tussen twee waarden
+      if (next === 0 ? pushRef.current !== 0 : Math.abs(next - pushRef.current) > 1) { pushRef.current = next; setPush(next); }
     };
     raf = requestAnimationFrame(fit);
     const late = setTimeout(() => { if (!raf) raf = requestAnimationFrame(fit); }, 900); // na de animaties
     return () => { cancelAnimationFrame(raf); clearTimeout(late); };
   }, [phase, features, form, concept, size]);
 
-  // --- tijdelijke actie rechtsboven in het tekenvlak: sleep de punt erheen (of klik) en de pagina gaat naar de actie
-  const promoRef = useRef<HTMLAnchorElement>(null);
-  const [promoOn, setPromoOn] = useState(false);
-  useEffect(() => {
-    const id = requestAnimationFrame(() => setPromoOn(Date.now() < PROMOS.website.until));
-    return () => cancelAnimationFrame(id);
-  }, []);
-  function nearPromo(p: Pt) {
-    const el = promoRef.current, stage = stageRef.current;
-    if (!el || !stage) return false;
-    const r = el.getBoundingClientRect(), s = stage.getBoundingClientRect(), m = 20;
-    return p.x > r.left - s.left - m && p.x < r.right - s.left + m && p.y > r.top - s.top - m && p.y < r.bottom - s.top + m;
-  }
-  function goToPromo() {
-    const target = document.getElementById("oktoberactie");
-    if (!target) return;
-    target.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" });
-    target.classList.remove("is-arrived"); void target.offsetWidth; target.classList.add("is-arrived");
-  }
 
   // --- nabijheid: in rust leunt de punt een fractie naar de cursor
   useEffect(() => {
@@ -230,7 +211,6 @@ export function PuntStage() {
     if (phase !== "drawing" || keyboard) return;
     const events = e.nativeEvent.getCoalescedEvents?.() ?? [e.nativeEvent];
     for (const ev of events) addPoint(localPoint(ev), ev.timeStamp, ev.pressure);
-    promoRef.current?.classList.toggle("is-near", nearPromo(pen.current));
   }
 
   const release = useCallback(() => {
@@ -273,12 +253,6 @@ export function PuntStage() {
 
   function end() {
     if (phase !== "drawing" || keyboard) return;
-    if (promoOn && nearPromo(pen.current)) {
-      promoRef.current?.classList.remove("is-near");
-      reset(false);
-      goToPromo();
-      return;
-    }
     release();
   }
 
@@ -398,17 +372,11 @@ export function PuntStage() {
           Mooi<span ref={homeRef} className="punt__home" aria-hidden="true" /><span className="visually-hidden">.</span>
         </h1>
         <p className="punt__intro">
-          Denckh maakt websites, handige apps en slimme technische oplossingen. Voor particulieren, zelfstandigen en kleine bedrijven.
+          Soms weet je niet hoe je verder moet. Of je denkt: dat moet toch slimmer kunnen? Daar denk ik graag over mee, en waar het helpt maak ik het ook.
         </p>
       </div>
 
       <div className="punt__zone" data-zone aria-hidden="true" />
-      {promoOn && (
-        <a ref={promoRef} className="punt__promo" href="#oktoberactie" onClick={(e) => { e.preventDefault(); goToPromo(); }}>
-          <span className="punt__promo-ring" aria-hidden="true" />
-          <span><b>Oktoberactie</b>sleep de punt hierheen</span>
-        </a>
-      )}
 
       <svg ref={svgRef} className="punt__svg" width={size.w} height={size.h} viewBox={`0 0 ${size.w || 1} ${size.h || 1}`} aria-hidden={phase !== "vorm"}>
         {(showInk || phase === "vormen") && morphPts.length > 1 && (
