@@ -83,8 +83,8 @@ export default function PreekhulpPage() {
           <h1 id="ph-titel">Onderzoek voor je preek, met de bron erbij.</h1>
           <p className="oh-lead">Preekhulp brengt Bijbeltekst, grondtekst, oude en nieuwe uitleg en je eigen aantekeningen samen in één onderzoeksdossier. Elke bewering met de bron waar hij op rust. Geen preekschrijver: jij blijft eigenaar van uitleg en preek.</p>
           <div className="oh-actions">
-            <a className="ink-button" href={PROEF_MAIL}>Doe mee aan de proefronde</a>
-            <a className="link-draw" href="#werking">Bekijk hoe het werkt</a>
+            <Link className="ink-button" href="/preekhulp/demo/">Probeer de demo</Link>
+            <a className="link-draw" href={PROEF_MAIL}>Doe mee aan de proefronde</a>
           </div>
           <p className="oh-note">Proefversie 0.1 · draait op je eigen computer.</p>
         </div>
@@ -134,6 +134,7 @@ export default function PreekhulpPage() {
           <Scherm shot={SHOTS.commentaren} size="desk" />
         </div>
         <p className="oh-note">Deze schermen komen uit een onderzoek zonder AI: alles wat je ziet is tekstdata, berekend verband of letterlijke oude uitleg.</p>
+        <div className="oh-actions"><Link className="ink-button" href="/preekhulp/demo/">Klik er zelf doorheen</Link></div>
       </section>
 
       <section className="shell oh-section" aria-labelledby="ph-bronnen">

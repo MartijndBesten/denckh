@@ -798,5 +798,68 @@ nav .link-draw:hover, nav .link-draw:focus-visible { background-size: 100% 6px, 
 .ph .oh-proof > .oh-shot { margin-bottom: 2rem; }
 .ph #werking .oh-note { margin-top: 2rem; }
 .ph .oh-proof__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* Preekhulp.-demo (B-101): rustig werkblad, kleuren met een rol (groen = bewezen, menie = Denckh kijkt/let op). */
+.phd-intro { padding-bottom: 0; }
+.phd-intro h1 { font-size: clamp(2.4rem, 6vw, 4.6rem); line-height: 1; letter-spacing: -0.04em; }
+.phd-sectie { padding-top: clamp(1.5rem, 4vw, 2.5rem); }
+.phd { display: grid; gap: 1.2rem; min-width: 0; }
+.phd-keuze { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.8rem; }
+.phd-keuze__knop { display: grid; gap: 0.2rem; text-align: left; font: inherit; color: inherit; background: #fff; border: 1.5px solid var(--pencil); padding: 0.9rem 1rem; cursor: pointer; min-height: 44px; }
+.phd-keuze__knop span { color: var(--graphite); font-size: 0.9rem; }
+.phd-keuze__knop.is-actief { border-color: var(--ink); box-shadow: inset 0 -3px 0 var(--oh); }
+.phd-vraag { margin: 0; font-size: 1.1rem; max-width: 46rem; }
+.phd-vraag span { display: block; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--graphite); }
+.phd-herkomst { margin: 0; color: var(--graphite); font-size: 0.9rem; max-width: 46rem; }
+.phd-tabs { display: flex; flex-wrap: wrap; gap: 0.2rem 1.4rem; border-bottom: 1.5px solid var(--pencil); }
+.phd-tab { font: inherit; font-weight: 600; color: var(--graphite); background: none; border: 0; padding: 0.7rem 0; margin-bottom: -1.5px; border-bottom: 3px solid transparent; cursor: pointer; min-height: 44px; }
+.phd-tab.is-actief { color: var(--ink); border-bottom-color: var(--ink); }
+.phd-tab:focus-visible, .phd-keuze__knop:focus-visible, .phd-woord:focus-visible, .phd-ref:focus-visible { outline: 2px solid var(--menie); outline-offset: 2px; }
+.phd-blad { min-width: 0; }
+.phd-blad h3 { font-size: 1.3rem; margin: 1.2rem 0 0.4rem; }
+.phd-vers p { margin: 0.3rem 0; max-width: 48rem; }
+.phd-vt { display: inline-block; min-width: 2.6rem; font-size: 0.75rem; font-weight: 700; color: var(--graphite); }
+.phd-zacht { color: var(--graphite); }
+.phd-uitleg { color: var(--graphite); font-size: 0.95rem; max-width: 44rem; }
+.phd-woorden { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.6rem 0 1rem; }
+.phd-woorden.is-hebreeuws { direction: rtl; }
+.phd-woord { display: grid; gap: 0.1rem; justify-items: center; font: inherit; color: inherit; background: #fff; border: 1.5px solid var(--pencil); padding: 0.35rem 0.55rem; cursor: pointer; min-height: 44px; direction: ltr; }
+.phd-woord.is-open { border-color: var(--menie); }
+.phd-woord__vorm { font-family: "SBL Hebrew", "Ezra SIL", "Times New Roman", serif; font-size: 1.35rem; line-height: 1.2; }
+.phd-woord__glosse { font-size: 0.72rem; color: var(--graphite); max-width: 9rem; overflow-wrap: anywhere; }
+.phd-groot { font-family: "SBL Hebrew", "Ezra SIL", "Times New Roman", serif; font-size: 1.5rem; }
+.phd-paneel { border-left: 3px solid var(--menie); background: #fff; padding: 0.8rem 1rem; margin: 0.6rem 0 1rem; overflow-wrap: anywhere; }
+.phd-paneel p { margin: 0.25rem 0; }
+.phd-paneel__kop { font-size: 0.92rem; color: var(--graphite); }
+.phd-paneel__tekst { white-space: pre-line; }
+.phd-lijst { list-style: none; margin: 0.6rem 0 0; padding: 0; }
+.phd-bewering, .phd-signaal { padding: 0.9rem 0; border-bottom: 1px dashed var(--pencil); }
+.phd-bewering p, .phd-signaal p { margin: 0.3rem 0; max-width: 50rem; overflow-wrap: anywhere; }
+.phd-meta { font-size: 0.88rem; color: var(--graphite); }
+.phd-niveau, .phd-ernst { display: inline-block; font-size: 0.78rem; font-weight: 700; padding: 0.1rem 0.55rem; border: 1.5px solid currentColor; border-radius: 999px; }
+.phd-niveau--direct_aangetoond { color: var(--oh); } .phd-niveau--onderbouwde_interpretatie { color: var(--info); } .phd-niveau--mogelijke_onderzoekslijn { color: var(--ochre-deep); }
+.phd-niveau--omstreden { color: var(--menie); } .phd-niveau--niet_geverifieerd { color: var(--graphite); }
+.phd-ernst--hoog { color: var(--menie); } .phd-ernst--middel { color: var(--ochre-deep); } .phd-ernst--laag { color: var(--graphite); }
+.phd-signaal__titel { font-weight: 700; }
+.phd-ref { font: inherit; font-size: 0.85rem; font-weight: 700; background: var(--oh-soft); color: var(--ink); border: 0; padding: 0.25rem 0.5rem; margin: 0 0.3rem 0.2rem 0; cursor: pointer; min-height: 32px; }
+.phd-ref.is-open { background: var(--ink); color: var(--paper); }
+.phd-werk { border-top: 1.5px solid var(--pencil); padding: 0.8rem 0; }
+.phd-werk summary { cursor: pointer; font-weight: 700; min-height: 32px; }
+.phd-citaat { margin: 0.6rem 0 0.8rem; padding-left: 1rem; border-left: 3px solid var(--pencil); max-width: 50rem; }
+.phd-citaat p { margin: 0.25rem 0; white-space: pre-line; overflow-wrap: anywhere; }
+.phd-gedachte { display: grid; gap: 0.5rem; max-width: 44rem; margin: 0.8rem 0 1rem; }
+.phd-gedachte label { font-weight: 700; }
+.phd-gedachte textarea { font: inherit; padding: 0.7rem 0.8rem; border: 1.5px solid var(--ink); background: #fff; color: var(--ink); resize: vertical; width: 100%; }
+.phd-gedachte .ink-button { justify-self: start; }
+.phd-tussenkop { margin-top: 1.8rem !important; }
+.phd-bronnen { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.2rem; }
+.phd-bronnen li { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr); gap: 0.4rem 1rem; padding: 0.7rem 0; border-bottom: 1px dashed var(--pencil); font-size: 0.93rem; overflow-wrap: anywhere; }
+.phd-melding, .phd-laden { color: var(--graphite); }
+@media (max-width: 760px) {
+  .phd-keuze { grid-template-columns: minmax(0, 1fr); }
+  .phd-tabs { flex-wrap: nowrap; overflow-x: auto; gap: 0 1.1rem; scrollbar-width: thin; }
+  .phd-tab { white-space: nowrap; flex: none; }
+  .phd-bronnen li { grid-template-columns: minmax(0, 1fr); }
+}
 @media (max-width: 960px) { .ph .oh-start { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ph .oh-proof__row { grid-template-columns: 1fr; } }
 @media (max-width: 600px) { .ph .oh-start { grid-template-columns: 1fr; } }

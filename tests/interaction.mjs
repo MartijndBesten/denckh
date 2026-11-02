@@ -658,8 +658,9 @@ for (const path of ["", "projecten/", "diensten/", "prijzen/", "projecten/lyev/"
   check("preekhulp: canonical", (await p.locator('link[rel="canonical"]').getAttribute("href")) === "https://denckh.nl/preekhulp/");
   check("preekhulp: één h1", (await p.locator("h1").count()) === 1);
   check("preekhulp: makervermelding met officiële signatuur", (await p.locator('.oh-by img[src="/brand/denckh-logo-signature.svg"]').count()) === 1);
-  const mail = await p.locator(".oh-hero .ink-button").getAttribute("href");
-  check("preekhulp: hoofdactie opent een mail met onderwerp", /^mailto:[^?]+@denckh\.nl\?subject=Preekhulp/.test(mail ?? ""), mail ?? "");
+  const mail = await p.locator(".oh-hero a[href^=\"mailto:\"]").getAttribute("href");
+  check("preekhulp: proefronde opent een mail met onderwerp", /^mailto:[^?]+@denckh\.nl\?subject=Preekhulp/.test(mail ?? ""), mail ?? "");
+  check("preekhulp: hoofdactie is de demo", (await p.locator('.oh-hero .ink-button').getAttribute("href")) === "/preekhulp/demo/");
   check("preekhulp: geen formulier dat niets verstuurt", (await p.locator("form").count()) === 0);
   const tekst = await p.locator("main").innerText();
   check("preekhulp: geen prijzen genoemd", !/€\s?\d/.test(tekst));
@@ -675,6 +676,37 @@ for (const path of ["", "projecten/", "diensten/", "prijzen/", "projecten/lyev/"
     await p.goto(new URL("preekhulp/", BASE).href);
     const text = await p.locator("main").innerText();
     check("preekhulp zonder JavaScript: acht stappen en veelgestelde vragen", (await p.locator(".oh-start li").count()) === 8 && (await p.locator(".oh-faq details").count()) === 6 && text.includes("Elke bewering met bewijs"));
+    await ctx.close(); }
+  // Preekhulp.-demo (B-101): echte, vooraf berekende uitkomsten; alles in de browser.
+  for (const width of [320, 390, 820, 1440]) {
+    const { p, ctx, errors } = await page(browser, { width, height: 900, mobile: width < 800, path: "preekhulp/demo/" });
+    await p.waitForSelector(".phd-vraag");
+    check(`preekhulp-demo ${width}px: geen horizontale overloop`, !(await p.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1)));
+    check(`preekhulp-demo ${width}px: geen consolefouten`, errors.filter(ext).length === 0, errors.filter(ext).join(" | "));
+    await ctx.close();
+  }
+  { const { p, ctx } = await page(browser, { width: 390, height: 900, mobile: true, path: "preekhulp/demo/" });
+    await p.waitForSelector(".phd-vraag");
+    check("preekhulp-demo: één h1 en canonical", (await p.locator("h1").count()) === 1 && (await p.locator('link[rel="canonical"]').getAttribute("href")) === "https://denckh.nl/preekhulp/demo/");
+    check("preekhulp-demo: drie voorbeelden", (await p.locator(".phd-keuze__knop").count()) === 3);
+    check("preekhulp-demo: eerlijk over herkomst (zonder AI)", (await p.locator(".phd-herkomst").innerText()).includes("zonder AI"));
+    await p.locator(".phd-woord").first().tap();
+    check("preekhulp-demo: grondtekstwoord opent met Strong-nummer", /[HG]\d{4}/.test(await p.locator(".phd-paneel").first().innerText()));
+    await p.getByRole("tab", { name: "Verbanden" }).tap();
+    await p.locator(".phd-ref").first().tap();
+    check("preekhulp-demo: bewijsstuk opent met vindplaats", (await p.locator(".phd-paneel__kop").count()) >= 1);
+    await p.getByRole("tab", { name: "Wat zie ik over het hoofd?" }).tap();
+    await p.locator(".phd-gedachte textarea").fill("Zo roept God ons in de doop terug naar zijn verbond, als sacrament van genade.");
+    await p.getByRole("button", { name: "Controleer mijn gedachte" }).tap();
+    const hoofd = await p.locator(".phd-blad").innerText();
+    check("preekhulp-demo: gedachte gecontroleerd (sacrament niet in de tekst, verbond wel)", /Begrippen uit je gedachte[\s\S]*sacrament/.test(hoofd) && !/‘verbond’/.test(hoofd));
+    check("preekhulp-demo: themasignaal belofte/doop", hoofd.includes("‘belofte’") && hoofd.includes("‘doop’"));
+    await p.getByRole("radio", { name: /Lucas 15:20/ }).tap();
+    await p.waitForSelector(".phd-vraag");
+    await p.waitForFunction(() => document.querySelector(".phd-vraag")?.textContent?.includes("Lucas"));
+    await p.getByRole("tab", { name: "Tekst en grondtaal" }).tap();
+    check("preekhulp-demo: wisselen naar Lucas 15:20 (Grieks)", (await p.locator(".phd-woord").count()) > 10);
+    check("preekhulp-demo: sitemap bevat de demo", (await (await p.request.get(new URL("sitemap.xml", BASE).href)).text()).includes("/preekhulp/demo/"));
     await ctx.close(); }
   { const { p, ctx } = await page(browser, { path: "" });
     check("footer linkt naar Preekhulp.", (await p.locator('.site-footer a[href="/preekhulp/"]').count()) === 1);
