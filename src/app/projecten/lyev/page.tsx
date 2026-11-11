@@ -25,8 +25,8 @@ export default function LyevCase() {
       parts={[
         { title: "De vraag", text: "Een eigen plek waar Lynn en Evy hun zelfgemaakte en versierde accessoires kunnen laten zien en verkopen." },
         { title: "De oplossing", text: "Een vrolijke, herkenbare webshop waarin de producten centraal staan en klanten waar mogelijk zelf kleuren of een naam kiezen." },
-        { title: "Achter de schermen", text: "Een eenvoudig beheer waarin producten, prijzen, foto's en keuzes in kleur en naam vanaf de telefoon worden aangepast. Nieuwe producten gaan pas online na een controle." },
-        { title: "Het resultaat", text: "Een zelfstandige, mobielvriendelijke webshop met een eigen uitstraling, passend bij de makers." },
+        { title: "Achter de schermen", text: "Een eenvoudig beheer op de telefoon: de makers zetten zelf nieuwe producten online, passen prijzen, foto's en keuzes in kleur en naam aan en handelen bestellingen en aanvragen af." },
+        { title: "Het resultaat", text: "Een zelfstandige, mobielvriendelijke webshop met een eigen uitstraling, waar klanten direct kunnen bestellen." },
       ]}
       made={[
         "Merkuitstraling en websiteontwerp, met een eigen logo en huisstijl",
@@ -35,6 +35,7 @@ export default function LyevCase() {
         "Productbeheer in twee stappen: wat heb je gemaakt, en een foto erbij",
         "Hoofdfoto's op de homepage die de makers zelf kiezen, ordenen en eerst als voorbeeld bekijken",
         "Een eigen bestel- en aanvraagproces, met voor maatwerk eerst een voorstel",
+        "Favorieten en delen, met korting voor wie een product deelt",
         "Animaties en een speelse productpresentatie",
         "Technische realisatie, hosting en beveiliging",
       ]}

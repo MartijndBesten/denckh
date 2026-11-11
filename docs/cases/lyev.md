@@ -1,7 +1,7 @@
 # LYEV. — projectvermelding
 
 - Bron: https://lyev.nl (live versie `4e106ff`) en repository `MartijndBesten/lyev` (privé), `main` @ `4e106ff`.
-- Gecontroleerd: 2026-10-19/20. Broncode gelezen (o.a. `src/domain/personalisatie.ts`, `src/domain/homepage.ts`,
+- Gecontroleerd: 2026-10-19/20; teksten van `/projecten/lyev/` opnieuw nagelopen op 2026-10-24 tegen live lyev.nl en `main` @ `eabcf76` (B-095). Broncode gelezen (o.a. `src/domain/personalisatie.ts`, `src/domain/homepage.ts`,
   `src/web/beheer/snel.tsx`, `src/web/beheer/homepage.tsx`, `public/assets/lyev.css`); `npm run check` → 75/75 tests.
 - Rechten: LYEV. is een handelsnaam van Denckh. (eigen project). Naam en link op verzoek van de eigenaar (opdracht 19-10-2026).
 - Status: projectkaart op de homepage (*Wat er al vorm kreeg.*) en projectpagina `/projecten/lyev/` (B-088).
@@ -14,16 +14,17 @@
 | Mobielvriendelijke webshop | live, gecontroleerd op 390 px |
 | Kleur- en naamkeuze met meerprijs per product | `personalisatie.ts`, migratie `0004`, tests `personaliseren.test.ts`; beheerscherm in de demo |
 | Maatwerkaanvraag met kleuren en naam (aanvraag → voorstel → akkoord) | live `/maak-het-persoonlijk` |
-| Product toevoegen in twee stappen op de telefoon, publicatie na controle | `snel.tsx`, `snel.test.ts` |
+| Product toevoegen in twee stappen op de telefoon; de maker zet het zelf online (eigen veiligheidsvinkje), de ouder kan blokkeren (sinds 22-10-2026) | `snel.tsx`, `snel.test.ts`, `zelfstandig.test.ts` |
 | Hoofdfoto's zelf kiezen, ordenen, voorbeeld, publiceren | `homepage.ts`, `homepage.test.ts` |
-| Eigen bestelproces zonder betaalprovider | `bestellen.ts`, `bestellen.test.ts` |
+| Eigen bestelproces zonder betaalprovider; winkel open sinds 21-10-2026 (afhalen) | `bestellen.ts`, `bestellen.test.ts`; live `/mandje`, `/bestellen` |
+| Favorieten en delen met 10% deelkorting | `likes-delen.test.ts`; live voorwaarden ‘Deelkorting’ (curl 24-10-2026) |
 | Animaties hoofdfoto's (entree, diepte, glans, reduced motion) | `lyev.css`, `lyev.js` |
 | Hosting en beveiliging | Cloudflare Workers + D1, HTTPS/HSTS, sessies, CSRF, rate limiting |
 
 ## Bewust niet genoemd
 
-- De winkel staat nog dicht voor echte bestellingen (`WINKEL_OPEN = "false"`); de teksten beloven daarom geen
-  lopende verkoop. Een kleurkeuze staat nog bij geen live product aan; de pagina noemt het als functie van de webshop.
+- ~~De winkel staat nog dicht~~ Achterhaald: de winkel is sinds 21-10-2026 open (alleen afhalen). De pagina noemt
+  bestellen als functie, zonder verkoopcijfers of leveringsbelofte.
 - Geen leeftijd, school, adres of accountgegevens van de makers.
 
 ## Beelden
