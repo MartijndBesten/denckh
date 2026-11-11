@@ -20,8 +20,9 @@ const ease = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) /
 /** Binnen een overgang: 12% rust aan beide kanten, zodat elke vorm even blijft staan. */
 const settle = (local: number) => ease(clamp((local - 0.12) / 0.76, 0, 1));
 
-export function Construct({ project, label, end, ratio = 0.72, tone = "paper" }: {
-  project: keyof typeof BUILDS; label: string; end?: string; ratio?: number; tone?: "paper" | "night";
+/** `narrowRatio`: andere hoogte/breedte-verhouding onder 520 px breed (bijv. een staande telefoon die anders te klein wordt). */
+export function Construct({ project, label, end, ratio = 0.72, narrowRatio, tone = "paper" }: {
+  project: keyof typeof BUILDS; label: string; end?: string; ratio?: number; narrowRatio?: number; tone?: "paper" | "night";
 }) {
   const build = BUILDS[project];
   const ref = useRef<HTMLDivElement>(null);
@@ -30,7 +31,7 @@ export function Construct({ project, label, end, ratio = 0.72, tone = "paper" }:
   // 1 als het midden op 28% staat.
   const p = useScrollProgress(ref, !reduced, { from: 0.92, to: 0.28 });
   const width = useWidth(ref, 520);
-  const w = width, h = Math.round(width * ratio);
+  const w = width, h = Math.round(width * (narrowRatio && width < 520 ? narrowRatio : ratio));
   const sketch = useSketch();
   const { stages, final } = useMemo(() => build(w, h), [build, w, h]);
   const start = useMemo(() => resample(place(sketch.points, w * 0.15, h * 0.15, w * 0.7, h * 0.7), SN), [sketch, w, h]);
@@ -92,15 +93,19 @@ export function Construct({ project, label, end, ratio = 0.72, tone = "paper" }:
 
   return (
     <figure className={`construct construct--${tone}`} ref={ref} style={{ ["--final" as string]: finalT }}>
-      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} role="img" aria-label={label}>
-        {final && <g className="construct__final" style={{ opacity: finalT }}>{final}</g>}
-        <path d={linePath(pts, closed)} className={`construct__line${shapeIdx === 0 ? " is-sketch" : ""}`} style={{ opacity: all[shapeIdx].hideLine && atRest ? 0 : 1 - finalT * 0.85 }} />
-        {all.map((s, si) => s.details && (
-          <g key={si} className={`construct__details${si === shapeIdx && atRest ? " is-on" : ""}`} style={{ opacity: si === shapeIdx ? 1 - finalT : 0 }}>
-            {s.details}
-          </g>
-        ))}
-      </svg>
+      {/* Schematisch beeld: de woorden erin (zoals productnamen in de Deegh-webshop) horen niet in zoekfragmenten
+          over Denckh (B-091). Google leest data-nosnippet alleen op div, span en section. */}
+      <div data-nosnippet="">
+        <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} role="img" aria-label={label}>
+          {final && <g className="construct__final" style={{ opacity: finalT }}>{final}</g>}
+          <path d={linePath(pts, closed)} className={`construct__line${shapeIdx === 0 ? " is-sketch" : ""}`} style={{ opacity: all[shapeIdx].hideLine && atRest ? 0 : 1 - finalT * 0.85 }} />
+          {all.map((s, si) => s.details && (
+            <g key={si} className={`construct__details${si === shapeIdx && atRest ? " is-on" : ""}`} style={{ opacity: si === shapeIdx ? 1 - finalT : 0 }}>
+              {s.details}
+            </g>
+          ))}
+        </svg>
+      </div>
       <figcaption className="construct__steps">
         <span className="visually-hidden">Stappen van lijn naar vorm. Kies een stap om die te bekijken.</span>
         <ol>

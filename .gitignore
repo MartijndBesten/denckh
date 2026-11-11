@@ -34,3 +34,4 @@ desktop.ini
 !.vscode/extensions.json
 .idea/
 *.swp
+.venv-tekst/

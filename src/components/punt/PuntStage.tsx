@@ -116,12 +116,14 @@ export function PuntStage() {
         const b = svg.getBBox(), top = panel.offsetTop - (parseFloat(getComputedStyle(panel).marginTop) || 0); // ook midden in de overgang
         if (b.height > 0) next = Math.max(0, Math.ceil(b.y + b.height + 16 - top));
       }
-      if (next !== pushRef.current) { pushRef.current = next; setPush(next); }
+      // 1 px speling: de verschuiving verandert zelf de maat van het podium, zonder speling wiebelt hij tussen twee waarden
+      if (next === 0 ? pushRef.current !== 0 : Math.abs(next - pushRef.current) > 1) { pushRef.current = next; setPush(next); }
     };
     raf = requestAnimationFrame(fit);
     const late = setTimeout(() => { if (!raf) raf = requestAnimationFrame(fit); }, 900); // na de animaties
     return () => { cancelAnimationFrame(raf); clearTimeout(late); };
   }, [phase, features, form, concept, size]);
+
 
   // --- nabijheid: in rust leunt de punt een fractie naar de cursor
   useEffect(() => {
@@ -370,7 +372,7 @@ export function PuntStage() {
           Mooi<span ref={homeRef} className="punt__home" aria-hidden="true" /><span className="visually-hidden">.</span>
         </h1>
         <p className="punt__intro">
-          Een technisch product, een ingewikkeld verhaal, een praktisch probleem of een goed idee. Denckh zoekt uit welke vorm het begrijpelijk, bruikbaar of zichtbaar maakt.
+          Soms weet je niet hoe je verder moet. Of je denkt: dat moet toch slimmer kunnen? Daar denk ik graag over mee, en waar het helpt maak ik het ook.
         </p>
       </div>
 
@@ -442,7 +444,7 @@ export function PuntStage() {
               <button type="button" className="link-button" onClick={() => reset()}>Nog een idee</button>
               {fromExample && <button type="button" className="link-button" onClick={playExample}>nog een voorbeeld</button>}
             </div>
-            <p className="punt__note">Dit prototype reageert met vaste regels in je browser. Er wordt niets verstuurd of bewaard.</p>
+            <p className="punt__note">Je tekening blijft in je browser. Er wordt niets verstuurd of bewaard.</p>
           </div>
         )}
       </div>

@@ -21,6 +21,22 @@ const ITEMS: Item[] = [
     accentLast: true,
   },
   {
+    shape: "kerk",
+    kind: "kerkelijke organisatie → eigen platform",
+    title: "Kerckh.",
+    text: "Een overzichtelijk platform voor kerkelijke organisatie. Zaalreserveringen, activiteiten en vrijwilligers op één plek. Bezoekers vragen online een ruimte aan, de kerk bevestigt, en de eigen agenda van de kerk blijft leidend.",
+    link: { href: "https://kerckh.nl", label: "Bekijk Kerckh. →" },
+    accentLast: true,
+  },
+  {
+    shape: "dart",
+    kind: "darten → een app op je telefoon",
+    title: "OKKIE.",
+    text: "Een dartapp om te trainen, wedstrijden te spelen en je scores bij te houden. Ontworpen voor de telefoon, ook als app op je beginscherm.",
+    link: { href: "https://okkiedarts.nl", label: "Bekijk OKKIE. →" },
+    accentLast: true,
+  },
+  {
     shape: "presentatie",
     kind: "complexe techniek → een verhaal in schermen",
     title: "Een presentatie die je bedient",
@@ -77,7 +93,7 @@ export function MoreWork() {
     <ul className="more">
       {ITEMS.map((item, i) => (
         <li key={item.title} className="more__item">
-          <Glyph item={item} delay={i * 260} />
+          <Glyph item={item} delay={(i % 2) * 260} />
           <p className="case__kind">{item.kind}</p>
           <h3>{item.title}</h3>
           <p>{item.text}</p>

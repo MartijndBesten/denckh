@@ -1,10 +1,20 @@
-// Drie projecten, drie soorten denken. Alleen geverifieerde inhoud (zie docs/cases/). Geen logo's of beelden van derden:
-// de eindbeelden zijn schematische weergaven, zo gemarkeerd.
+// Vijf projecten, vijf soorten denken. Alleen geverifieerde inhoud (zie docs/cases/). Geen logo's of beelden van derden:
+// de eindbeelden zijn schematische weergaven, zo gemarkeerd. Uitzondering: LYEV. (eigen project) eindigt in een echte
+// schermafbeelding van de eigen site.
 import { SHAPES } from "@/lib/ink/shapes";
 import { resample } from "@/lib/ink/geometry";
 import { rr, type Build } from "./Construct";
+import { GLYPHS, TEKSTEN, UPM } from "./deeghShotGlyphs";
 
 const D = (d: string, key: number) => <path key={key} d={d} pathLength={1} className="c-anim" />;
+
+/** Vaste tekst als contouren (scripts/tekst-als-pad.py): ziet eruit als tekst in Manrope, maar is geen paginatekst. Zo
+ *  lezen zoekmachines de productnamen van Deegh niet als aanbod van Denckh (B-092). Oorsprong = begin van de basislijn. */
+const Tekst = ({ t, x, y, size }: { t: string; x: number; y: number; size: number }) => (
+  <g className="shot-tekst" transform={`translate(${x} ${y}) scale(${size / UPM})`} fill="#554f4f">
+    {TEKSTEN[t].map(([g, dx], i) => <path key={i} d={GLYPHS[g]} transform={`translate(${dx} 0)`} />)}
+  </g>
+);
 
 /** Deegh: product → merk → webshop. Namen uit de broncode van de webshop (menu en producten).
  *  Het logo is eigen werk van de eigenaar (docs/cases/deegh.md); de deegbol rijst, de lijn wordt een cirkel en maakt
@@ -46,15 +56,15 @@ export const deeghBuild: Build = (w, h) => {
       <g className="deegh-shot">
         <path d={rr(x, y, W, H, 10)} fill="#ffffff" stroke="#554f4f" strokeOpacity=".35" />
         <path d={rr(x, y, W, 26, 10)} fill="#f0e8d3" />
-        <text x={x + 14} y={y + 17} fontSize={fs + 3} fontWeight="700" fill="#554f4f">deegh</text>
-        {nav.map((n, i) => <text key={n} x={navX[i]} y={y + 17} fontSize={nfs} fill="#554f4f">{n}</text>)}
-        <text x={x + 16} y={y + 56} fontSize={fs + 5} fontWeight="700" fill="#554f4f">Ons deeg</text>
+        <Tekst t="deegh" x={x + 14} y={y + 17} size={fs + 3} />
+        {nav.map((n, i) => <Tekst key={n} t={n} x={navX[i]} y={y + 17} size={nfs} />)}
+        <Tekst t="Ons deeg" x={x + 16} y={y + 56} size={fs + 5} />
         {products.map(([n, s], i) => (
           <g key={n}>
             <path d={rr(x + 16 + i * (tw + 12), y + 70, tw, H * 0.38, 6)} fill="#f0e8d3" />
             <circle cx={x + 16 + i * (tw + 12) + tw / 2} cy={y + 70 + H * 0.19} r={Math.min(tw, H * 0.38) * 0.22} fill="#fbf7ec" stroke="#554f4f" strokeOpacity=".25" />
-            <text x={x + 16 + i * (tw + 12)} y={y + 86 + H * 0.38} fontSize={pfs} fontWeight="700" fill="#554f4f">{n}</text>
-            <text x={x + 16 + i * (tw + 12)} y={y + 100 + H * 0.38} fontSize={pfs - 1} fill="#554f4f">{s}</text>
+            <Tekst t={n} x={x + 16 + i * (tw + 12)} y={y + 86 + H * 0.38} size={pfs} />
+            <Tekst t={s} x={x + 16 + i * (tw + 12)} y={y + 100 + H * 0.38} size={pfs - 1} />
           </g>
         ))}
       </g>
@@ -158,6 +168,133 @@ export const spelBuild: Build = (w, h) => {
   };
 };
 
+/** LYEV.: een strasssteentje → een product met jouw kleur en naam → een webshop op de telefoon. Het eindbeeld is een
+ *  echte schermafbeelding van de homepage van lyev.nl (docs/cases/lyev.md), in het telefoonkader dat de lijn tekende. */
+export const lyevBuild: Build = (w, h) => {
+  // 1 · een strasssteentje van boven: achthoek met facetten en een glinstering
+  const s = Math.min(w, h) * 0.3, gx = w / 2, gy = h / 2;
+  const oct = Array.from({ length: 9 }, (_, i) => {
+    const a = -Math.PI / 2 + Math.PI / 8 + (i / 8) * Math.PI * 2;
+    return { x: gx + Math.cos(a) * s, y: gy + Math.sin(a) * s };
+  });
+  const gem = resample(oct, 128);
+  const inner = oct.slice(0, 8).map((p) => ({ x: gx + (p.x - gx) * 0.5, y: gy + (p.y - gy) * 0.5 }));
+  const sx = gx + s * 0.95, sy = gy - s * 0.95, sr = s * 0.2;
+  const gemDetails = [
+    D(`M${inner.map((p) => `${p.x} ${p.y}`).join(" L")} Z`, 0),
+    D(inner.map((p, i) => `M${p.x} ${p.y} L${oct[i].x} ${oct[i].y}`).join(" "), 1),
+    <path key="spark" d={`M${sx} ${sy - sr} V${sy + sr} M${sx - sr} ${sy} H${sx + sr}`} pathLength={1} className="c-anim c-idea" />,
+  ];
+
+  // 2 · een product dat je zelf kiest: een label met kleurrondjes en een naamregel
+  const tW = Math.min(w * 0.6, h * 0.95), tH = tW * 0.62, tx = (w - tW) / 2, ty = (h - tH) / 2;
+  const tag = resample(rrPts(tx, ty, tW, tH, 14), 128);
+  const dr = tH * 0.085;
+  const ring = (cx: number, cy: number, r: number) => `M${cx - r} ${cy} a${r} ${r} 0 1 0 ${2 * r} 0 a${r} ${r} 0 1 0 ${-2 * r} 0`;
+  const tagDetails = [
+    <path key="gat" d={ring(tx + tW * 0.1, ty + tH * 0.2, dr * 0.6)} pathLength={1} className="c-anim" />,
+    ...[0, 1, 2, 3].map((i) => (
+      <path key={`k${i}`} d={ring(tx + tW * 0.24 + i * dr * 3, ty + tH * 0.42, dr)} pathLength={1} className={i === 1 ? "c-anim c-idea" : "c-anim"} />
+    )),
+    <path key="naam" d={`M${tx + tW * 0.24 - dr} ${ty + tH * 0.72} H${tx + tW * 0.82}`} pathLength={1} className="c-anim" />,
+  ];
+
+  // 3 · een webshop op de telefoon, in dezelfde verhouding als de schermafbeelding (540 × 1169)
+  const pH = h * 0.92, pW = pH * (540 / 1169), px = (w - pW) / 2, py = (h - pH) / 2;
+  const phone = resample(rrPts(px, py, pW, pH, pW * 0.12), 128);
+  const m = pW * 0.1, cell = (pW - m * 3) / 2;
+  const shopDetails = [
+    `M${px + m} ${py + pH * 0.1} H${px + pW - m}`,
+    `M${px + m} ${py + pH * 0.2} H${px + pW * 0.7} M${px + m} ${py + pH * 0.26} H${px + pW * 0.55}`,
+    ...[0, 1, 2, 3].map((i) => rr(px + m + (i % 2) * (cell + m), py + pH * 0.36 + Math.floor(i / 2) * (cell + m), cell, cell, 5)),
+    rr(px + m, py + pH * 0.36 + 2 * (cell + m), pW - 2 * m, pH * 0.07, pH * 0.035),
+  ].map(D);
+  const bezel = pW * 0.035;
+  return {
+    stages: [
+      { outline: gem, closed: true, caption: "een strasssteentje", details: gemDetails },
+      { outline: tag, closed: true, caption: "jouw kleur, jouw naam", details: tagDetails },
+      { outline: phone, closed: true, caption: "een webshop op je telefoon", details: shopDetails },
+    ],
+    final: (
+      <g className="lyev-shot">
+        <defs>
+          <clipPath id="lyev-scherm"><path d={rr(px + bezel, py + bezel, pW - bezel * 2, pH - bezel * 2, pW * 0.1)} /></clipPath>
+        </defs>
+        <path d={rr(px, py, pW, pH, pW * 0.12)} className="lyev-shot__frame" />
+        <image href="/images/projecten/lyev-home.webp" x={px + bezel} y={py + bezel} width={pW - bezel * 2} height={pH - bezel * 2}
+          preserveAspectRatio="xMidYMin slice" clipPath="url(#lyev-scherm)" />
+      </g>
+    ),
+  };
+};
+
+/** TCLP: een armatuur → de keten als kringloop → alle partijen verbonden. Schematisch, zonder het TCLP-logo of beelden
+ *  van de site; stapnamen en rollen zoals op tclp.nl (docs/cases/tclp.md). */
+export const tclpBuild: Build = (w, h) => {
+  // 1 · een armatuur aan het eind van een project: pendelkap aan een snoer
+  const cx = w / 2, s = Math.min(w, h), ky = h * 0.36, kh = s * 0.3, top = s * 0.14, bot = s * 0.34;
+  const shade = resample([
+    { x: cx - top, y: ky }, { x: cx + top, y: ky }, { x: cx + bot, y: ky + kh }, { x: cx - bot, y: ky + kh }, { x: cx - top, y: ky },
+  ], 128);
+  const lampDetails = [
+    `M${cx} ${ky} V${h * 0.06}`,
+    `M${cx - s * 0.08} ${ky + kh} A${s * 0.08} ${s * 0.08} 0 0 0 ${cx + s * 0.08} ${ky + kh}`,
+  ].map(D);
+
+  // 2 · zes stappen in een kring: van demonteren tot opnieuw inzetten (de korte namen uit de draaiende hero)
+  const r = s * 0.33, cy = h / 2;
+  const ring = resample(Array.from({ length: 129 }, (_, i) => {
+    const a = -Math.PI / 2 + (i / 128) * Math.PI * 2;
+    return { x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r };
+  }), 128);
+  const names = ["Demonteren", "Ophalen", "Controleren", "Herstellen", "Opslaan", "Herinzetten"];
+  const at = (i: number, k = 1) => { const a = -Math.PI / 2 + (i / 6) * Math.PI * 2; return { x: cx + Math.cos(a) * r * k, y: cy + Math.sin(a) * r * k }; };
+  const roomy = w >= 440;
+  const ringDetails = names.map((n, i) => {
+    const p = at(i), l = at(i, i % 3 === 0 ? 1.3 : 1.14), side = Math.abs(l.x - cx) < 4 ? "middle" : l.x > cx ? "start" : "end";
+    return (
+      <g key={n} className="callout">
+        <circle cx={p.x} cy={p.y} r={12} />
+        <text x={p.x} y={p.y + 4} textAnchor="middle">{i + 1}</text>
+        {roomy && <text x={l.x} y={l.y + 4} textAnchor={side} className="callout__label">{n}</text>}
+      </g>
+    );
+  });
+
+  // 3 · alle partijen verbonden: vijf rollen rond een middelpunt, het middelpunt is TCLP
+  const pr = s * 0.36;
+  const pts = Array.from({ length: 5 }, (_, i) => {
+    const a = -Math.PI / 2 + (i / 5) * Math.PI * 2;
+    return { x: cx + Math.cos(a) * pr, y: cy + Math.sin(a) * pr };
+  });
+  const net = resample([...pts, pts[0]], 128);
+  const roles = ["klant", "installateur", "fabrikant", "logistiek", "volgend project"];
+  const netDetails = [
+    ...pts.map((p, i) => {
+      const k = 12 / pr; // de spaken beginnen buiten het middelpunt
+      return <path key={`s${i}`} d={`M${cx + (p.x - cx) * k} ${cy + (p.y - cy) * k} L${p.x} ${p.y}`} pathLength={1} className="c-anim" />;
+    }),
+    ...pts.map((p, i) => {
+      const l = { x: cx + (p.x - cx) * 1.3, y: cy + (p.y - cy) * 1.3 }, side = Math.abs(l.x - cx) < 4 ? "middle" : l.x > cx ? "start" : "end";
+      return (
+        <g key={`p${i}`} className="callout">
+          <circle cx={p.x} cy={p.y} r={7} />
+          {roomy && <text x={l.x} y={l.y + 4} textAnchor={side} className="callout__label">{roles[i]}</text>}
+        </g>
+      );
+    }),
+    <path key="tclp" d={`M${cx - 9} ${cy} a9 9 0 1 0 18 0 a9 9 0 1 0 -18 0`} pathLength={1} className="c-anim c-idea" />,
+  ];
+  return {
+    stages: [
+      { outline: shade, closed: true, caption: "een armatuur", details: lampDetails },
+      { outline: ring, closed: true, caption: "zes stappen in een kring", details: ringDetails },
+      { outline: net, closed: true, caption: "alle partijen verbonden", details: netDetails },
+    ],
+  };
+};
+
 /** Afgeronde rechthoek als puntenreeks (voor vormen die moeten kunnen morphen). */
 function rrPts(x: number, y: number, w: number, h: number, r: number) {
   const pts: { x: number; y: number }[] = [];
@@ -169,4 +306,4 @@ function rrPts(x: number, y: number, w: number, h: number, r: number) {
   return pts;
 }
 
-export const BUILDS = { deegh: deeghBuild, koffer: kofferBuild, spel: spelBuild };
+export const BUILDS = { deegh: deeghBuild, koffer: kofferBuild, spel: spelBuild, lyev: lyevBuild, tclp: tclpBuild };

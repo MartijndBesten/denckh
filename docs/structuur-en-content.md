@@ -13,7 +13,7 @@ De homepage volgt nu de interactieve grammatica uit `docs/creative-direction.md`
 | 2 | overgang | jouw lijn, uitgerold |
 | 3 | **Van idee naar vorm.** | letters vinden hun plek tijdens het scrollen |
 | 4 | **Wat er al vorm kreeg.** | drie projecten, elk uit jouw lijn opgebouwd; scroll bepaalt de stand, de stappen eronder zijn klikbaar. Deegh (deegbol → merk met het echte logo → webshop), een demokoffer (techniek → uitleg; zonder merknaam), Loflijn (kaart → lied → tijdlijn) |
-| 5 | **Ook gemaakt.** | drie kleinere projecten, elk één vorm waar jouw lijn in overloopt: Autowasdag Sionkerk (agenda), een presentatie (scherm; anoniem), een werkdag in 3D (gebouw; anoniem) |
+| 5 | **Ook gemaakt.** | vier kleinere projecten, elk één vorm waar jouw lijn in overloopt: Autowasdag Sionkerk (agenda), Kerckh. (kerk met agendakaart; eigen product, B-077), een presentatie (scherm; anoniem), een werkdag in 3D (gebouw; anoniem). Twee kolommen op tablet en desktop, één op mobiel (B-078) |
 | 6 | **Wat kan een idee worden?** | "De vorm volgt uit wat het idee nodig heeft." Eén lijn, tien voorbeeldvormen, kiesbaar |
 | 7 | **Zo werkt het.** | Vertel (idee, probleem of losse gedachte) → Denckh (uitzoeken wat nodig is en welke vorm past) → Vorm (zichtbaar, testbaar of bruikbaar; waar nodig verder uitgebouwd), met jouw eigen lijn |
 | 8 | **Wat kost zoiets?** (`#prijzen`) | een lijn van punt (Eerst even Denckh, €45) via schets (Eerste vorm, vanaf €125) naar vorm (Echt maken, vanaf €295), getekend door te scrollen; links naar `/prijzen/` en contact (B-063) |

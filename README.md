@@ -6,11 +6,12 @@ Dit is de repository voor de nieuwe website van Denckh.
 
 ## Wat is Denckh
 
-Denckh is een kleine creatieve conceptstudio. We werken ideeën uit tot digitale concepten, prototypes en bruikbare
-vormen.
+Denckh is een kleine, onafhankelijke digitale werkplaats: ontstaan uit nieuwsgierigheid naar techniek, creativiteit,
+AI en nieuwe mogelijkheden, en bedoeld om anderen daarmee verder te helpen. Bewust klein; groei is geen doel op zich.
 
-Denckh doet nadrukkelijk meer dan webdesign. Een website kan de uitkomst zijn, maar net zo goed een interactieve demo,
-een prototype, een tool of een ander concept dat een idee concreet en toetsbaar maakt.
+Je mag aankloppen met een idee, probleem of vraag, ook zonder verstand van techniek. Denckh denkt mee over wat er
+werkelijk nodig is. Soms is dat iets wat al bestaat; soms wordt het een website, app, tool, interactieve uitleg,
+automatisering of technische oplossing. Het eerste gesprek is gratis. Zie B-099 in `HANDOFF.md`.
 
 ## Status
 

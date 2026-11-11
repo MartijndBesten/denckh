@@ -4,23 +4,23 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://denckh.nl"),
   title: {
-    default: "Denckh · van idee naar vorm",
+    default: "Denckh · websites, apps en slimme techniek in Houten",
     template: "%s · Denckh",
   },
-  description: "Kleine conceptstudio. Je hoeft nog niet te weten wat het moet worden: Denckh zoekt de vorm die bij je idee past en maakt die.",
+  description: "Kleine digitale werkplaats in Houten. Ik denk mee over je idee of probleem en maak wat helpt: een website, app, tool of technische oplossing. Eerste gesprek gratis.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "nl_NL",
     siteName: "Denckh",
-    title: "Denckh · van idee naar vorm",
-    description: "Een kleine conceptstudio voor ideeën die concreet mogen worden.",
+    title: "Denckh · websites, apps en slimme techniek in Houten",
+    description: "Meedenken over je idee of probleem, en maken wat helpt: een website, app, tool, automatisering of technische oplossing.",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "denckh. van idee naar vorm" }],
   },
   twitter: {
     card: "summary_large_image",
     images: ["/og.png"],
-    title: "Denckh · van idee naar vorm",
+    title: "Denckh · websites, apps en slimme techniek in Houten",
     description: "Van idee naar vorm.",
   },
   icons: { icon: "/favicon.svg" },
@@ -31,15 +31,37 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
+// Denckh als eigen merk (B-091). Bewust zonder straat en btw-nummer: die deelt Denckh met Deegh (zelfde inschrijving)
+// en ze staan zichtbaar in de footer. In de gestructureerde gegevens maakten ze van twee merken één bedrijf.
 const organization = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Denckh",
-  url: "https://denckh.nl",
-  description: "Kleine creatieve conceptstudio. Van idee naar vorm.",
-  email: "info@denckh.nl",
-  address: { "@type": "PostalAddress", streetAddress: "Vlierweg 54", addressLocality: "Houten", addressCountry: "NL" },
-  vatID: "NL003791952B15",
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://denckh.nl/#organisatie",
+      name: "Denckh",
+      alternateName: "Denckh.",
+      url: "https://denckh.nl/",
+      logo: "https://denckh.nl/brand/denckh-logo-signature-transparent-web.png",
+      image: "https://denckh.nl/og.png",
+      slogan: "van idee naar vorm",
+      description: "Kleine digitale werkplaats in Houten die meedenkt over ideeën en problemen en maakt wat helpt: websites, apps, digitale hulpmiddelen, automatisering en technische oplossingen.",
+      email: "info@denckh.nl",
+      address: { "@type": "PostalAddress", addressLocality: "Houten", addressRegion: "Utrecht", addressCountry: "NL" },
+      areaServed: ["Houten", "Nieuwegein", "Utrecht", "Bunnik"],
+      knowsAbout: ["websites", "webshops", "apps", "automatiseren", "lichtsturing", "sensoren"],
+      sameAs: ["https://www.instagram.com/denckh.nl/"],
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://denckh.nl/#website",
+      name: "Denckh",
+      alternateName: ["Denckh.", "denckh.nl"],
+      url: "https://denckh.nl/",
+      inLanguage: "nl-NL",
+      publisher: { "@id": "https://denckh.nl/#organisatie" },
+    },
+  ],
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -53,6 +75,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }} />
         <a className="skip-link" href="#inhoud">Ga naar de inhoud</a>
         {children}
+        <script defer src="https://dashboard.denckh.nl/s.js" data-brand="denckh" />
       </body>
     </html>
   );

@@ -11,6 +11,8 @@ const check = (name, ok, detail = "") => { results.push({ name, ok, detail }); c
 
 async function page(browser, { width = 1440, height = 900, mobile = false, reduced = false, path = "" } = {}) {
   const ctx = await browser.newContext({ viewport: { width, height }, isMobile: mobile, hasTouch: mobile, reducedMotion: reduced ? "reduce" : "no-preference" });
+  // STUB_EXTERNAL=1: externe adressen (de bezoekersteller) leeg beantwoorden in een omgeving zonder internet.
+  if (process.env.STUB_EXTERNAL === "1") await ctx.route(/^https:\/\/(?!127\.0\.0\.1|localhost)/, (r) => r.fulfill({ status: 200, contentType: "text/javascript", body: "" }));
   const p = await ctx.newPage();
   const errors = [];
   p.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
@@ -39,13 +41,13 @@ async function drawCircle(p, touch = false, ctx = null) {
   }
 }
 
-const browser = await chromium.launch();
+const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
 
 // 1 · desktop: tekenen → kijken → lezen → vorm
 {
   const { p, ctx, errors } = await page(browser);
   check("hero: punt staat in de kop", (await p.locator(".punt--idle").count()) === 1);
-  check("hero: goedgekeurde intro", /Een technisch product, een ingewikkeld verhaal, een praktisch probleem of een goed idee\./.test((await p.locator(".punt__intro").textContent()) ?? ""));
+  check("hero: goedgekeurde intro (meedenken en maken)", /Daar denk ik graag over mee, en waar het helpt maak ik het ook\./.test((await p.locator(".punt__intro").textContent()) ?? ""));
   const ghost = await p.locator(".punt__ghost").getAttribute("d");
   check("hero: hulplijn is de Denckh-krul (vier bochten na de aanloop)", (ghost?.match(/C /g) ?? []).length === 5, `${(ghost?.match(/C /g) ?? []).length} bochten`);
   check("hero: favicon en OG-beeld ongewijzigd", (await p.locator('link[rel="icon"]').getAttribute("href")) === "/favicon.svg" && (await p.locator('meta[property="og:image"]').getAttribute("content")) === "https://denckh.nl/og.png");
@@ -257,7 +259,9 @@ for (const [w, h] of [[390, 844], [320, 640]]) {
   const { p, ctx, errors } = await page(browser, { width: 390, height: 844, mobile: true });
   const fig = p.locator(".construct").first();
   const box = await fig.evaluate((el) => { const r = el.getBoundingClientRect(); return { top: r.top + scrollY, h: r.height }; });
-  await p.evaluate(({ top, h }) => scrollTo(0, top + h / 2 - innerHeight * 0.8), box);
+  // Midden van het beeld op 90% van de schermhoogte: binnen de eerste 4% van de scrollweg (Construct.tsx), dus
+  // gegarandeerd nog de schets, ongeacht het aantal vormen (O-38: 80% lag al voorbij die grens).
+  await p.evaluate(({ top, h }) => scrollTo(0, top + h / 2 - innerHeight * 0.9), box);
   await p.waitForTimeout(400);
   check("construct: nog een lijn zolang het beeld binnenkomt", (await fig.locator(".construct__line.is-sketch").count()) === 1);
   await p.evaluate(({ top, h }) => scrollTo(0, top + h / 2 - innerHeight * 0.55), box);
@@ -268,10 +272,44 @@ for (const [w, h] of [[390, 844], [320, 640]]) {
   check("construct: stap is klikbaar", (await merk.getAttribute("aria-current")) === "step");
   check("construct: Deegh-logo in de stap merk", (await fig.locator(".construct__details.is-on image").count()) === 1);
   check("construct: echt Deegh-logo (PNG), lijn maakt plaats", (await fig.locator('.construct__details.is-on image[href="/images/deegh-logo.png"]').count()) === 1 && (await fig.locator(".construct__line").evaluate((e) => getComputedStyle(e).opacity)) === "0");
-  for (let i = 0; i < 3; i++) { await p.locator(".more__item").nth(i).scrollIntoViewIfNeeded(); await p.waitForTimeout(300); }
+  // homepage: alleen Deegh en TCLP, plus een link naar alle projecten (B-090)
+  check("homepage: precies twee projecten, Deegh en TCLP", (await p.locator("article.case h3").allTextContents()).join(",") === "Deegh,TCLP");
+  check("homepage: link 'Bekijk alle projecten →' naar /projecten/", (await p.getByRole("link", { name: "Bekijk alle projecten →" }).getAttribute("href")) === "/projecten/");
+  // de knop: jouw lijn bladert door de overige projecten; de wisselende naam telt niet mee voor schermlezers
+  const all = p.locator(".all-link");
+  await all.evaluate((el) => el.scrollIntoView({ block: "center", behavior: "instant" }));
+  await p.waitForTimeout(400);
+  const d0 = await all.locator(".all-link__line").getAttribute("d");
+  await p.waitForTimeout(2600);
+  check("knop alle projecten: lijn bladert door de projecten", d0 !== (await all.locator(".all-link__line").getAttribute("d")) && (await all.locator(".all-link__now").textContent()) !== "");
+  check("knop alle projecten: toegankelijke naam blijft gelijk", (await p.getByRole("link", { name: "Bekijk alle projecten →", exact: true }).count()) === 1 && (await all.locator(".all-link__now").getAttribute("aria-hidden")) === "true");
+  check("homepage: geen 'Ook gemaakt' meer", (await p.locator(".more__item").count()) === 0);
+  const tclp = p.locator(".case--tclp");
+  check("projecten: TCLP met link naar tclp.nl", (await tclp.locator("h3").textContent()) === "TCLP" && (await tclp.getByRole("link", { name: "tclp.nl" }).getAttribute("href")) === "https://tclp.nl");
+  await tclp.getByRole("button", { name: "alle partijen verbonden" }).click();
   await p.waitForTimeout(1200);
-  check("ook gemaakt: drie vormen krijgen vorm", (await p.locator(".more__details").count()) === 3);
-  check("projecten: geen console-errors", errors.length === 0, errors.join(" | "));
+  check("projecten: TCLP-stap 'alle partijen verbonden' is klikbaar", (await tclp.getByRole("button", { name: "alle partijen verbonden" }).getAttribute("aria-current")) === "step");
+  check("homepage: geen console-errors", errors.length === 0, errors.join(" | "));
+  await ctx.close();
+}
+
+// 6a · /projecten/: het volledige openbare portfolio, met dezelfde lijnanimaties en "Ook gemaakt"
+{
+  const { p, ctx, errors } = await page(browser, { width: 390, height: 844, mobile: true, path: "projecten/" });
+  check("projectenpagina: kop en vijf uitgewerkte projecten", (await p.locator("h1").textContent()) === "Wat er al vorm kreeg." && (await p.locator("article.case h3").allTextContents()).join(",") === "Deegh,Een koffer die zichzelf uitlegt,Loflijn,LYEV.,TCLP");
+  check("projectenpagina: elk project bouwt zich op uit een lijn", (await p.locator("article.case .construct").count()) === 5);
+  const more = p.locator(".more__item"), nMore = await more.count();
+  for (let i = 0; i < nMore; i++) { await more.nth(i).scrollIntoViewIfNeeded(); await p.waitForTimeout(300); }
+  await p.waitForTimeout(1200);
+  check("ook gemaakt: vijf vormen krijgen vorm", nMore === 5 && (await p.locator(".more__details").count()) === 5, `${nMore} projecten`);
+  // alleen het openbare portfolio: precies deze vijf
+  check("ook gemaakt: precies de vijf openbare projecten", (await more.locator("h3").allTextContents()).join(",") === "Autowasdag Sionkerk,Kerckh.,OKKIE.,Een presentatie die je bedient,Een werkdag in 3D");
+  check("ook gemaakt: OKKIE. linkt naar okkiedarts.nl", (await more.filter({ hasText: "OKKIE." }).getByRole("link", { name: "Bekijk OKKIE." }).getAttribute("href")) === "https://okkiedarts.nl");
+  check("ook gemaakt: Kerckh. linkt naar kerckh.nl", (await more.filter({ hasText: "Kerckh." }).getByRole("link", { name: "Bekijk Kerckh." }).getAttribute("href")) === "https://kerckh.nl");
+  check("projectenpagina: menu-item Projecten wijst hierheen", (await p.getByRole("navigation", { name: "Hoofdnavigatie" }).getByRole("link", { name: "Projecten" }).getAttribute("href")) === "/projecten/");
+  const sitemap = await (await p.request.get(new URL("sitemap.xml", BASE).href)).text();
+  check("projectenpagina: in de sitemap", sitemap.includes("https://denckh.nl/projecten/<"));
+  check("projectenpagina: geen console-errors", errors.length === 0, errors.join(" | "));
   await ctx.close();
 }
 
@@ -297,10 +335,19 @@ for (const [w, h, mobile] of [[320, 700, true], [393, 852, true], [1440, 900, fa
   await fig.getByRole("button", { name: /deegh\.nl/ }).click();
   await p.waitForTimeout(1500);
   const nav = await p.evaluate(() => {
-    const t = [...document.querySelectorAll(".deegh-shot text")].slice(0, 5).map((e) => e.getBBox()), frame = document.querySelector(".deegh-shot path").getBBox();
+    // schermcoördinaten: de teksten zijn geschaalde contourgroepen (B-092), getBBox() zou font-eenheden geven
+    const t = [...document.querySelectorAll(".deegh-shot .shot-tekst")].slice(0, 5).map((e) => e.getBoundingClientRect()), frame = document.querySelector(".deegh-shot path").getBoundingClientRect();
     return { gaps: t.slice(1).map((b, i) => Math.round(b.x - (t[i].x + t[i].width))), over: Math.round(t[4].x + t[4].width - (frame.x + frame.width)) };
   });
   check(`deegh-eindbeeld op ${w}px: menu zonder overlap, binnen het kader`, nav.gaps.every((g) => g >= 4) && nav.over < 0, `ruimtes ${nav.gaps.join(",")} · rand ${nav.over}`);
+  await ctx.close();
+}
+
+// 6e · merkscheiding (B-092): de Deegh-producten in het eindbeeld zijn contouren, geen paginatekst van Denckh
+for (const path of ["", "projecten/", "projecten/deegh/"]) {
+  const { p, ctx } = await page(browser, { path });
+  const tekst = await p.evaluate(() => document.body.textContent);
+  check(`merkscheiding /${path}: geen Deegh-productnamen in de paginatekst`, !/pizzabollen|Deegh Gezin|Deegh Voorraad|Pizza-avond/.test(tekst) && (await p.locator(".deegh-shot text").count()) === 0 && (await p.locator(".deegh-shot .shot-tekst").count()) === 12);
   await ctx.close();
 }
 
@@ -339,10 +386,13 @@ for (const [w, h, mobile] of [[320, 700, true], [393, 852, true], [1440, 900, fa
 {
   const { p, ctx, errors } = await page(browser);
   const block = p.locator("#prijzen");
-  check("prijsblok: kop en intro", ((await block.locator("h2").textContent()) ?? "") === "Wat kost zoiets?" && /hoeft niet eerst een offerte aan te vragen/.test((await block.locator(".prices__head p").textContent()) ?? ""));
+  check("prijsblok: kop en intro", ((await block.locator("h2").textContent()) ?? "") === "Wat kost zoiets?" && /Een eerste gesprek kost niets\./.test((await block.locator(".prices__head p").textContent()) ?? ""));
   const stops = await block.locator(".pl__stop").evaluateAll((els) => els.map((e) => ({ label: e.querySelector(".pl__label")?.textContent, price: e.querySelector(".pl__price")?.textContent?.replace(/\s+/g, " ").trim() })));
-  check("prijsblok: drie haltes in de goede volgorde", stops.map((s) => s.label).join(",") === "Eerst even Denckh,Eerste vorm,Echt maken", stops.map((s) => s.label).join(","));
-  check("prijsblok: €45, vanaf €125, vanaf €295, alle excl. btw", stops.map((s) => s.price).join(" | ") === "€45 excl. btw | vanaf €125 excl. btw | vanaf €295 excl. btw", stops.map((s) => s.price).join(" | "));
+  check("prijsblok: drie haltes in de goede volgorde", stops.map((s) => s.label).join(",") === "Kennismaken,Samen uitwerken,Echt maken", stops.map((s) => s.label).join(","));
+  check("prijsblok: gratis kennismaken, €45, vanaf €295 excl. btw", stops.map((s) => s.price).join(" | ") === "gratis circa 20 minuten | €45 excl. btw · €54,45 incl. · 60 minuten | vanaf €295 excl. btw · €356,95 incl.", stops.map((s) => s.price).join(" | "));
+  const home = (await p.locator("main").textContent()) ?? "";
+  check("positionering: eerste gesprek gratis, bestaande oplossing kan, geen verkooptaal", /het eerste gesprek is gratis/.test(home) && /Soms bestaat de oplossing al/.test(home) && !/Bekijk wat je kunt aanvragen|particulieren, zelfstandigen en kleine bedrijven/.test(home));
+  check("werkwijze: Vertel, Samen denken, Vorm geven", (await p.locator(".werkwijze h3").allTextContents()).map((t) => t.replace(/^\d/, "")).join(",") === "Vertel,Samen denken,Vorm geven");
   check("prijsblok: €45 wordt verrekend bij een opdracht vanaf €295", /Wordt het daarna een opdracht vanaf €295\? Dan verreken ik die €45\./.test((await block.locator(".pl__note").textContent()) ?? ""));
   check("prijsblok: links naar /prijzen/ en contact", (await block.getByRole("link", { name: "Bekijk de richtprijzen" }).getAttribute("href")) === "/prijzen/" && (await block.getByRole("link", { name: "Vertel je idee" }).getAttribute("href")) === "#contact");
   const line = block.locator(".pl__line path");
@@ -386,14 +436,18 @@ const dotOffset = (p) => p.evaluate(() => { const n = document.querySelector(".f
   const rows = await p.locator(".fp__row").evaluateAll((els) => els.map((e) => ({ name: e.querySelector(".fp__name")?.textContent, price: e.querySelector(".fp__price")?.textContent?.replace(/\s+/g, " ").trim(), domain: !!e.querySelector(".fp__domain"), aside: e.querySelector(".fp__aside")?.textContent ?? "" })));
   const wrong = rows.filter((r) => r.price !== `vanaf €${prices[r.name]}`);
   check("prijzen: elf vormen met de juiste vanafprijs", rows.length === 11 && wrong.length === 0, wrong.map((r) => `${r.name}: ${r.price}`).join(", ") || `${rows.length} rijen`);
-  check("prijzen: vermelding exclusief btw bij de vormen", /Alle bedragen zijn vanafprijzen, exclusief btw\./.test(await p.locator("#vormen-titel + p").textContent() ?? ""));
+  check("prijzen: vermelding excl. btw (zakelijk) en incl. btw (particulier)", /exclusief btw voor zakelijk, met het bedrag inclusief 21% btw voor particulieren/.test(await p.locator("#vormen-titel + p").textContent() ?? ""));
+  const incl = await p.locator(".fp__row").evaluateAll((els) => els.map((e) => [e.querySelector(".fp__price")?.textContent?.match(/€(\d+)/)?.[1], e.querySelector(".fp__incl")?.textContent ?? ""]));
+  const inclWrong = incl.filter(([ex, t]) => !t.includes(`€${(Math.round(Number(ex) * 121) / 100).toFixed(2).replace(".", ",")} incl. btw`));
+  check("prijzen: bij elke vorm ook het bedrag incl. 21% btw", incl.length === 11 && inclWrong.length === 0, inclWrong.map(([ex, t]) => `${ex}: ${t}`).join(", "));
   check("prijzen: domeinnaam bij alle websites en webshops", rows.filter((r) => r.domain).map((r) => r.name).join(",") === "Website,Uitgebreidere website,Webshop,Uitgebreidere webshop");
-  check("prijzen: domeinnaam tot maximaal €20 excl. btw", /eerste jaar inbegrepen, tot maximaal €20 excl\. btw\./.test((await p.locator(".fp__domain").first().textContent()) ?? ""));
+  check("prijzen: domeinnaam tot maximaal €20 excl. btw", /eerste jaar inbegrepen, tot maximaal €20 excl\. btw \(€24,20 incl\.\)\./.test((await p.locator(".fp__domain").first().textContent()) ?? ""));
   check("prijzen: €95 is anders dan Even Denckh", /Anders dan Even Denckh/.test(rows.find((r) => r.name === "Iets zonder naam")?.aside ?? ""));
   const start = await p.locator(".pl__stop").evaluateAll((els) => els.map((e) => `${e.querySelector(".pl__label")?.textContent}: ${e.querySelector(".pl__price")?.textContent?.replace(/\s+/g, " ").trim()}`));
-  check("prijzen: kennismaken, Even Denckh, project", start.join(" | ") === "Kennismaken: vrijblijvend circa 20 minuten | Even Denckh: €45 excl. btw · 60 minuten | Project: vaste prijs vooraf afgesproken", start.join(" | "));
+  check("prijzen: kennismaken, Even Denckh, project", start.join(" | ") === "Kennismaken: gratis circa 20 minuten | Even Denckh: €45 excl. btw · €54,45 incl. · 60 minuten | Project: vaste prijs vooraf afgesproken", start.join(" | "));
   const body = (await p.locator("main").textContent()) ?? "";
   check("prijzen: meerwerk na overleg, geen uurtarief op de site", /Iets extra nodig\?/.test(body) && /Je hoort vooraf wat het extra kost\./.test(body) && !/per uur/.test(body));
+  check("prijzen: maatschappelijke initiatieven per idee, geen vaste korting", (await p.locator("#maatschappelijk h2").textContent()) === "Vereniging of vrijwilligers?" && /per idee vooraf af/.test(body) && /een vaste korting is het niet/.test(body));
   check("prijzen: webadres op eigen naam, hosting niet standaard", /komt op jouw naam/.test(body) && /Hosting zit er niet standaard bij\./.test(body));
   check("prijzen: standaard en niet standaard", (await p.locator(".scope-list--in li").count()) === 6 && (await p.locator("#niet-titel + ul li").count()) === 12);
   const pdf = fs.existsSync(new URL("../public/downloads/denckh-prijslijst.pdf", import.meta.url));
@@ -407,7 +461,7 @@ const dotOffset = (p) => p.evaluate(() => { const n = document.querySelector(".f
   }
   check("prijzen: vertel je idee naar contact", (await p.getByRole("link", { name: "Vertel je idee" }).getAttribute("href")) === "/#contact");
   check("prijzen: geen gedachtestreepjes en geen 'wij'", !/[—–]/.test(body) && !/\b(wij|ons|onze)\b/i.test(body));
-  await p.locator(".fp__row", { hasText: "Webshop" }).first().hover();
+  await p.locator(".fp__row", { has: p.locator(".fp__name", { hasText: /^Webshop$/ }) }).hover();
   await p.waitForTimeout(900);
   await p.waitForTimeout(700); // laatste detail: 420 ms + 40 ms per detail + 500 ms tekenen
   const partial = await p.locator(".fp__details path").evaluateAll((els) => els.filter((e) => { const c = getComputedStyle(e), da = parseFloat(c.strokeDasharray) || Infinity; return da < e.getTotalLength() - 0.5 || parseFloat(c.strokeDashoffset) !== 0; }).length);
@@ -448,12 +502,243 @@ for (const [w, h, mobile] of [[320, 700, true], [390, 844, true], [1440, 900, fa
   await ctx.close();
 }
 
+// 8d · LYEV.: projectkaart wordt een telefoon met een echte schermafbeelding; links en projectpagina
+for (const [w, h, mobile] of [[390, 844, true], [1440, 900, false]]) {
+  const { p, ctx, errors } = await page(browser, { width: w, height: h, mobile, path: "projecten/" });
+  const card = p.locator(".case--lyev");
+  check(`lyev op ${w}px: kaart met titel en ondertitel`, (await card.locator("h3").textContent()) === "LYEV." && (await card.locator(".case__lead").textContent()) === "Een webshop vol sparkle.");
+  check(`lyev op ${w}px: link naar lyev.nl`, (await card.getByRole("link", { name: "lyev.nl" }).getAttribute("href")) === "https://lyev.nl");
+  check(`lyev op ${w}px: link naar de projectpagina`, (await card.getByRole("link", { name: "Bekijk het project" }).getAttribute("href")) === "/projecten/lyev/");
+  const fig = card.locator(".construct");
+  const box = await fig.evaluate((el) => { const r = el.getBoundingClientRect(); return { top: r.top + scrollY, h: r.height }; });
+  await p.evaluate(({ top }) => scrollTo({ top: top - 20, behavior: "instant" }), box);
+  await p.waitForTimeout(600);
+  // op een telefoon tikken (geen muis die na het verspringen van de stappenregel een andere stap aanwijst)
+  const kies = (name) => (mobile ? fig.getByRole("button", { name }).tap() : fig.getByRole("button", { name }).click());
+  await kies("een strasssteentje");
+  await p.waitForFunction(() => document.querySelector(".case--lyev [aria-current=step]")?.textContent === "een strasssteentje", null, { timeout: 4000 }).catch(() => {});
+  check(`lyev op ${w}px: stap strasssteentje is klikbaar`, (await fig.getByRole("button", { name: "een strasssteentje" }).getAttribute("aria-current")) === "step");
+  await kies("lyev.nl op de telefoon");
+  await p.waitForFunction(() => Number(getComputedStyle(document.querySelector(".case--lyev .construct__final")).opacity) > 0.9, null, { timeout: 5000 }).catch(() => {});
+  const shot = fig.locator('.lyev-shot image[href="/images/projecten/lyev-home.webp"]');
+  const loaded = await p.evaluate(async () => { const r = await fetch("/images/projecten/lyev-home.webp"); return r.ok && (r.headers.get("content-type") ?? "").includes("webp"); });
+  const finalOpacity = Number(await fig.locator(".construct__final").evaluate((e) => getComputedStyle(e).opacity));
+  const current = await fig.locator("[aria-current=step]").textContent();
+  check(`lyev op ${w}px: echte schermafbeelding in beeld`, (await shot.count()) === 1 && finalOpacity > 0.9 && loaded, `opacity ${finalOpacity}, stap ${current}, geladen ${loaded}`);
+  check(`lyev op ${w}px: geen console-errors`, errors.length === 0, errors.join(" | "));
+  await ctx.close();
+}
+{
+  const { p, ctx, errors } = await page(browser, { width: 390, height: 844, mobile: true, path: "projecten/lyev/" });
+  check("lyev-pagina: titel, vier delen en link naar lyev.nl", (await p.locator("h1").textContent()).includes("Een webshop vol sparkle.") && (await p.locator(".case-page__parts h2").allTextContents()).join(",") === "De vraag,De oplossing,Achter de schermen,Het resultaat" && (await p.getByRole("link", { name: "Bekijk lyev.nl →" }).getAttribute("href")) === "https://lyev.nl");
+  // Beelden laden lui: eerst elk beeld in beeld brengen en op het laden wachten (O-38: het derde stond onder de vouw).
+  const shots = p.locator(".case-page__shots img");
+  for (let n = 0; n < (await shots.count()); n++) {
+    await shots.nth(n).scrollIntoViewIfNeeded();
+    await shots.nth(n).evaluate((i) => (i.complete && i.naturalWidth > 0) || new Promise((r) => { i.addEventListener("load", r, { once: true }); i.addEventListener("error", r, { once: true }); setTimeout(r, 8000); }));
+  }
+  const imgs = await shots.evaluateAll((els) => els.map((i) => i.complete && i.naturalWidth > 0 && i.alt.length > 20));
+  check("lyev-pagina: drie geladen schermen met alt-tekst", imgs.length === 3 && imgs.every(Boolean), String(imgs));
+  check("lyev-pagina: geen console-errors", errors.length === 0, errors.join(" | "));
+  const sitemap = await (await p.request.get(new URL("sitemap.xml", BASE).href)).text();
+  check("lyev-pagina: in de sitemap", sitemap.includes("https://denckh.nl/projecten/lyev/"));
+  await ctx.close();
+}
+{
+  // reduced motion: geen scrollanimatie; via de laatste stap staat het eindbeeld er meteen, zonder zweef bij aanwijzen
+  const { p, ctx, errors } = await page(browser, { width: 1440, height: 900, reduced: true, path: "projecten/" });
+  const fig = p.locator(".case--lyev .construct");
+  const box = await fig.evaluate((el) => { const r = el.getBoundingClientRect(); return { top: r.top + scrollY, h: r.height }; });
+  await p.evaluate(({ top, h }) => scrollTo(0, top + h / 2 - innerHeight * 0.2), box);
+  await fig.getByRole("button", { name: "lyev.nl op de telefoon" }).click();
+  await p.waitForTimeout(150);
+  await fig.locator("svg").hover();
+  await p.waitForTimeout(700);
+  const t = await fig.locator(".lyev-shot").evaluate((e) => getComputedStyle(e).transform);
+  check("lyev, reduced motion: eindbeeld direct zichtbaar, geen beweging", Number(await fig.locator(".construct__final").evaluate((e) => getComputedStyle(e).opacity)) > 0.9 && (t === "none" || t === "matrix(1, 0, 0, 1, 0, 0)") && errors.length === 0, t);
+  await ctx.close();
+}
+
+// 8e · reduced motion: de knop naar alle projecten staat stil
+{
+  const { p, ctx } = await page(browser, { width: 1440, height: 900, reduced: true });
+  const all = p.locator(".all-link");
+  await all.evaluate((el) => el.scrollIntoView({ block: "center", behavior: "instant" }));
+  await p.waitForTimeout(400);
+  const d0 = await all.locator(".all-link__line").getAttribute("d");
+  await p.waitForTimeout(2200);
+  check("knop alle projecten, reduced motion: stilstaand, met 'en nog 8 projecten'", d0 === (await all.locator(".all-link__line").getAttribute("d")) && (await all.locator(".all-link__now").textContent()) === "en nog 8 projecten");
+  await ctx.close();
+}
+
 // 9 · geen horizontale overflow
-for (const path of ["", "prijzen/"]) for (const width of [320, 390, 768, 1024, 1440]) {
+for (const path of ["", "projecten/", "diensten/", "prijzen/", "projecten/lyev/"]) for (const width of [320, 390, 768, 1024, 1440]) {
   const { p, ctx } = await page(browser, { width, height: 800, mobile: width < 500, path });
   const ov = await p.evaluate(() => document.documentElement.scrollWidth - innerWidth);
   check(`geen horizontale overflow op ${width}px${path ? ` (/${path})` : ""}`, ov <= 0, `${ov}px`);
   await ctx.close();
+}
+
+// 10 · interne links: elke link op elke pagina leidt naar een bestaande pagina, bestand of anker
+{
+  const { p, ctx } = await page(browser);
+  const pages = ["", "projecten/", "diensten/", "prijzen/", "privacy/", "projecten/deegh/", "projecten/kerckh/", "projecten/lyev/", "projecten/okkie/", "ouderhulp/", "preekhulp/"];
+  const broken = [];
+  const seen = new Set();
+  for (const path of pages) {
+    await p.goto(new URL(path, BASE).href, { waitUntil: "domcontentloaded" });
+    const links = await p.evaluate(() => [...document.querySelectorAll("a[href]")].map((a) => a.getAttribute("href")));
+    for (const href of links) {
+      if (/^(https?:|mailto:)/.test(href)) continue;
+      const url = new URL(href, new URL(path, BASE));
+      const key = url.pathname + url.hash;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const res = await p.request.get(url.origin + url.pathname);
+      let ok = res.ok();
+      if (ok && url.hash) {
+        const html = await res.text();
+        ok = html.includes(`id="${decodeURIComponent(url.hash.slice(1))}"`);
+      }
+      if (!ok) broken.push(`/${path} → ${href}`);
+    }
+  }
+  check(`interne links: ${seen.size} doelen, allemaal bereikbaar`, broken.length === 0, broken.join(" | "));
+  await ctx.close();
+}
+
+// Ouderhulp. productpagina (B-096)
+{
+  const ext = (e) => !/ERR_TUNNEL|ERR_NAME|ERR_INTERNET|dashboard\.denckh\.nl/.test(e); // bezoekersteller is extern
+  for (const width of [320, 390, 1440]) {
+    const { p, ctx, errors } = await page(browser, { width, height: 900, mobile: width < 800, path: "ouderhulp/" });
+    const over = await p.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
+    check(`ouderhulp ${width}px: geen horizontale overloop`, !over);
+    check(`ouderhulp ${width}px: geen consolefouten`, errors.filter(ext).length === 0, errors.filter(ext).join(" | "));
+    if (width === 390) {
+      await p.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
+      await p.waitForTimeout(200);
+      check("ouderhulp: 200% tekst zonder horizontale overloop", await p.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
+    }
+    await ctx.close();
+  }
+  const { p, ctx } = await page(browser, { path: "ouderhulp/" });
+  check("ouderhulp: eigen titel", /^Ouderhulp\. · /.test(await p.title()));
+  check("ouderhulp: canonical", (await p.locator('link[rel="canonical"]').getAttribute("href")) === "https://denckh.nl/ouderhulp/");
+  const og = await p.locator('meta[property="og:image"]').getAttribute("content");
+  check("ouderhulp: eigen deelbeeld bestaat", /og-ouderhulp\.png$/.test(og ?? "") && (await p.request.get(new URL("/images/ouderhulp/og-ouderhulp.png", BASE).href)).ok());
+  check("ouderhulp: één h1", (await p.locator("h1").count()) === 1);
+  check("ouderhulp: makervermelding met officiële signatuur", (await p.locator('.oh-by img[src="/brand/denckh-logo-signature.svg"]').count()) === 1);
+  const mail = await p.locator(".oh-hero a.ink-button").getAttribute("href");
+  check("ouderhulp: hoofdactie opent een mail met onderwerp", /^mailto:[^?]+@denckh\.nl\?subject=Ouderhulp/.test(mail ?? ""), mail ?? "");
+  check("ouderhulp: geen formulier dat niets verstuurt", (await p.locator("form").count()) === 0);
+  const html = await p.content();
+  check("ouderhulp: geen schooladres, testomgeving of toegangscode", !/\.ouderhulp\.denckh\.nl|onrender|example\.test|toegangscode:/i.test(html.replace(/Toegangscodes staan nooit op deze site/, "")));
+  check("ouderhulp: geen prijzen genoemd", !/€\s?\d/.test(await p.locator("main").innerText()));
+  const imgs = await p.locator("main img").evaluateAll((els) => els.filter((e) => !e.getAttribute("alt")).length);
+  check("ouderhulp: alle beelden hebben een beschrijving", imgs === 0);
+  // rolwissel met het toetsenbord
+  const tab = p.getByRole("tab", { name: "Leerkrachten" });
+  await tab.focus(); await p.keyboard.press("ArrowRight");
+  check("ouderhulp: rolwissel met pijltjestoets", (await p.getByRole("tab", { name: "Schoolbeheerder" }).getAttribute("aria-selected")) === "true" && (await p.locator("#oh-paneel-beheerder").isVisible()));
+  await p.keyboard.press("End");
+  check("ouderhulp: End kiest de laatste rol", (await p.getByRole("tab", { name: "Ouders" }).getAttribute("aria-selected")) === "true");
+  // route: speelt één keer af en stopt bij stap 4; een stap kiezen kan altijd
+  await p.locator("#werking").scrollIntoViewIfNeeded(); await p.waitForTimeout(5600);
+  check("ouderhulp: route loopt eenmalig door tot de laatste stap", (await p.locator('.oh-route__step button[aria-current="step"]').innerText()).includes("School"));
+  await p.locator(".oh-route__step button").nth(1).click();
+  check("ouderhulp: stap kiezen toont het voorbeeld", /Beheerder bundelt/.test(await p.locator(".oh-route__panel").innerText()));
+  await p.waitForTimeout(1800);
+  check("ouderhulp: na kiezen loopt de route niet verder", (await p.locator('.oh-route__step button[aria-current="step"]').innerText()).includes("Beheerder"));
+  await ctx.close();
+  // met reduced motion: geen automatische voortgang
+  { const { p, ctx } = await page(browser, { reduced: true, path: "ouderhulp/" });
+    await p.locator("#werking").scrollIntoViewIfNeeded(); await p.waitForTimeout(2000);
+    check("ouderhulp reduced motion: route blijft op stap 1", (await p.locator('.oh-route__step button[aria-current="step"]').innerText()).includes("Leerkracht"));
+    await ctx.close(); }
+  // zonder JavaScript: alle inhoud leesbaar
+  { const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 900 } }); const p = await ctx.newPage();
+    await p.goto(new URL("ouderhulp/", BASE).href);
+    const text = await p.locator("main").innerText();
+    check("ouderhulp zonder JavaScript: vier stappen met uitleg", ["maakt een hulpvraag", "bundelt in een ouderhulplijst", "geven beschikbaarheid op", "maakt en bevestigt de indeling"].every((t) => text.includes(t)) && text.includes("Reacties en tekorten per dienst"));
+    check("ouderhulp zonder JavaScript: drie rollen", ["Leerkrachten", "Schoolbeheerder", "Ouders"].every((t) => text.includes(t)) && text.includes("Eén begrijpelijk overzicht vóór het indienen."));
+    check("ouderhulp zonder JavaScript: veelgestelde vragen aanwezig", (await p.locator(".oh-faq details").count()) === 8);
+    await ctx.close(); }
+}
+
+// Preekhulp. productpagina (B-098)
+{
+  const ext = (e) => !/ERR_TUNNEL|ERR_NAME|ERR_INTERNET|dashboard\.denckh\.nl/.test(e);
+  for (const width of [320, 390, 1440]) {
+    const { p, ctx, errors } = await page(browser, { width, height: 900, mobile: width < 800, path: "preekhulp/" });
+    check(`preekhulp ${width}px: geen horizontale overloop`, !(await p.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1)));
+    check(`preekhulp ${width}px: geen consolefouten`, errors.filter(ext).length === 0, errors.filter(ext).join(" | "));
+    if (width === 390) {
+      await p.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
+      await p.waitForTimeout(200);
+      check("preekhulp: 200% tekst zonder horizontale overloop", await p.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
+    }
+    await ctx.close();
+  }
+  const { p, ctx } = await page(browser, { path: "preekhulp/" });
+  check("preekhulp: eigen titel", /^Preekhulp\. · /.test(await p.title()));
+  check("preekhulp: canonical", (await p.locator('link[rel="canonical"]').getAttribute("href")) === "https://denckh.nl/preekhulp/");
+  check("preekhulp: één h1", (await p.locator("h1").count()) === 1);
+  check("preekhulp: makervermelding met officiële signatuur", (await p.locator('.oh-by img[src="/brand/denckh-logo-signature.svg"]').count()) === 1);
+  const mail = await p.locator(".oh-hero a[href^=\"mailto:\"]").getAttribute("href");
+  check("preekhulp: proefronde opent een mail met onderwerp", /^mailto:[^?]+@denckh\.nl\?subject=Preekhulp/.test(mail ?? ""), mail ?? "");
+  check("preekhulp: hoofdactie is zelf proberen", (await p.locator('.oh-hero .ink-button').getAttribute("href")) === "/preekhulp/probeer/");
+  check("preekhulp: geen formulier dat niets verstuurt", (await p.locator("form").count()) === 0);
+  const tekst = await p.locator("main").innerText();
+  check("preekhulp: geen prijzen genoemd", !/€\s?\d/.test(tekst));
+  check("preekhulp: geen beschermde vertaling als inhoud aangeprezen", !/HSV[^,.]*bevat|NBV21 zit erin/i.test(tekst));
+  check("preekhulp: proefronde eerlijk benoemd", tekst.includes("In de proefronde") && tekst.includes("Werkt en getest"));
+  check("preekhulp: alle beelden hebben een beschrijving", (await p.locator("main img:not([alt]), main img[alt='']").count()) === 0);
+  const beelden = await p.locator("main img").evaluateAll((els) => els.map((e) => e.getAttribute("src") ?? ""));
+  let kapot = 0;
+  for (const src of beelden) { const u = new URL(src, BASE); const q = u.searchParams.get("url"); if (!(await p.request.get(q ? new URL(q, BASE).href : u.href)).ok()) kapot++; }
+  check(`preekhulp: ${beelden.length} beelden bereikbaar`, kapot === 0 && beelden.length >= 5);
+  await ctx.close();
+  { const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 900 } }); const p = await ctx.newPage();
+    await p.goto(new URL("preekhulp/", BASE).href);
+    const text = await p.locator("main").innerText();
+    check("preekhulp zonder JavaScript: acht stappen en veelgestelde vragen", (await p.locator(".oh-start li").count()) === 8 && (await p.locator(".oh-faq details").count()) === 6 && text.includes("Elke bewering met bewijs"));
+    await ctx.close(); }
+  // Preekhulp. proberen (B-101): echte, vooraf berekende uitkomsten; alles in de browser.
+  for (const width of [320, 390, 820, 1440]) {
+    const { p, ctx, errors } = await page(browser, { width, height: 900, mobile: width < 800, path: "preekhulp/probeer/" });
+    await p.waitForSelector(".phd-vraag");
+    check(`preekhulp-probeer ${width}px: geen horizontale overloop`, !(await p.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1)));
+    check(`preekhulp-probeer ${width}px: geen consolefouten`, errors.filter(ext).length === 0, errors.filter(ext).join(" | "));
+    await ctx.close();
+  }
+  { const { p, ctx } = await page(browser, { width: 390, height: 900, mobile: true, path: "preekhulp/probeer/" });
+    await p.waitForSelector(".phd-vraag");
+    check("preekhulp-probeer: één h1 en canonical", (await p.locator("h1").count()) === 1 && (await p.locator('link[rel="canonical"]').getAttribute("href")) === "https://denckh.nl/preekhulp/probeer/");
+    check("preekhulp-probeer: drie voorbeelden", (await p.locator(".phd-keuze__knop").count()) === 3);
+    check("preekhulp-probeer: het woord demo komt niet voor", !/demo/i.test(await p.locator("main").innerText()) && !/demo/i.test(await p.title()));
+    check("preekhulp-probeer: eerlijk over herkomst (zonder AI)", (await p.locator(".phd-herkomst").innerText()).includes("zonder AI"));
+    await p.locator(".phd-woord").first().tap();
+    check("preekhulp-probeer: grondtekstwoord opent met Strong-nummer", /[HG]\d{4}/.test(await p.locator(".phd-paneel").first().innerText()));
+    await p.getByRole("tab", { name: "Verbanden" }).tap();
+    await p.locator(".phd-ref").first().tap();
+    check("preekhulp-probeer: bewijsstuk opent met vindplaats", (await p.locator(".phd-paneel__kop").count()) >= 1);
+    await p.getByRole("tab", { name: "Wat zie ik over het hoofd?" }).tap();
+    await p.locator(".phd-gedachte textarea").fill("Zo roept God ons in de doop terug naar zijn verbond, als sacrament van genade.");
+    await p.getByRole("button", { name: "Controleer mijn gedachte" }).tap();
+    const hoofd = await p.locator(".phd-blad").innerText();
+    check("preekhulp-probeer: gedachte gecontroleerd (sacrament niet in de tekst, verbond wel)", /Begrippen uit je gedachte[\s\S]*sacrament/.test(hoofd) && !/‘verbond’/.test(hoofd));
+    check("preekhulp-probeer: themasignaal belofte/doop", hoofd.includes("‘belofte’") && hoofd.includes("‘doop’"));
+    await p.getByRole("radio", { name: /Lucas 15:20/ }).tap();
+    await p.waitForSelector(".phd-vraag");
+    await p.waitForFunction(() => document.querySelector(".phd-vraag")?.textContent?.includes("Lucas"));
+    await p.getByRole("tab", { name: "Tekst en grondtaal" }).tap();
+    check("preekhulp-probeer: wisselen naar Lucas 15:20 (Grieks)", (await p.locator(".phd-woord").count()) > 10);
+    check("preekhulp-probeer: sitemap bevat de pagina", (await (await p.request.get(new URL("sitemap.xml", BASE).href)).text()).includes("/preekhulp/probeer/"));
+    await ctx.close(); }
+  { const { p, ctx } = await page(browser, { path: "" });
+    check("footer linkt naar Preekhulp.", (await p.locator('.site-footer a[href="/preekhulp/"]').count()) === 1);
+    await ctx.close(); }
 }
 
 await browser.close();

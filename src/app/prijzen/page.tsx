@@ -5,9 +5,9 @@ import Link from "next/link";
 import { Footer, Header } from "@/components/Header";
 import { FormPrices } from "@/components/grammar/FormPrices";
 import { PriceLine } from "@/components/grammar/PriceLine";
-import { EXTRA, FORM_PRICES, INCLUDED, NOT_INCLUDED, PRICE_PDF, START_STOPS, WEB_ADDRESS } from "@/lib/prices";
+import { BTW_NOTE, EXTRA, FORM_PRICES, INCLUDED, NOT_INCLUDED, PRICE_PDF, SOCIAL, START_STOPS, WEB_ADDRESS } from "@/lib/prices";
 
-const description = "Richtprijzen van Denckh: even samen denken voor €45, een eerste vorm vanaf €125 en een werkend resultaat vanaf €295. Na de intake weet je vooraf wat jouw idee kost.";
+const description = "Richtprijzen van Denckh: het eerste gesprek is gratis, een uur samen denken kost €45 (€54,45 incl. btw) en een werkend resultaat begint vanaf €295 (€356,95 incl. btw). Je weet vooraf wat jouw idee kost.";
 
 export const metadata: Metadata = {
   title: "Prijzen",
@@ -35,7 +35,7 @@ export default function Prijzen() {
         <header className="price-page__header">
           <p className="eyebrow">prijzen</p>
           <h1>Wat kan een idee kosten?</h1>
-          <p>Geen idee is precies hetzelfde. Dit zijn richtprijzen voor compacte, goed afgebakende opdrachten. Na de intake weet je vooraf wat jouw idee kost.</p>
+          <p>Een eerste gesprek is gratis. Pas als we afspreken dat ik iets voor je uitzoek, ontwerp of maak, kost het iets. Hieronder staan richtprijzen voor compacte, goed afgebakende opdrachten; na de intake weet je vooraf wat jouw idee kost.</p>
         </header>
 
         <section className="price-page__section" aria-labelledby="begin-titel">
@@ -46,7 +46,7 @@ export default function Prijzen() {
         <section className="price-page__section" aria-labelledby="vormen-titel">
           <header className="price-page__head">
             <h2 id="vormen-titel">Richtprijzen per vorm.</h2>
-            <p>Alle bedragen zijn vanafprijzen, exclusief btw. Voor particuliere opdrachten vermeld ik vooraf ook de prijs inclusief btw.</p>
+            <p>{BTW_NOTE}</p>
           </header>
           <FormPrices items={FORM_PRICES} />
         </section>
@@ -72,6 +72,11 @@ export default function Prijzen() {
             <h3>{EXTRA.title}</h3>
             <p>{EXTRA.text}</p>
           </div>
+        </section>
+
+        <section className="price-page__section" id="maatschappelijk" aria-labelledby="maatschappelijk-titel">
+          <h2 id="maatschappelijk-titel">{SOCIAL.title}</h2>
+          <p className="price-page__lead" style={{ maxWidth: "42rem" }}>{SOCIAL.text}</p>
         </section>
 
         {hasPdf && (

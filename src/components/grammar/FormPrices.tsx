@@ -10,7 +10,7 @@ import { useMorph } from "@/lib/ink/hooks";
 import { SHAPES, SN } from "@/lib/ink/shapes";
 import { place, useSketch } from "@/lib/ink/store";
 import { useReducedMotion } from "@/lib/ink/useReducedMotion";
-import { DOMAIN_NOTE, FORM_GROUPS, type FormPrice } from "@/lib/prices";
+import { DOMAIN_NOTE, FORM_GROUPS, type FormPrice, inclBtw } from "@/lib/prices";
 
 export function FormPrices({ items }: { items: FormPrice[] }) {
   const figRef = useRef<HTMLDivElement>(null);
@@ -111,6 +111,7 @@ export function FormPrices({ items }: { items: FormPrice[] }) {
               <h4 className="fp__name">{it.name}</h4>
               <p className="fp__price"><span className="fp__from">vanaf</span> €{it.price}</p>
             </div>
+            <p className="fp__incl">excl. btw · {inclBtw(it.price)} incl. btw</p>
             <p className="fp__text">{it.text}</p>
             {it.aside && <p className="fp__aside">{it.aside}</p>}
             {it.domain && <p className="fp__domain">{DOMAIN_NOTE}</p>}

@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Footer, Header } from "@/components/Header";
+import { DeeghCase, TclpCase } from "@/components/Cases";
 import { PuntStage } from "@/components/punt/PuntStage";
+import { AllProjectsLink } from "@/components/grammar/AllProjectsLink";
 import { ContactReturn } from "@/components/grammar/ContactReturn";
-import { Construct } from "@/components/grammar/Construct";
 import { InkRule } from "@/components/grammar/InkRule";
-import { MoreWork } from "@/components/grammar/MoreWork";
 import { Outcomes } from "@/components/grammar/Outcomes";
 import { PriceLine } from "@/components/grammar/PriceLine";
 import { SettleTitle } from "@/components/grammar/SettleTitle";
@@ -25,78 +25,26 @@ export default function Home() {
       <section className="shell story" aria-labelledby="idee-titel">
         <SettleTitle id="idee-titel" text="Van idee naar vorm." className="story__title" />
         <div className="story__text">
-          <p className="story__lead">Soms weet je precies wat je wilt. Soms heb je alleen een gedachte waarvan je denkt: hier zit iets in.</p>
-          <p>Je hoeft nog niet te weten wat het moet worden. Denckh denkt mee, zoekt de vorm die bij het idee past en maakt die concreet. Dat kan een interactieve uitleg zijn, een prototype, een presentatie of iets fysieks. Soms is het een website. Of iets waarvoor nog geen goede naam bestaat.</p>
+          <p className="story__lead">Het begint niet bij techniek, maar bij jouw vraag. Je hoeft zelf niets van techniek of AI te weten.</p>
+          <p>Soms bestaat de oplossing al en hoef je niets nieuws te laten maken. Dan zeg ik dat gewoon, en help ik je het goed in te stellen. Soms ontstaat er wel iets nieuws: een website, een app of digitaal hulpmiddel, een interactieve uitleg of presentatie, een automatisering of een technische oplossing met verlichting en sensoren. <Link className="link-draw" href="/diensten/">Bekijk waar ik mee help</Link></p>
         </div>
       </section>
 
       <section className="shell projects" id="projecten" aria-labelledby="projecten-titel">
         <header className="projects__head">
           <h2 id="projecten-titel">Wat er al vorm kreeg.</h2>
-          <p>Drie ideeën, drie soorten denken. Scroll, en kijk hoe een lijn elk project wordt.</p>
+          <p>Twee ideeën, twee soorten denken. Scroll, en kijk hoe een lijn elk project wordt.</p>
         </header>
 
-        <article className="case">
-          <Construct project="deegh" label="deegh.nl, schematisch" />
-          <div className="case__text">
-            <p className="case__kind">product → merk → webshop</p>
-            <h3>Deegh</h3>
-            <p className="case__lead">Van deegbol tot een plek waar je bestelt en leert hoe het werkt.</p>
-            <dl className="case__facts">
-              <div><dt>Aanleiding</dt><dd>Een eigen product, ambachtelijk pizzadeeg, had een plek nodig die net zo helder is als het product zelf.</dd></div>
-              <div><dt>Denckh</dt><dd>Een eigen webshop op WordPress en WooCommerce, met een eigen thema: producten, uitleg in stappen, recepten, verkooppunten en een zakelijke route.</dd></div>
-              <div><dt>Vorm</dt><dd>deegh.nl: bestellen, en leren hoe je van een bol deeg een pizza maakt.</dd></div>
-            </dl>
-            <p className="case__links">
-              <Link className="link-draw" href="/projecten/deegh/">Bekijk het project</Link>
-              <a className="link-draw" href="https://deegh.nl" rel="noopener">deegh.nl</a>
-            </p>
-          </div>
-        </article>
-
-        <article className="case case--flip case--night">
-          <Construct project="koffer" label="interactieve gids bij een demokoffer" tone="night" />
-          <div className="case__text">
-            <p className="case__kind">complexe techniek → begrijpelijke uitleg</p>
-            <h3>Een koffer die zichzelf uitlegt</h3>
-            <p className="case__lead">Een demokoffer vol sensortechniek kreeg een digitale gids die je opent met een QR-code op de koffer.</p>
-            <dl className="case__facts">
-              <div><dt>Aanleiding</dt><dd>Hoe snapt iemand die de koffer openmaakt meteen wat erin zit en hoe je het bedient?</dd></div>
-              <div><dt>Denckh</dt><dd>Een verkenner van de koffer, de bediening stap voor stap nagebootst en een demomodus om mee te presenteren. In drie talen, ook offline.</dd></div>
-              <div><dt>Vorm</dt><dd>Een interactieve uitleg die naast het echte product werkt.</dd></div>
-            </dl>
-            <p className="case__note">Zonder merknaam of productbeelden: het gaat hier om de manier van uitleggen.</p>
-          </div>
-        </article>
-
-        <article className="case case--flip">
-          <Construct project="spel" label="Loflijn, schematisch: een beurt van kaart tot tijdlijn" end="van psalm tot praise" ratio={0.62} />
-          <div className="case__text">
-            <p className="case__kind">spel op tafel → uitleg in drie tellen</p>
-            <h3>Loflijn</h3>
-            <p className="case__lead">Een muziekspel voor op tafel. Online moest je in een paar tellen snappen hoe een beurt werkt.</p>
-            <dl className="case__facts">
-              <div><dt>Aanleiding</dt><dd>Van Psalm tot Praise is een fysiek muziekspel: je scant een kaart, luistert naar het lied en legt de kaart op de tijdlijn. Wie het nog niet kent, moet dat meteen zien.</dd></div>
-              <div><dt>Denckh</dt><dd>De website en webshop: een beurt uitgelegd in drie stappen, productinformatie en een route naar bestellen.</dd></div>
-              <div><dt>Vorm</dt><dd>loflijn.nl, waar je het spel leert kennen en bestelt.</dd></div>
-            </dl>
-            <p className="case__links"><a className="link-draw" href="https://loflijn.nl" rel="noopener">loflijn.nl</a></p>
-          </div>
-        </article>
-      </section>
-
-      <section className="shell more-section" id="ook-gemaakt" aria-labelledby="ook-titel">
-        <header className="projects__head">
-          <h2 id="ook-titel">Ook gemaakt.</h2>
-          <p>Kleinere vormen, dezelfde manier van denken.</p>
-        </header>
-        <MoreWork />
+        <DeeghCase />
+        <TclpCase />
+        <p className="projects__all"><AllProjectsLink /></p>
       </section>
 
       <section className="shell outcomes-section" aria-labelledby="uitkomst-titel">
         <header className="projects__head">
           <h2 id="uitkomst-titel">Wat kan een idee worden?</h2>
-          <p>Dat weet je niet altijd vooraf. De vorm volgt uit wat het idee nodig heeft. Juist iets technisch of ingewikkelds? Mooi. Daar begint het vaak.</p>
+          <p>Dat weet je niet altijd vooraf. De vorm volgt uit wat het idee nodig heeft, en soms is dat iets wat al bestaat. Juist iets technisch of ingewikkelds? Mooi. Daar begint het vaak.</p>
         </header>
         <Outcomes />
       </section>
@@ -112,11 +60,10 @@ export default function Home() {
       <section className="shell prices" id="prijzen" aria-labelledby="prijzen-titel">
         <header className="prices__head">
           <h2 id="prijzen-titel">Wat kost zoiets?</h2>
-          <p>Dat hangt af van wat het idee nodig heeft. Maar je hoeft niet eerst een offerte aan te vragen om enig idee van de prijs te krijgen.</p>
+          <p>Een eerste gesprek kost niets. Pas als we afspreken dat ik iets voor je uitwerk of maak, kost het iets, en dat weet je vooraf. Een vereniging of vrijwilligersinitiatief met een klein budget? Vertel het gerust.</p>
         </header>
         <PriceLine stops={HOME_STOPS} label="Van even samen denken tot echt maken" />
         <div className="prices__more">
-          <p>Benieuwd naar de richtprijzen per vorm?</p>
           <div className="prices__cta">
             <Link className="ink-button" href="/prijzen/">Bekijk de richtprijzen</Link>
             <a className="link-draw link-draw--dot" href="#contact">Vertel je idee</a>
@@ -131,11 +78,9 @@ export default function Home() {
         </figure>
         <div className="small__text">
           <h2 id="klein-titel">Denckh is klein. Bewust.</h2>
-          <p>Heb je een idee, product of technisch verhaal dat nog niet helemaal in vorm is? Dan help ik je uitzoeken wat het eigenlijk nodig heeft, en maak ik het concreet.</p>
-          <p>Soms wordt dat een interactieve uitleg, prototype, tool of presentatie. Soms iets fysieks. En soms gewoon een goede website.</p>
-          <p>Je werkt rechtstreeks met mij: degene die meedenkt én maakt.</p>
-          <p>Waarom ik juist dit soort vragen leuk vind? Mijn achtergrond ligt op het snijvlak van techniek en commercie. Ik ben elektrotechnisch opgeleid en werk al jaren met verlichting, lichtsturing en slimme gebouwen. Daardoor kijk ik vaak van twee kanten naar een vraag: hoe werkt het echt, en hoe maken we het zo eenvoudig dat een ander het begrijpt, gebruikt of kan verkopen?</p>
-          <p>Naast Denckh maak ik Deegh, ambachtelijk pizzadeeg. Ook dat begon als een idee.</p>
+          <p>Ik vind het leuk om nieuwe dingen te ontdekken en uit te zoeken wat ermee mogelijk is. Nog leuker vind ik het wanneer iemand anders daar echt iets aan heeft. Daar komt Denckh uit voort.</p>
+          <p>Je werkt rechtstreeks met mij: degene die meedenkt én maakt. Denckh hoeft niet groot te worden. Ik maak liever iets wat werkelijk helpt dan iets omdat het nu eenmaal kan.</p>
+          <p>Mijn achtergrond ligt op het snijvlak van techniek en commercie: elektrotechnisch opgeleid en al jaren bezig met verlichting, lichtsturing en slimme gebouwen.</p>
           <p><a className="link-draw" href="/downloads/denckh-achter-denckh.pdf">Meer over mijn achtergrond →</a></p>
         </div>
       </section>
@@ -143,8 +88,8 @@ export default function Home() {
       <div className="shell"><InkRule /></div>
 
       <section className="shell contact" id="contact" aria-labelledby="contact-titel">
-        <h2 id="contact-titel">En wat zit er bij jou in je hoofd?</h2>
-        <p className="contact__lead">Het hoeft nog geen plan te zijn. Een half idee, een vraag of een probleem is genoeg om mee te beginnen.</p>
+        <h2 id="contact-titel">Waar loop jij tegenaan?</h2>
+        <p className="contact__lead">Een idee, een probleem of gewoon een vraag is genoeg. Je hoeft nog geen plan of budget te hebben. Ik denk graag met je mee, en het eerste gesprek is gratis.</p>
         <ContactReturn />
       </section>
 
